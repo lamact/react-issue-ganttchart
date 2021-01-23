@@ -3,20 +3,53 @@ import Gantt from './components/Gantt';
 import Toolbar from './components/Toolbar';
 import MessageArea from './components/MessageArea';
 import './App.css';
+import axios from 'axios';
 
-const data = {
-  data: [
-    { id: 1, text: 'Task #1', start_date: '2020-02-12', duration: 3, progress: 0.6 },
-    { id: 2, text: 'Task #2', start_date: '2020-02-16', duration: 3, progress: 0.4 }
-  ],
-  links: [
-    { id: 1, source: 1, target: 2, type: '0' }
-  ]
-};
 class App extends Component {
   state = {
     currentZoom: 'Days',
-    messages: []
+    messages: [],
+  };
+
+  componentDidMount() {
+    this.getGitlabIssues();
+  }
+
+  getParsedDate(infoDate){
+    var date = new Date(infoDate);
+    // alert(date);
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    date =  dd + "-" + mm + "-" + yyyy;
+    return date.toString();
+  }
+
+  getGitlabIssues = async () => {
+    const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues';
+    let res = await axios.get(url).then((res) => {
+        let data=[];
+        let links=[];
+        res.data.map((info) => {
+        let issue = {
+          id:info.id,
+          text:info.title,
+          start_date:this.getParsedDate(info.created_at),
+          duration:3,
+          progress:0.1,
+        }
+        data.push(issue);
+      });
+      data={data:data,links:links}
+      this.setState({ data });
+    });
   };
 
   addMessage(message) {
@@ -58,13 +91,15 @@ class App extends Component {
             onZoomChange={this.handleZoomChange}
           />
         </div>
+        {this.state.data　&&
         <div className="gantt-container">
           <Gantt
-            tasks={data}
+            tasks={this.state.data}
             zoom={currentZoom}
             onDataUpdated={this.logDataUpdate}
           />
         </div>
+        }
         <MessageArea
           messages={messages}
         />
