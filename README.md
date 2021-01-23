@@ -14,16 +14,16 @@ More features can be added due to rich functionality of dhtmlxGantt: https://dht
 ~~~
 yarn install
 ~~~
-or
-~~~ 
-npm install 
-~~~
 
  - run server
 ~~~
 yarn start
 ~~~
-or
+
+- build and deploy Pages
 ~~~
-npm start
+yarn deploy
 ~~~
+
+- View Pages
+https://lamact.github.io/react-issue-ganttchart/
