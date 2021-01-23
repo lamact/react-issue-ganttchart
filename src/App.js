@@ -3,6 +3,16 @@ import Gantt from './components/Gantt';
 import Toolbar from './components/Toolbar';
 import MessageArea from './components/MessageArea';
 import './App.css';
+import axios from 'axios';
+
+const format = [
+  { type: 'string', label: 'Task ID' },
+  { type: 'string', label: 'Task Name' },
+  { type: 'date', label: 'Start Date' },
+  { type: 'number', label: 'Duration' },
+  { type: 'number', label: 'Percent Complete' },
+  { type: 'string', label: 'Dependencies' },
+]
 
 const data = {
   data: [
@@ -17,6 +27,33 @@ class App extends Component {
   state = {
     currentZoom: 'Days',
     messages: []
+  };
+
+  componentDidMount() {
+    this.getGitlabIssues();
+  }
+
+  getGitlabIssues = async () => {
+    const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues';
+    let res = await axios.get(url).then((res) => {
+      let issues = [
+        format,
+      ]
+      res.data.map((info) => {
+        let issue = [
+          info.id,
+          info.title,
+          new Date(info.created_at),
+          new Date(2021, 5, 20),
+          100,
+          null,
+        ]
+        issues.push(issue);
+      });
+      this.setState({ issues });
+      console.log(this.state.issues);
+      this.addMessage(this.state.issues[1][1]);
+    });
   };
 
   addMessage(message) {
