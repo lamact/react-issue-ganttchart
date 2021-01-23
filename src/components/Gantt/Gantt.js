@@ -98,7 +98,7 @@ export default class Gantt extends Component {
           let start_date = this.getStartDateFromBodyString(res.data.body);
           let due_date = this.getDueDateFromBodyString(res.data.body);
           let start_date_str, duration = null;
-          if (start_date != null || due_date != null) {
+          if (start_date != null && due_date != null) {
             let start_date_moment = moment(start_date);
             let due_date_moment = moment(due_date);
             start_date_str = start_date.toLocaleDateString("ja-JP");
