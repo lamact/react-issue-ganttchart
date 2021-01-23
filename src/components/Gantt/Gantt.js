@@ -73,20 +73,20 @@ export default class Gantt extends Component {
   }
 
   getStartDateFromBodyString(body) {
-    let date_str = body.match(/start_date: \d{4}\-\d{1,2}\-\d{1,2}/)
+    let date_str = body.match(/start_date: \d{4}\/\d{1,2}\/\d{1,2}/);
     if (date_str == null) {
       return null;
     }
-    date_str = date_str[0].match(/\d{4}\-\d{1,2}\-\d{1,2}/)[0];
+    date_str = date_str[0].match(/\d{4}\/\d{1,2}\/\d{1,2}/)[0];
     return new Date(date_str);
   }
 
   getDueDateFromBodyString(body) {
-    let date_str = body.match(/due_date: \d{4}\-\d{1,2}\-\d{1,2}/);
+    let date_str = body.match(/due_date: \d{4}\/\d{1,2}\/\d{1,2}/);
     if (date_str == null) {
       return null;
     }
-    date_str = date_str[0].match(/\d{4}\-\d{1,2}\-\d{1,2}/)[0];
+    date_str = date_str[0].match(/\d{4}\/\d{1,2}\/\d{1,2}/)[0];
     return new Date(date_str);
   }
 
@@ -106,17 +106,16 @@ export default class Gantt extends Component {
             unscheduled = false
           } else {
             start_date_str = new Date(info.created_at).toLocaleDateString("ja-JP");
-            console.log(start_date_str)
             duration = 1;
             unscheduled = true
           }
           let issue = {
-            id: info.id,
+            id: info.number,
             text: info.title,
             start_date: start_date_str,
             duration: duration,
             progress: 0.1,
-            unscheduled :unscheduled,
+            unscheduled: unscheduled,
           }
           let data = [];
           let links = [];
@@ -128,6 +127,50 @@ export default class Gantt extends Component {
     });
   };
 
+  replaceStartDateInBodyString(body, write_start_date) {
+    let start_date = this.getStartDateFromBodyString(body);
+    if (start_date != null) {
+      return body.replace(/start_date: \d{4}\/\d{1,2}\/\d{1,2}/, "start_date: " + write_start_date);
+    } else {
+      return "start_date: " + write_start_date + "\n" + body;
+    }
+  }
+
+  replaceDueDateInBodyString(body, write_due_date) {
+    let due_date = this.getDueDateFromBodyString(body);
+    if (due_date != null) {
+      return body.replace(/due_date: \d{4}\/\d{1,2}\/\d{1,2}/, "due_date: " + write_due_date);
+    } else {
+      return "due_date: " + write_due_date + "\n" + body;
+    }
+  }
+
+  updateIssue(id, item) {
+    const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues/' + item.id;
+    let start_date = new Date(item.start_date);
+    let start_date_str = start_date.toLocaleDateString("ja-JP");
+    let due_date = moment(start_date).add(item.duration, 'd').toDate();
+    let due_date_str = due_date.toLocaleDateString("ja-JP");
+    const token = '6517d5baaa7'
+
+    axios.get(url).then((res) => {
+      let body = res.data.body;
+      body = this.replaceDueDateInBodyString(body,due_date_str);
+      body = this.replaceStartDateInBodyString(body,start_date_str);
+
+      axios.post(url, {
+        body: body,
+      }, {
+        headers: {
+          'Authorization': `token ${token}`
+        }
+      }).then((res) => {
+        this.getGitHubIssues();
+      });
+    });
+    return null;
+  }
+
   shouldComponentUpdate(nextProps) {
     return this.props.zoom !== nextProps.zoom;
   }
@@ -135,7 +178,11 @@ export default class Gantt extends Component {
   componentDidMount() {
     gantt.config.xml_date = "%Y/%m/%d %H:%i";
     gantt.config.show_unscheduled = true;
+    gantt.locale.labels.section_description = "Issue Description";
 
+    gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
+      this.updateIssue(id, item);
+    });
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     this.getGitHubIssues();
