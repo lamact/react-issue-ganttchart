@@ -97,16 +97,18 @@ export default class Gantt extends Component {
         axios.get(url + '/' + info.number).then((res) => {
           let start_date = this.getStartDateFromBodyString(res.data.body);
           let due_date = this.getDueDateFromBodyString(res.data.body);
-          let start_date_str, duration = null;
+          let start_date_str, duration, unscheduled = null;
           if (start_date != null && due_date != null) {
             let start_date_moment = moment(start_date);
             let due_date_moment = moment(due_date);
             start_date_str = start_date.toLocaleDateString("ja-JP");
             duration = due_date_moment.diff(start_date_moment, 'days');
+            unscheduled = false
           } else {
             start_date_str = new Date(info.created_at).toLocaleDateString("ja-JP");
             console.log(start_date_str)
             duration = 1;
+            unscheduled = true
           }
           let issue = {
             id: info.id,
@@ -114,6 +116,7 @@ export default class Gantt extends Component {
             start_date: start_date_str,
             duration: duration,
             progress: 0.1,
+            unscheduled :unscheduled,
           }
           let data = [];
           let links = [];
@@ -131,6 +134,8 @@ export default class Gantt extends Component {
 
   componentDidMount() {
     gantt.config.xml_date = "%Y/%m/%d %H:%i";
+    gantt.config.show_unscheduled = true;
+
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     this.getGitHubIssues();
