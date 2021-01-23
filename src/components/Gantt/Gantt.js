@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { gantt } from 'dhtmlx-gantt';
+import axios from 'axios';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
+import moment from 'moment'
 
 export default class Gantt extends Component {
 
@@ -70,16 +72,68 @@ export default class Gantt extends Component {
     });
   }
 
+  getStartDateFromBodyString(body) {
+    let date_str = body.match(/start_date: \d{4}\-\d{1,2}\-\d{1,2}/)
+    if (date_str == null) {
+      return null;
+    }
+    date_str = date_str[0].match(/\d{4}\-\d{1,2}\-\d{1,2}/)[0];
+    return new Date(date_str);
+  }
+
+  getDueDateFromBodyString(body) {
+    let date_str = body.match(/due_date: \d{4}\-\d{1,2}\-\d{1,2}/);
+    if (date_str == null) {
+      return null;
+    }
+    date_str = date_str[0].match(/\d{4}\-\d{1,2}\-\d{1,2}/)[0];
+    return new Date(date_str);
+  }
+
+  getGitHubIssues = async () => {
+    const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues';
+    axios.get(url).then((res) => {
+      res.data.map((info) => {
+        axios.get(url + '/' + info.number).then((res) => {
+          let start_date = this.getStartDateFromBodyString(res.data.body);
+          let due_date = this.getDueDateFromBodyString(res.data.body);
+          let start_date_str, duration = null;
+          if (start_date != null && due_date != null) {
+            let start_date_moment = moment(start_date);
+            let due_date_moment = moment(due_date);
+            start_date_str = start_date.toLocaleDateString("ja-JP");
+            duration = due_date_moment.diff(start_date_moment, 'days');
+          } else {
+            start_date_str = new Date(info.created_at).toLocaleDateString("ja-JP");
+            console.log(start_date_str)
+            duration = 1;
+          }
+          let issue = {
+            id: info.id,
+            text: info.title,
+            start_date: start_date_str,
+            duration: duration,
+            progress: 0.1,
+          }
+          let data = [];
+          let links = [];
+          data.push(issue);
+          data = { data: data, links: links }
+          gantt.parse(data);
+        });
+      });
+    });
+  };
+
   shouldComponentUpdate(nextProps) {
     return this.props.zoom !== nextProps.zoom;
   }
 
   componentDidMount() {
-    gantt.config.xml_date = "%Y-%m-%d %H:%i";
-    const { tasks } = this.props;
+    gantt.config.xml_date = "%Y/%m/%d %H:%i";
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
-    gantt.parse(tasks);
+    this.getGitHubIssues();
   }
 
   componentWillUnmount() {

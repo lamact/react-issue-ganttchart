@@ -3,53 +3,11 @@ import Gantt from './components/Gantt';
 import Toolbar from './components/Toolbar';
 import MessageArea from './components/MessageArea';
 import './App.css';
-import axios from 'axios';
 
 class App extends Component {
   state = {
     currentZoom: 'Days',
     messages: [],
-  };
-
-  componentDidMount() {
-    this.getGithubIssues();
-  }
-
-  getParsedDate(infoDate){
-    var date = new Date(infoDate);
-    // alert(date);
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1; //January is 0!
-    var yyyy = date.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-    date =  yyyy + "-" + mm + "-" + dd;
-    return date.toString();
-  }
-
-  getGithubIssues = async () => {
-    const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues';
-    let res = await axios.get(url).then((res) => {
-        let data=[];
-        let links=[];
-        res.data.map((info) => {
-        let issue = {
-          id:info.id,
-          text:info.title,
-          start_date:this.getParsedDate(info.created_at),
-          duration:3,
-          progress:0.1,
-        }
-        console.log(data);
-        data.push(issue);
-      });
-      data={data:data,links:links}
-      this.setState({ data });
-    });
   };
 
   addMessage(message) {
@@ -91,15 +49,12 @@ class App extends Component {
             onZoomChange={this.handleZoomChange}
           />
         </div>
-        {this.state.data　&&
         <div className="gantt-container">
           <Gantt
-            tasks={this.state.data}
             zoom={currentZoom}
             onDataUpdated={this.logDataUpdate}
           />
         </div>
-        }
         <MessageArea
           messages={messages}
         />
@@ -109,4 +64,3 @@ class App extends Component {
 }
 
 export default App;
-
