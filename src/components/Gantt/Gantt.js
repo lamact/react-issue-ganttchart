@@ -72,22 +72,6 @@ export default class Gantt extends Component {
     });
   }
 
-  getParsedDate(infoDate) {
-    var date = new Date(infoDate);
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1; //January is 0!
-
-    var yyyy = date.getFullYear();
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    date = dd + "-" + mm + "-" + yyyy;
-    return date.toString();
-  }
-
   getStartDateFromBodyString(body) {
     let date_str = body.match(/start_date: \d{4}\-\d{1,2}\-\d{1,2}/)
     if (date_str == null) {
