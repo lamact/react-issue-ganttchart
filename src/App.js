@@ -12,7 +12,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.getGitlabIssues();
+    this.getGithubIssues();
   }
 
   getParsedDate(infoDate){
@@ -20,7 +20,6 @@ class App extends Component {
     // alert(date);
     var dd = date.getDate();
     var mm = date.getMonth() + 1; //January is 0!
-
     var yyyy = date.getFullYear();
     if (dd < 10) {
         dd = '0' + dd;
@@ -28,11 +27,11 @@ class App extends Component {
     if (mm < 10) {
         mm = '0' + mm;
     }
-    date =  dd + "-" + mm + "-" + yyyy;
+    date =  yyyy + "-" + mm + "-" + dd;
     return date.toString();
   }
 
-  getGitlabIssues = async () => {
+  getGithubIssues = async () => {
     const url = 'https://api.github.com/repos/lamact/react-issue-ganttchart/issues';
     let res = await axios.get(url).then((res) => {
         let data=[];
@@ -45,6 +44,7 @@ class App extends Component {
           duration:3,
           progress:0.1,
         }
+        console.log(data);
         data.push(issue);
       });
       data={data:data,links:links}
