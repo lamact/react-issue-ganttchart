@@ -20,10 +20,10 @@ yarn install
 yarn start
 ~~~
 
-- build and deploy Pages
+- build and deploy for Pages
 ~~~
 yarn deploy
 ~~~
 
-- View Pages
+- View Pages  
 https://lamact.github.io/react-issue-ganttchart/
