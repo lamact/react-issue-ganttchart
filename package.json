@@ -12,7 +12,8 @@
     "moment": "^2.29.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1"
+    "react-scripts": "3.3.1",
+    "sfcookies": "^1.0.2"
   },
   "homepage": "https://lamact.github.io/react-issue-ganttchart/",
   "scripts": {
