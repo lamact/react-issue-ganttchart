@@ -123,6 +123,7 @@ export default class Gantt extends Component {
           data = { data: data, links: links }
           gantt.parse(data);
         });
+        return null;
       });
     });
   };
@@ -151,20 +152,22 @@ export default class Gantt extends Component {
     let start_date_str = start_date.toLocaleDateString("ja-JP");
     let due_date = moment(start_date).add(item.duration, 'd').toDate();
     let due_date_str = due_date.toLocaleDateString("ja-JP");
-    const token = '6517d5baaa7'
 
     axios.get(url).then((res) => {
       let body = res.data.body;
-      body = this.replaceDueDateInBodyString(body,due_date_str);
-      body = this.replaceStartDateInBodyString(body,start_date_str);
+      body = this.replaceDueDateInBodyString(body, due_date_str);
+      body = this.replaceStartDateInBodyString(body, start_date_str);
 
       axios.post(url, {
         body: body,
       }, {
         headers: {
-          'Authorization': `token ${token}`
+          'Authorization': `token ${this.props.token}`
         }
       }).then((res) => {
+        console.log("success post")
+      }).catch((err) => {
+        alert.show('aa')
         this.getGitHubIssues();
       });
     });
@@ -179,6 +182,7 @@ export default class Gantt extends Component {
     gantt.config.xml_date = "%Y/%m/%d %H:%i";
     gantt.config.show_unscheduled = true;
     gantt.locale.labels.section_description = "Issue Description";
+    gantt.config.sort = true;
 
     gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
       this.updateIssue(id, item);
