@@ -12,6 +12,12 @@ export default class Toolbar extends Component {
     }
   }
 
+  handleGitURLChange = (e) => {
+    if (this.props.onGitURLChange) {
+      this.props.onGitURLChange(e.target.value)
+    }
+  }
+
   render() {
     const zoomRadios = ['Days', 'Months'].map((value) => {
       const isActive = this.props.zoom === value;
@@ -28,11 +34,16 @@ export default class Toolbar extends Component {
 
     return (
       <div className="tool-bar">
+        <b>URL: </b>
+        <input type="text"
+          value={this.props.url}
+          onChange={this.handleGitURLChange}
+          className='text-input-label' />
         <b>Token: </b>
         <input type="password"
           value={this.props.token}
           onChange={this.handleTokenChange}
-          className='token-input-label' />
+          className='text-input-label' />
         <b>Zoom: </b>
         {zoomRadios}
       </div>

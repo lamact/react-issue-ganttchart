@@ -165,6 +165,12 @@ export default class Gantt extends Component {
     return null;
   }
 
+  
+  linkIssue(id, e) {
+    console.log(id)
+    window.open("https://google.com", "_blank");
+  }
+
   shouldComponentUpdate(nextProps) {
     return this.props.zoom !== nextProps.zoom;
   }
@@ -177,6 +183,9 @@ export default class Gantt extends Component {
     gantt.config.show_unscheduled = true;
     gantt.locale.labels.section_description = "Issue Description";
     gantt.config.sort = true;
+    gantt.attachEvent("onTaskClick",  (id, e) => {
+      this.linkIssue(id, e);
+    });
 
     gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
       this.updateIssue(id, item);
