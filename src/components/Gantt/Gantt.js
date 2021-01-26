@@ -18,15 +18,6 @@ export default class Gantt extends Component {
     gantt.ext.zoom.init({
       levels: [
         {
-          name: 'Hours',
-          scale_height: 60,
-          min_column_width: 30,
-          scales: [
-            { unit: 'day', step: 1, format: '%d %M' },
-            { unit: 'hour', step: 1, format: '%H' }
-          ]
-        },
-        {
           name: 'Days',
           scale_height: 60,
           min_column_width: 70,
@@ -131,6 +122,9 @@ export default class Gantt extends Component {
 
   componentDidMount() {
     gantt.config.xml_date = "%Y/%m/%d %H:%i";
+    gantt.config.order_branch = true;
+    gantt.config.order_branch_free = true;
+
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     this.getGitHubIssues();
