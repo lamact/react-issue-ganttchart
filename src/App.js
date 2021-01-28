@@ -8,7 +8,7 @@ class App extends Component {
   state = {
     currentZoom: 'Months',
     messages: [],
-    git_url: '',
+    git_url: 'https://github.com/',
     token: '',
   };
 
@@ -16,21 +16,29 @@ class App extends Component {
     this.setState({
       currentZoom: zoom
     });
+    bake_cookie('currentZoom', zoom);
   }
 
   handleTokenChange = (token) => {
     this.setState({ token });
-    bake_cookie('personal_access_token', token);
+    bake_cookie('token', token);
   }
 
   handleGitURLChange = (git_url) => {
-    this.setState({ git_url });
+    // this.setState({ git_url });
     bake_cookie('git_url', git_url);
   }
 
   componentDidMount() {
     this.setState({
-      token: read_cookie('personal_access_token')
+      token: read_cookie('token')
+    });
+    this.setState({
+      git_url: read_cookie('git_url')
+    });
+    if (read_cookie('currentZoom') === 'Days' || read_cookie('currentZoom') === 'Months')
+    this.setState({
+      currentZoom: read_cookie('currentZoom')
     });
   }
 
