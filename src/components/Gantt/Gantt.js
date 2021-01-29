@@ -6,7 +6,7 @@ import {
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
-} from '../../functions/SwitchAPI.js';
+} from '../../functions/Common/IssueAPI.js';
 
 export default class Gantt extends Component {
 
@@ -67,7 +67,7 @@ export default class Gantt extends Component {
     });
   }
 
-  updateGantt(){
+  updateGantt() {
     getIssuesFromAPI(gantt, this.props.git_url, this.props.token);
   }
 
@@ -86,16 +86,24 @@ export default class Gantt extends Component {
     gantt.config.show_unscheduled = true;
     gantt.config.sort = true;
 
-    gantt.attachEvent("onTaskDblClick", (id, e) => {
-      openIssueAtBrowser(id, this.props.git_url);
+    gantt.attachEvent("onTaskDblClick", (gantt_task, e) => {
+      openIssueAtBrowser(gantt_task, this.props.git_url);
     });
 
-    gantt.attachEvent("onTaskCreated", (id, e) => {
-      openNewIssueAtBrowser(id, this.props.git_url);
+    gantt.attachEvent("onTaskCreated", (gantt_task, e) => {
+      openNewIssueAtBrowser(gantt_task, this.props.git_url);
     });
 
-    gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
-      updateIssueByAPI(id, this.props.token, gantt, this.props.git_url);
+    gantt.attachEvent("onAfterTaskUpdate", (gantt_task, item) => {
+      updateIssueByAPI(gantt_task, this.props.token, gantt, this.props.git_url);
+    });
+
+    gantt.attachEvent("onScaleClick", (id, row) => {
+      console.log(id)
+    });
+
+    gantt.attachEvent("onEmptyClick", (e) => {
+      
     });
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();

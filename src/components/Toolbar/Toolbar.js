@@ -18,6 +18,12 @@ export default class Toolbar extends Component {
     }
   }
 
+  handleUpdateClick = (e) => {
+    if (this.props.onUpdateClick) {
+      this.props.onUpdateClick()
+    }
+  }
+
   render() {
     const zoomRadios = ['Days', 'Months'].map((value) => {
       const isActive = this.props.zoom === value;
@@ -44,6 +50,11 @@ export default class Toolbar extends Component {
           value={this.props.token}
           onChange={this.handleTokenChange}
           className='token-input-label' />
+        <button
+          onClick={this.handleUpdateClick}
+          className='button' >
+          Update
+        </button>
         <b>Zoom: </b>
         {zoomRadios}
       </div>
