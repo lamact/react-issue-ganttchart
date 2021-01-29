@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import {
-  getGitHubIssues,
-  updateGitHubIssue,
-  linkGitHubIssue,
-  linkGitHubNewIssue,
-} from '../../functions/GitHubAPI.js';
+  getIssuesFromAPI,
+  updateIssueByAPI,
+  openIssueAtBrowser,
+  openNewIssueAtBrowser,
+} from '../../functions/SwitchAPI.js';
 
 export default class Gantt extends Component {
 
@@ -68,7 +68,7 @@ export default class Gantt extends Component {
   }
 
   updateGantt(){
-    getGitHubIssues(gantt, this.props.git_url);
+    getIssuesFromAPI(gantt, this.props.git_url);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -87,15 +87,15 @@ export default class Gantt extends Component {
     gantt.config.sort = true;
 
     gantt.attachEvent("onTaskDblClick", (id, e) => {
-      linkGitHubIssue(id, this.props.git_url);
+      openIssueAtBrowser(id, this.props.git_url);
     });
 
     gantt.attachEvent("onTaskCreated", (id, e) => {
-      linkGitHubNewIssue(id, this.props.git_url);
+      openNewIssueAtBrowser(id, this.props.git_url);
     });
 
     gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
-      updateGitHubIssue(id, this.props.token, gantt, this.props.git_url);
+      updateIssueByAPI(id, this.props.token, gantt, this.props.git_url);
     });
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();

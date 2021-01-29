@@ -38,7 +38,7 @@ const adjustGitHubAPIURL = (git_url) => {
   return git_api_url;
 }
 
-export const getGitHubIssues = async (gantt, git_url) => {
+export const getGitHubIssuesFromAPI = async (gantt, git_url) => {
   const url = adjustGitHubAPIURL(git_url) + '/issues';
   axios.get(url).then((res) => {
     res.data.map((info) => {
@@ -81,7 +81,7 @@ export const getGitHubIssues = async (gantt, git_url) => {
   });
 };
 
-export const updateGitHubIssue = (id, item, token, gantt, git_url) => {
+export const updateGitHubIssueFromAPI = (id, item, token, gantt, git_url) => {
   const url = adjustGitHubAPIURL(git_url) + '/issues/' + item.id;
   let start_date = new Date(item.start_date);
   let start_date_str = start_date.toLocaleDateString("ja-JP");
@@ -104,17 +104,17 @@ export const updateGitHubIssue = (id, item, token, gantt, git_url) => {
       console.log("success update issue")
     }).catch((err) => {
       alert('failed update issue')
-      getGitHubIssues(gantt, git_url);
+      getGitHubIssuesFromAPI(gantt, git_url);
     });
   });
   return null;
 };
 
-export const linkGitHubIssue = (id, git_url) => {
+export const openGitHubIssueAtBrowser = (id, git_url) => {
   window.open(adjustGitHubURL(git_url) + "/issues/" + id, "_blank");
 };
 
-export const linkGitHubNewIssue = (id, git_url) => {
+export const openGitHubNewIssueAtBrowser = (id, git_url) => {
   let body = "";
   body += "start_date:%20" + new Date().toLocaleDateString("ja-JP") + "%0D%0A";
   body += "due_date:%20" + new Date().toLocaleDateString("ja-JP") + "%0D%0A";
