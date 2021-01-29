@@ -5,12 +5,16 @@ import { bake_cookie, read_cookie } from 'sfcookies';
 import './App.css';
 
 class App extends Component {
-  state = {
-    currentZoom: 'Months',
-    messages: [],
-    git_url: 'https://github.com/',
-    token: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentZoom: 'Months',
+      messages: [],
+      git_url: '',
+      token: '',
+    };
+    this.GanttRef = React.createRef();
+  }
 
   handleZoomChange = (zoom) => {
     this.setState({
@@ -21,11 +25,13 @@ class App extends Component {
 
   handleTokenChange = (token) => {
     this.setState({ token });
+    this.GanttRef.current.updateGantt();
     bake_cookie('token', token);
   }
 
   handleGitURLChange = (git_url) => {
-    // this.setState({ git_url });
+    this.setState({ git_url });
+    this.GanttRef.current.updateGantt();
     bake_cookie('git_url', git_url);
   }
 
@@ -37,9 +43,9 @@ class App extends Component {
       git_url: read_cookie('git_url')
     });
     if (read_cookie('currentZoom') === 'Days' || read_cookie('currentZoom') === 'Months')
-    this.setState({
-      currentZoom: read_cookie('currentZoom')
-    });
+      this.setState({
+        currentZoom: read_cookie('currentZoom')
+      });
   }
 
   render() {
@@ -58,10 +64,10 @@ class App extends Component {
         </div>
         <div className="gantt-container">
           <Gantt
+            ref={this.GanttRef}
             zoom={currentZoom}
             git_url={git_url}
             token={token}
-            onDataUpdated={this.logDataUpdate}
           />
         </div>
       </div>

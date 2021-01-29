@@ -67,6 +67,10 @@ export default class Gantt extends Component {
     });
   }
 
+  updateGantt(){
+    getGitHubIssues(gantt, this.props.git_url);
+  }
+
   shouldComponentUpdate(nextProps) {
     return this.props.zoom !== nextProps.zoom;
   }
@@ -83,19 +87,19 @@ export default class Gantt extends Component {
     gantt.config.sort = true;
 
     gantt.attachEvent("onTaskDblClick", (id, e) => {
-      linkGitHubIssue(id, e);
+      linkGitHubIssue(id, this.props.git_url);
     });
 
     gantt.attachEvent("onTaskCreated", (id, e) => {
-      linkGitHubNewIssue(id, e);
+      linkGitHubNewIssue(id, this.props.git_url);
     });
 
     gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
-      updateGitHubIssue(id, item, this.props.token, gantt);
+      updateGitHubIssue(id, this.props.token, gantt, this.props.git_url);
     });
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
-    getGitHubIssues(gantt);
+    this.updateGantt();
   }
 
   componentWillUnmount() {
