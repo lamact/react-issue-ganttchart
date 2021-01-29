@@ -48,17 +48,6 @@ class App extends Component {
       });
   }
 
-  handleTokenChange = (token) => {
-    this.setState({ token });
-    bake_cookie('personal_access_token', token);
-  }
-
-  componentDidMount() {
-    this.setState({
-      token: read_cookie('personal_access_token')
-    });
-  }
-
   render() {
     const { currentZoom, git_url, token } = this.state;
     return (
