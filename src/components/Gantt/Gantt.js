@@ -167,7 +167,7 @@ export default class Gantt extends Component {
       }).then((res) => {
         console.log("success post")
       }).catch((err) => {
-        alert.show('aa')
+        alert('failed update issue! please check your token.')
         this.getGitHubIssues();
       });
     });
