@@ -25,3 +25,6 @@ yarn deploy
 
 - View Pages  
 https://lamact.github.io/react-issue-ganttchart/
+
+- Personal Access Token Scopes
+public_repo, write:discussion
