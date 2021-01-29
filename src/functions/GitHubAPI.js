@@ -2,41 +2,18 @@ import axios from 'axios';
 import moment from 'moment'
 import {
   getStartDateFromBodyString,
+  replaceStartDateInBodyString,
   getDueDateFromBodyString,
   replaceDueDateInBodyString,
-  replaceStartDateInBodyString,
   getProgressFromBodyString,
   replaceProgressInBodyString,
 } from './Parser.js';
+import {
+  adjustGitHubAPIURL,
+  adjustGitHubURL,
+  updateGanttIssue,
+} from './APIHelper.js';
 
-const adjustGitHubURL = (git_url) => {
-  let url = git_url;
-  if (git_url.length > 1 && /\/$/.test(git_url)) {
-    url = git_url.slice(0, -1);
-  }
-  return url;
-}
-
-const adjustGitHubAPIURL = (git_url) => {
-  let url = adjustGitHubURL(git_url);
-  let git_api_url = url;
-  // insert api.
-  if (url.length > 1 && !/api.github.com/.test(git_url)) {
-    let index_of_github = url.indexOf('github');
-    let https = url.slice(0, index_of_github);
-    let github_com = url.slice(index_of_github);
-    url = https + "api." + github_com;
-  }
-  // insert repos
-  if (url.length > 1 && !/\/repos\//.test(git_url)) {
-    let index_of_github_com = url.indexOf('github.com');
-    let https_api_github_com_slash = url.slice(0, index_of_github_com+11);
-    let rest_url = url.slice(index_of_github_com+11);
-    git_api_url = https_api_github_com_slash + "repos/" + rest_url;
-  }
-  console.log(git_api_url)
-  return git_api_url;
-}
 
 export const getGitHubIssuesFromAPI = async (gantt, git_url) => {
   const url = adjustGitHubAPIURL(git_url) + '/issues';
@@ -69,12 +46,7 @@ export const getGitHubIssuesFromAPI = async (gantt, git_url) => {
           progress: progress,
           unscheduled: unscheduled,
         }
-        let data = [];
-        let links = [];
-        data.push(issue);
-        data = { data: data, links: links }
-        gantt.parse(data);
-        gantt.sort("start_date", false);
+        updateGanttIssue(issue, gantt);
       });
       return null;
     });

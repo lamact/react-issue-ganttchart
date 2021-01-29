@@ -68,7 +68,7 @@ export default class Gantt extends Component {
   }
 
   updateGantt(){
-    getIssuesFromAPI(gantt, this.props.git_url);
+    getIssuesFromAPI(gantt, this.props.git_url, this.props.token);
   }
 
   shouldComponentUpdate(nextProps) {
