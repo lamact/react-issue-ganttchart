@@ -43,7 +43,7 @@ export default class Toolbar extends Component {
         <input type="password"
           value={this.props.token}
           onChange={this.handleTokenChange}
-          className='text-input-label' />
+          className='token-input-label' />
         <b>Zoom: </b>
         {zoomRadios}
       </div>

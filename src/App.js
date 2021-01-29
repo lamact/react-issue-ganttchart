@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       currentZoom: 'Months',
       messages: [],
-      git_url: '',
+      git_url: 'https://github.com/lamact/react-issue-ganttchart',
       token: '',
     };
     this.GanttRef = React.createRef();
