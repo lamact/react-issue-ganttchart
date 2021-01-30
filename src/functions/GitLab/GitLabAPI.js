@@ -10,14 +10,34 @@ import {
   updateGanttIssue,
  } from '../Common/CommonHelper.js';
 
-export const getGitLabIssuesFromAPI = async (gantt, git_url, token) => {
-  const url = adjustGitLabAPIURL(git_url) + '/issues?access_token=' + token;
-  axios.get(url).then((res) => {
+export const getGitLabIssuesFromAPI = async (gantt, git_url, token, selected_labels) => {
+  let labels_url_str = "";
+  if (selected_labels !== null || selected_labels !== []) {
+    labels_url_str += "&labels="
+    selected_labels.map((label) => {
+      labels_url_str += label.name + ","
+      return null;
+    });
+  }
+  const get_issue_list_url = adjustGitLabAPIURL(git_url) + '/issues?access_token=' + token + labels_url_str;
+  axios.get(get_issue_list_url).then((res) => {
     res.data.map((issue_info) => {
       let gantt_task = generateGanttTaskFromGitLab(issue_info);
       updateGanttIssue(gantt_task, gantt);
       return null;
     });
+  });
+};
+
+export const setGitLabLabelListOfRepoFromAPI = async (_this, git_url, token) => {
+  const url = adjustGitLabAPIURL(git_url) + '/labels?access_token=' + token;
+  axios.get(url).then((res) => {
+    let label_list = [];
+    res.data.map((lebel_info) => {
+      label_list.push(lebel_info);
+      return null;
+    });
+    _this.setState({ labels: label_list });
   });
 };
 

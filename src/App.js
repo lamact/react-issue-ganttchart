@@ -35,12 +35,13 @@ class App extends Component {
 
   updateGantt = async (selected_labels) => {
     this.GanttRef.current.updateGantt(selected_labels);
-    bake_cookie('token', this.state.token);
-    bake_cookie('git_url', this.state.git_url);
     setLabelListOfRepoFromAPI(this, this.state.git_url, this.state.token);
   }
 
   handleUpdateClick = () => {
+    bake_cookie('access_token', this.state.token);
+    bake_cookie('url', this.state.git_url);
+    this.setState({ labels: [] });
     this.updateGantt([]);
   }
 
@@ -50,10 +51,10 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({
-      token: read_cookie('token')
+      token: read_cookie('access_token')
     });
     this.setState({
-      git_url: read_cookie('git_url')
+      git_url: read_cookie('url')
     });
     if (read_cookie('currentZoom') === 'Weeks' || read_cookie('currentZoom') === 'Days')
       this.setState({

@@ -9,10 +9,11 @@ import { updateGanttIssue } from '../Common/CommonHelper.js';
 
 export const getGitHubIssuesFromAPI = async (gantt, git_url, selected_labels) => {
   let labels_url_str = "";
-  if (selected_labels != null || selected_labels != []) {
+  if (selected_labels !== null || selected_labels !== []) {
     labels_url_str += "?labels="
     selected_labels.map((label) => {
       labels_url_str += label.name + ","
+      return null;
     });
   }
   const get_issue_list_url = adjustGitHubAPIURL(git_url) + '/issues' + labels_url_str;
