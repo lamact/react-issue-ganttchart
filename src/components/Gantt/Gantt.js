@@ -95,7 +95,6 @@ export default class Gantt extends Component {
     });
 
     gantt.attachEvent("onAfterTaskUpdate", (id, gantt_task) => {
-      console.log(gantt_task)
       updateIssueByAPI(gantt_task, this.props.token, gantt, this.props.git_url);
     });
 
