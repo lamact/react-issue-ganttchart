@@ -23,12 +23,12 @@ export const getIssuesFromAPI = async (gantt, git_url, token) => {
   }
 }
 
-export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
+export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
   if (isGitHubURL(git_url)) {
-    updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
+    updateGitHubIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
   }
   if (isGitLabURL(git_url)) {
-    updateGitLabIssueFromGanttTask(gantt_task, token, gantt, git_url);
+    updateGitLabIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
   }
 }
 

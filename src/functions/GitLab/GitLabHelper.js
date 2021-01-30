@@ -1,9 +1,14 @@
-import { adjustURL } from '../Common/Parser.js';
+import {
+  getStartDateFromDescriptionString,
+  replaceStartDateInDescriptionString,
+  getProgressFromDescriptionString,
+  replaceProgressInDescriptionString,
+  adjustURL,
+} from '../Common/Parser.js';
 import { 
   getGanttStartDate,
-  getGanttDuration,
-  getGanttProgress,
   getGanttUnscheduled,
+  getGanttDuration,
  } from '../Common/CommonHelper.js';
 
 export const isGitLabURL = (git_url) => {
@@ -35,13 +40,25 @@ export const adjustGitLabURL = (git_url) => {
 }
 
 export const generateGanttTaskFromGitLab = (issue_info) => {
+  let start_date = getStartDateFromDescriptionString(issue_info.description);
+  let due_date = new Date(issue_info.due_date).toLocaleDateString("ja-JP");
+  
   let gantt_task = {
     id: issue_info.iid,
     text: issue_info.title,
-    start_date: getGanttStartDate(issue_info.description, issue_info.created_at),
-    duration: getGanttDuration(issue_info.description),
-    progress: getGanttProgress(issue_info.description),
-    unscheduled: getGanttUnscheduled(issue_info.description),
+    start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
+    duration: getGanttDuration(start_date, due_date),
+    progress: getProgressFromDescriptionString(issue_info.description),
+    unscheduled: getGanttUnscheduled(start_date, due_date),
   }
   return gantt_task;
+}
+
+export const updateGitLabDescriptionStringFromGanttTask = (description, gantt_task) => {
+  let start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
+
+  description = replaceProgressInDescriptionString(description, gantt_task.progress);
+  description = replaceStartDateInDescriptionString(description, start_date_str);
+
+  return encodeURIComponent(description);
 }

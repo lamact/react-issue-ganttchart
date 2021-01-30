@@ -3,9 +3,9 @@ import {
   adjustGitHubAPIURL,
   adjustGitHubURL,
   generateGanttTaskFromGitHub,
+  updateGitHubDescriptionStringFromGanttTask,
 } from './GitHubHelper.js';
 import { updateGanttIssue } from '../Common/CommonHelper.js';
-import { updateBodyStringFromGanttTask } from '../Common/Parser.js';
 
 export const getGitHubIssuesFromAPI = async (gantt, git_url) => {
   const url = adjustGitHubAPIURL(git_url) + '/issues';
@@ -23,7 +23,7 @@ export const getGitHubIssuesFromAPI = async (gantt, git_url) => {
 export const updateGitHubIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
   const url = adjustGitHubAPIURL(git_url) + '/issues/' + gantt_task.id;
   axios.get(url).then((res) => {
-    let body = updateBodyStringFromGanttTask(res.data.body, gantt_task);
+    let body = updateGitHubDescriptionStringFromGanttTask(res.data.body, gantt_task);
     axios.post(url, {
       body: body,
     }, {
