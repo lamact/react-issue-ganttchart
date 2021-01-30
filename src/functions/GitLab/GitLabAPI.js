@@ -28,9 +28,8 @@ export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url
     res.data.map((issue_info) => {
       if (issue_info.iid === gantt_task.id) {
         const description = updateGitLabDescriptionStringFromGanttTask(issue_info.description, gantt_task);
-        let start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
+        const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
         const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
-        console.log(due_date_str)
         const put_url = adjustGitLabAPIURL(git_url) + '/issues/' + gantt_task.id
           + "?access_token=" + token
           + "&description=" + description

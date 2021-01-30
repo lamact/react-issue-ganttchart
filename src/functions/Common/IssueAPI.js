@@ -32,20 +32,20 @@ export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
   }
 }
 
-export const openIssueAtBrowser = (gantt_task, git_url) => {
+export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   if (isGitHubURL(git_url)) {
-    openGitHubIssueAtBrowser(gantt_task, git_url);
+    openGitHubIssueAtBrowser(gantt_task_id, git_url);
   }
   if (isGitLabURL(git_url)) {
-    openGitLabIssueAtBrowser(gantt_task, git_url);
+    openGitLabIssueAtBrowser(gantt_task_id, git_url);
   }
 };
 
-export const openNewIssueAtBrowser = (gantt_task, git_url) => {
+export const openNewIssueAtBrowser = (gantt_task_id, git_url) => {
   if (isGitHubURL(git_url)) {
-    openGitHubNewIssueAtBrowser(gantt_task, git_url);
+    openGitHubNewIssueAtBrowser(gantt_task_id, git_url);
   }
   if (isGitLabURL(git_url)) {
-    openGitLabNewIssueAtBrowser(gantt_task, git_url);
+    openGitLabNewIssueAtBrowser(gantt_task_id, git_url);
   }
 }

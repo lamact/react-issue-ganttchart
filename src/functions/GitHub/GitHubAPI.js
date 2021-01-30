@@ -31,20 +31,20 @@ export const updateGitHubIssueFromGanttTask = (gantt_task, token, gantt, git_url
         'Authorization': `token ${token}`
       }
     }).then((res) => {
-      console.log("success update issue")
+      console.log("success update issue");
     }).catch((err) => {
-      alert('failed update GitHub issue. check your token.')
+      alert('failed update GitHub issue. check your token.');
       getGitHubIssuesFromAPI(gantt, git_url);
     });
   });
   return null;
 };
 
-export const openGitHubIssueAtBrowser = (id, git_url) => {
-  window.open(adjustGitHubURL(git_url) + "/issues/" + id, "_blank");
+export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
+  window.open(adjustGitHubURL(git_url) + "/issues/" + gantt_task_id, "_blank");
 };
 
-export const openGitHubNewIssueAtBrowser = (id, git_url) => {
+export const openGitHubNewIssueAtBrowser = (gantt_task_id, git_url) => {
   let body = "";
   body += "start_date:%20" + new Date().toLocaleDateString("ja-JP") + "%0D%0A";
   body += "due_date:%20" + new Date().toLocaleDateString("ja-JP") + "%0D%0A";
