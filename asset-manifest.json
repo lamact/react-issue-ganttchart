@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/react-issue-ganttchart/static/css/main.f8ea4d94.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.126efa91.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.126efa91.chunk.js.map",
+    "main.css": "/react-issue-ganttchart/static/css/main.34c658b3.chunk.css",
+    "main.js": "/react-issue-ganttchart/static/js/main.07a194a9.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.07a194a9.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.234ea6c8.js",
     "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.234ea6c8.js.map",
     "static/css/2.7592fcad.chunk.css": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css",
-    "static/js/2.7f7b3d4f.chunk.js": "/react-issue-ganttchart/static/js/2.7f7b3d4f.chunk.js",
-    "static/js/2.7f7b3d4f.chunk.js.map": "/react-issue-ganttchart/static/js/2.7f7b3d4f.chunk.js.map",
+    "static/js/2.a1025c5d.chunk.js": "/react-issue-ganttchart/static/js/2.a1025c5d.chunk.js",
+    "static/js/2.a1025c5d.chunk.js.map": "/react-issue-ganttchart/static/js/2.a1025c5d.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
-    "precache-manifest.b5f6c1063f2e32001cac601578176959.js": "/react-issue-ganttchart/precache-manifest.b5f6c1063f2e32001cac601578176959.js",
+    "precache-manifest.fb7a8609c2bb7cb370a2f87a4621e881.js": "/react-issue-ganttchart/precache-manifest.fb7a8609c2bb7cb370a2f87a4621e881.js",
     "service-worker.js": "/react-issue-ganttchart/service-worker.js",
     "static/css/2.7592fcad.chunk.css.map": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css.map",
-    "static/css/main.f8ea4d94.chunk.css.map": "/react-issue-ganttchart/static/css/main.f8ea4d94.chunk.css.map",
-    "static/js/2.7f7b3d4f.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.7f7b3d4f.chunk.js.LICENSE.txt"
+    "static/css/main.34c658b3.chunk.css.map": "/react-issue-ganttchart/static/css/main.34c658b3.chunk.css.map",
+    "static/js/2.a1025c5d.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.a1025c5d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.234ea6c8.js",
     "static/css/2.7592fcad.chunk.css",
-    "static/js/2.7f7b3d4f.chunk.js",
-    "static/css/main.f8ea4d94.chunk.css",
-    "static/js/main.126efa91.chunk.js"
+    "static/js/2.a1025c5d.chunk.js",
+    "static/css/main.34c658b3.chunk.css",
+    "static/js/main.07a194a9.chunk.js"
   ]
 }
