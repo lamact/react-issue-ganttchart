@@ -34,6 +34,23 @@
   border-color: #707070;
 }
 
+.text-input-label {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  height: 30px;
+  line-height: 28px;
+  margin-left: 6px;
+  margin-right: 16px;
+  text-align: center;
+  width:400px;
+
+  border: 1px solid #D9D9D9;
+  border-radius: 2px;
+  background: #fff;
+  color: rgba(0,0,0,0.7);
+}
+
 .token-input-label {
   box-sizing: border-box;
   cursor: pointer;
@@ -43,7 +60,7 @@
   margin-left: 6px;
   margin-right: 16px;
   text-align: center;
-  width: 180px;
+  width: 100px;
 
   border: 1px solid #D9D9D9;
   border-radius: 2px;
