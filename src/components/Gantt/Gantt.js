@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import {
-  getGitHubIssues,
-  updateGitHubIssue,
-  linkGitHubIssue,
-  linkGitHubNewIssue,
-} from '../../functions/GitHubAPI.js';
+  getIssuesFromAPI,
+  updateIssueByAPI,
+  openIssueAtBrowser,
+  openNewIssueAtBrowser,
+} from '../../functions/Common/IssueAPI.js';
 
 export default class Gantt extends Component {
 
@@ -67,8 +67,8 @@ export default class Gantt extends Component {
     });
   }
 
-  updateGantt(){
-    getGitHubIssues(gantt, this.props.git_url);
+  updateGantt() {
+    getIssuesFromAPI(gantt, this.props.git_url, this.props.token);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -86,17 +86,18 @@ export default class Gantt extends Component {
     gantt.config.show_unscheduled = true;
     gantt.config.sort = true;
 
-    gantt.attachEvent("onTaskDblClick", (id, e) => {
-      linkGitHubIssue(id, this.props.git_url);
+    gantt.attachEvent("onTaskDblClick", (gantt_task_id, e) => {
+      openIssueAtBrowser(gantt_task_id, this.props.git_url);
     });
 
-    gantt.attachEvent("onTaskCreated", (id, e) => {
-      linkGitHubNewIssue(id, this.props.git_url);
+    gantt.attachEvent("onTaskCreated", (gantt_task_id, e) => {
+      openNewIssueAtBrowser(gantt_task_id, this.props.git_url);
     });
 
-    gantt.attachEvent("onAfterTaskUpdate", (id, item) => {
-      updateGitHubIssue(id, this.props.token, gantt, this.props.git_url);
+    gantt.attachEvent("onAfterTaskUpdate", (id, gantt_task) => {
+      updateIssueByAPI(gantt_task, this.props.token, gantt, this.props.git_url);
     });
+
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     this.updateGantt();

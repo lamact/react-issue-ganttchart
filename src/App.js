@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       currentZoom: 'Months',
       messages: [],
-      git_url: 'https://github.com/lamact/react-issue-ganttchart',
+      git_url: '',
       token: '',
     };
     this.GanttRef = React.createRef();
@@ -25,14 +25,16 @@ class App extends Component {
 
   handleTokenChange = (token) => {
     this.setState({ token });
-    this.GanttRef.current.updateGantt();
-    bake_cookie('token', token);
   }
 
   handleGitURLChange = (git_url) => {
     this.setState({ git_url });
+  }
+
+  handleUpdateClick = () => {
     this.GanttRef.current.updateGantt();
-    bake_cookie('git_url', git_url);
+    bake_cookie('token', this.state.token);
+    bake_cookie('git_url', this.state.git_url);
   }
 
   componentDidMount() {
@@ -60,6 +62,7 @@ class App extends Component {
             onGitURLChange={this.handleGitURLChange}
             token={token}
             onTokenChange={this.handleTokenChange}
+            onUpdateClick={this.handleUpdateClick}
           />
         </div>
         <div className="gantt-container">
