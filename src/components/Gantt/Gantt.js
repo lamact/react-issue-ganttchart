@@ -99,13 +99,6 @@ export default class Gantt extends Component {
       updateIssueByAPI(gantt_task, this.props.token, gantt, this.props.git_url);
     });
 
-    gantt.attachEvent("onScaleClick", (id, row) => {
-      console.log(id)
-    });
-
-    gantt.attachEvent("onEmptyClick", (e) => {
-      
-    });
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     this.updateGantt();
