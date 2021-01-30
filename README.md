@@ -3,7 +3,7 @@
 react-issue-ganttchart
 ===================
 
-This is a single page application created with React to display Github/(Gitlab) issues as a Gantt chart.  
+This is a single page application created with React to display Github/Gitlab issues as a Gantt chart.  
 Repository URL and personal access token are required, but not the rest.  
 No backend is required, and the token is stored in a cookie.  
 
@@ -14,7 +14,8 @@ https://lamact.github.io/react-issue-ganttchart/
 - URL (your repository's path)  
   ex: https://github.com/lamact/react-issue-ganttchart
 - Personal Access Token  
-  Scopes: public_repo, write:discussion
+  GitHub: https://github.com/settings/tokens/new Scopes: public_repo, write:discussion
+  GitLab: https://gitlab.com/-/profile/personal_access_tokens 
 
 ## How to start on your server
 
