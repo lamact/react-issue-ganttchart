@@ -14,6 +14,7 @@ class App extends Component {
       git_url: '',
       token: '',
       labels: [],
+      selected_labels: [],
     };
     this.GanttRef = React.createRef();
   }
@@ -41,12 +42,12 @@ class App extends Component {
   handleUpdateClick = () => {
     bake_cookie('access_token', this.state.token);
     bake_cookie('url', this.state.git_url);
-    this.setState({ labels: [] });
-    this.updateGantt([]);
+    this.updateGantt(this.state.selected_labels);
   }
 
   handleLabelChange = (selected_labels) => {
     this.updateGantt(selected_labels);
+    this.setState({ selected_labels });
   }
 
   componentDidMount() {
