@@ -1,7 +1,13 @@
 import axios from 'axios';
 import {
-  adjustGitLabAPIURL,
-  adjustGitLabURL,
+  getGitLabAPIURLIssueFilterdLabel,
+  getGitLabAPIURLIssue,
+  getGitLabAPIURLLabel,
+  getGitabAPIURLIssuebyNumber,
+  getGitLabURLIssuebyNumber,
+  getGitLabURLNewIssueWithTemplate,
+} from './GitLabURLHelper.js';
+import {
   generateGanttTaskFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
 } from './GitLabHelper.js';
@@ -11,18 +17,9 @@ import {
  } from '../Common/CommonHelper.js';
 
 export const getGitLabIssuesFromAPI = async (gantt, git_url, token, selected_labels) => {
-  let labels_url_str = "";
-  if (selected_labels !== null || selected_labels !== []) {
-    labels_url_str += "&labels="
-    selected_labels.map((label) => {
-      labels_url_str += label.name + ","
-      return null;
-    });
-  }
-  const get_issue_list_url = adjustGitLabAPIURL(git_url) + '/issues?access_token=' + token + labels_url_str;
-  axios.get(get_issue_list_url).then((res) => {
+  axios.get(getGitLabAPIURLIssueFilterdLabel(git_url, token, selected_labels)).then((res) => {
     res.data.map((issue_info) => {
-      let gantt_task = generateGanttTaskFromGitLab(issue_info);
+      const gantt_task = generateGanttTaskFromGitLab(issue_info);
       updateGanttIssue(gantt_task, gantt);
       return null;
     });
@@ -30,8 +27,7 @@ export const getGitLabIssuesFromAPI = async (gantt, git_url, token, selected_lab
 };
 
 export const setGitLabLabelListOfRepoFromAPI = async (_this, git_url, token) => {
-  const url = adjustGitLabAPIURL(git_url) + '/labels?access_token=' + token;
-  axios.get(url).then((res) => {
+  axios.get(getGitLabAPIURLLabel(git_url, token)).then((res) => {
     let label_list = [];
     res.data.map((lebel_info) => {
       label_list.push(lebel_info);
@@ -42,16 +38,13 @@ export const setGitLabLabelListOfRepoFromAPI = async (_this, git_url, token) => 
 };
 
 export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
-
-  const get_url = adjustGitLabAPIURL(git_url) + '/issues?access_token=' + token;
-  axios.get(get_url).then((res) => {
+  axios.get(getGitLabAPIURLIssue(git_url, token)).then((res) => {
     res.data.map((issue_info) => {
       if (issue_info.iid === gantt_task.id) {
         const description = updateGitLabDescriptionStringFromGanttTask(issue_info.description, gantt_task);
         const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
         const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
-        const put_url = adjustGitLabAPIURL(git_url) + '/issues/' + gantt_task.id
-          + "?access_token=" + token
+        const put_url = getGitabAPIURLIssuebyNumber(git_url, token, gantt_task.id)
           + "&description=" + description
           + "&due_date=" + due_date_str;
         axios.put(put_url).then((res) => {
@@ -67,12 +60,12 @@ export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url
 };
 
 export const openGitLabIssueAtBrowser = (id, git_url) => {
-  window.open(adjustGitLabURL(git_url) + "/-/issues/" + id, "_blank");
+  window.open(getGitLabURLIssuebyNumber(git_url, id), "_blank");
 };
 
 export const openGitLabNewIssueAtBrowser = (id, git_url) => {
   let body = "";
   body += "start_date:%20" + new Date().toLocaleDateString("ja-JP") + "%20%20%0D%0A";
   body += "progress:%200.1%0D%0A";
-  window.open(adjustGitLabURL(git_url) + "/issues/new?issue[description]=" + body, "_blank");
+  window.open(getGitLabURLNewIssueWithTemplate(git_url) + body, "_blank");
 };

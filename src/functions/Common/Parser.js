@@ -33,7 +33,7 @@ export const getStartDateFromDescriptionString = (description) => {
 }
 
 export const replaceStartDateInDescriptionString = (description, write_str) => {
-  let start_date = getStartDateFromDescriptionString(description);
+  const start_date = getStartDateFromDescriptionString(description);
   if (start_date != null) {
     return description.replace(/start_date: \d{4}\/\d{1,2}\/\d{1,2}/, "start_date: " + write_str);
   } else {
@@ -54,7 +54,7 @@ export const getDueDateFromDescriptionString = (description) => {
 }
 
 export const replaceDueDateInDescriptionString = (description, write_str) => {
-  let due_date = getDueDateFromDescriptionString(description);
+  const due_date = getDueDateFromDescriptionString(description);
   if (due_date != null) {
     return description.replace(/due_date: \d{4}\/\d{1,2}\/\d{1,2}/, "due_date: " + write_str);
   } else {
@@ -75,8 +75,8 @@ export const getProgressFromDescriptionString = (description) => {
 }
 
 export const replaceProgressInDescriptionString = (description, write_float_number) => {
-  let progress = getProgressFromDescriptionString(description);
-  let write_round_str = Math.round(write_float_number * 10) / 10;
+  const progress = getProgressFromDescriptionString(description);
+  const write_round_str = Math.round(write_float_number * 10) / 10;
   if (progress != null) {
     return description.replace(/progress: \d{1}\.\d{1}/, "progress: " + write_round_str);
   } else {

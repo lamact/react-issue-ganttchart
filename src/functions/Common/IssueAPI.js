@@ -1,5 +1,5 @@
-import { isGitHubURL } from '../GitHub/GitHubHelper.js';
-import { isGitLabURL } from '../GitLab/GitLabHelper.js';
+import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
+import { isGitLabURL } from '../GitLab/GitLabURLHelper.js';
 import {
   getGitHubIssuesFromAPI,
   updateGitHubIssueFromGanttTask,

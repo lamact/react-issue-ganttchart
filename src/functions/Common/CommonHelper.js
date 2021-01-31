@@ -1,14 +1,14 @@
 import moment from 'moment';
 
 const calculateDuration = (start_date, due_date) => {
-  let start_date_moment = moment(start_date);
-  let due_date_moment = moment(due_date);
+  const start_date_moment = moment(start_date);
+  const due_date_moment = moment(due_date);
   return due_date_moment.diff(start_date_moment, 'days') + 1;
 }
 
 export const calculateDueDate = (start_date_str, duration) => {
-  let start_date = new Date(start_date_str);
-  let due_date = moment(start_date).add(duration - 1, 'd').toDate();
+  const start_date = new Date(start_date_str);
+  const due_date = moment(start_date).add(duration - 1, 'd').toDate();
   return due_date.toLocaleDateString("ja-JP");
 }
 
