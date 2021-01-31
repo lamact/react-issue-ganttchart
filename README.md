@@ -14,7 +14,7 @@ https://lamact.github.io/react-issue-ganttchart/
 - URL (your repository's path)  
   ex: https://github.com/lamact/react-issue-ganttchart
 - Personal Access Token  
-  GitHub: https://github.com/settings/tokens/new Scopes: public_repo, write:discussion
+  GitHub: https://github.com/settings/tokens/new Scopes: public_repo, write:discussion  
   GitLab: https://gitlab.com/-/profile/personal_access_tokens 
 
 ## How to start on your server
