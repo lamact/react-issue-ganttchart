@@ -31,7 +31,7 @@ export default class Gantt extends Component {
           ]
         },
         {
-          name: 'Months',
+          name: 'Weeks',
           scale_height: 60,
           min_column_width: 70,
           scales: [
@@ -67,8 +67,8 @@ export default class Gantt extends Component {
     });
   }
 
-  updateGantt() {
-    getIssuesFromAPI(gantt, this.props.git_url, this.props.token);
+  updateGantt(selected_labels) {
+    getIssuesFromAPI(gantt, this.props.git_url, this.props.token, selected_labels);
   }
 
   shouldComponentUpdate(nextProps) {
