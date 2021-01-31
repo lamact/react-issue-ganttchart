@@ -76,7 +76,10 @@ export const getProgressFromDescriptionString = (description) => {
 
 export const replaceProgressInDescriptionString = (description, write_float_number) => {
   const progress = getProgressFromDescriptionString(description);
-  const write_round_str = Math.round(write_float_number * 10) / 10;
+  let write_round_str = Math.round(write_float_number * 10) / 10;
+  if (write_float_number === "1"){
+    write_float_number = "1.0"
+  }
   if (progress != null) {
     return description.replace(/progress: \d{1}\.\d{1}/, "progress: " + write_round_str);
   } else {
