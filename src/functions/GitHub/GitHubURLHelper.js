@@ -1,4 +1,5 @@
 import { adjustURL } from '../Common/Parser.js';
+import { isValidVariable } from '../Common/CommonHelper.js';
 
 const GitHubAPIURL = "https://api.github.com/repos/";
 const GitHubURL = "https://github.com/";
@@ -33,7 +34,7 @@ export const getGitHubAPIURLIssuebyNumber = (git_url, number) => {
 
 export const getGitHubAPIURLIssueFilterdLabel = (git_url, labels) => {
   let labels_url_str = "";
-  if (labels !== null || labels !== []) {
+  if (isValidVariable(labels)) {
     labels_url_str += "?labels="
     labels.map((label) => {
       labels_url_str += label.name + ","
@@ -51,11 +52,11 @@ export const getGitHubAPIURLLabel = (git_url) => {
 
 export const getGitHubURLIssuebyNumber = (git_url, number) => {
   const url = adjustURL(git_url);
-  return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url)+ "/issues/" + number;
+  return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + "/issues/" + number;
 }
 
 export const getGitHubURLNewIssueWithTemplate = (git_url) => {
   const url = adjustURL(git_url);
   return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url)
-         + "/issues/new?assignees=&labels=&title=&body=";
+    + "/issues/new?assignees=&labels=&title=&body=";
 }

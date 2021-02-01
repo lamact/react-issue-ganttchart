@@ -1,5 +1,9 @@
 import moment from 'moment';
 
+export const isValidVariable = (variable) => {
+  return (variable !== null && variable !== [] && variable !== void 0)
+}
+
 const calculateDuration = (start_date, due_date) => {
   const start_date_moment = moment(start_date);
   const due_date_moment = moment(due_date);

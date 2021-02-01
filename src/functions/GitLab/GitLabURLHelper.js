@@ -1,4 +1,5 @@
 import { adjustURL } from '../Common/Parser.js';
+import { isValidVariable } from '../Common/CommonHelper.js';
 
 const GitLabAPIURL = "https://gitlab.com/api/v4/projects/";
 const GitLabURL = "https://gitlab.com/";
@@ -23,7 +24,7 @@ const getGitLabProjectFromGitURL = (git_url) => {
 
 const postFixToken = (token) => {
   let post_fix_str = "";
-  if (token !== null && token !== "") {
+  if (isValidVariable(token)) {
     post_fix_str += "?access_token=" + token + "&";
   } else {
     post_fix_str += "?";
@@ -33,7 +34,7 @@ const postFixToken = (token) => {
 
 export const getGitLabAPIURLIssueFilterdLabel = (git_url, token, labels) => {
   let post_fix_str = postFixToken(token);
-  if (labels !== null || labels !== []) {
+  if (isValidVariable(labels)) {
     post_fix_str += "labels=";
     labels.map((label) => {
       post_fix_str += label.name + ","

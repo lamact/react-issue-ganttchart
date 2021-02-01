@@ -4,6 +4,7 @@ import Toolbar from './components/Toolbar';
 import { bake_cookie, read_cookie } from 'sfcookies';
 import { setLabelListOfRepoFromAPI } from './functions/Common/IssueAPI.js';
 import './App.css';
+import { withRouter } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -34,37 +35,59 @@ class App extends Component {
     this.setState({ git_url });
   }
 
-  updateGantt = async (selected_labels) => {
-    this.GanttRef.current.updateGantt(selected_labels);
+  updateGantt = async () => {
     setLabelListOfRepoFromAPI(this, this.state.git_url, this.state.token);
+    this.GanttRef.current.updateGantt();
   }
 
   handleUpdateClick = () => {
     bake_cookie('access_token', this.state.token);
-    bake_cookie('url', this.state.git_url);
-    this.updateGantt(this.state.selected_labels);
+    this.changeQueryStringFromState();
+    this.updateGantt();
   }
 
   handleLabelChange = (selected_labels) => {
-    this.updateGantt(selected_labels);
     this.setState({ selected_labels });
+    this.updateGantt();
   }
+
+  changeQueryStringFromState = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    params.set('giturl', this.state.git_url);
+    params.set('labels', this.state.selected_labels);
+    this.props.history.push({
+      search: params.toString(),
+    });
+  }
+
+  setStateFromQueryString = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    this.setState({ git_url: params.get('giturl') });
+  }
+
+  componentWillMount = () => {
+    this.setStateFromQueryString();
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.location !== this.props.location) {
+      this.setStateFromQueryString();
+    }
+  };
 
   componentDidMount() {
     this.setState({
       token: read_cookie('access_token')
     });
-    this.setState({
-      git_url: read_cookie('url')
-    });
     if (read_cookie('currentZoom') === 'Weeks' || read_cookie('currentZoom') === 'Days')
       this.setState({
         currentZoom: read_cookie('currentZoom')
       });
+    this.updateGantt();
   }
 
   render() {
-    const { currentZoom, git_url, token, labels } = this.state;
+    const { currentZoom, git_url, token, labels, selected_labels } = this.state;
     return (
       <div>
         <div className="zoom-bar">
@@ -77,6 +100,7 @@ class App extends Component {
             onTokenChange={this.handleTokenChange}
             onUpdateClick={this.handleUpdateClick}
             labels={labels}
+            selected_labels={selected_labels}
             onLabelChange={this.handleLabelChange}
           />
         </div>
@@ -93,4 +117,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

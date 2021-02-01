@@ -67,8 +67,8 @@ export default class Gantt extends Component {
     });
   }
 
-  updateGantt(selected_labels) {
-    getIssuesFromAPI(gantt, this.props.git_url, this.props.token, selected_labels);
+  updateGantt() {
+    getIssuesFromAPI(gantt, this.props.git_url, this.props.token, this.props.selected_labels);
   }
 
   shouldComponentUpdate(nextProps) {
