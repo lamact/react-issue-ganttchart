@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/react-issue-ganttchart/static/css/main.34c658b3.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.7e65976e.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.7e65976e.chunk.js.map",
+    "main.js": "/react-issue-ganttchart/static/js/main.fbcc054f.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.fbcc054f.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.234ea6c8.js",
     "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.234ea6c8.js.map",
     "static/css/2.7592fcad.chunk.css": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css",
     "static/js/2.01f3fec2.chunk.js": "/react-issue-ganttchart/static/js/2.01f3fec2.chunk.js",
     "static/js/2.01f3fec2.chunk.js.map": "/react-issue-ganttchart/static/js/2.01f3fec2.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
-    "precache-manifest.05b987785b016d208837d5df4b5946fd.js": "/react-issue-ganttchart/precache-manifest.05b987785b016d208837d5df4b5946fd.js",
+    "precache-manifest.e675b6a9350ce17ee15751c4c7fc5cb3.js": "/react-issue-ganttchart/precache-manifest.e675b6a9350ce17ee15751c4c7fc5cb3.js",
     "service-worker.js": "/react-issue-ganttchart/service-worker.js",
     "static/css/2.7592fcad.chunk.css.map": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css.map",
     "static/css/main.34c658b3.chunk.css.map": "/react-issue-ganttchart/static/css/main.34c658b3.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.7592fcad.chunk.css",
     "static/js/2.01f3fec2.chunk.js",
     "static/css/main.34c658b3.chunk.css",
-    "static/js/main.7e65976e.chunk.js"
+    "static/js/main.fbcc054f.chunk.js"
   ]
 }
