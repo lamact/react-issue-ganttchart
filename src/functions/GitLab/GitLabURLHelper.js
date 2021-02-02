@@ -17,7 +17,8 @@ const switchGitLabDomain = (git_url) => {
   const self_hosting_gitlab_domain = getSelfHostingGitLabDomain(git_url);
   if (self_hosting_gitlab_domain !== null) {
     gitlab_domain = "https://" + self_hosting_gitlab_domain + "/";
-  } else {
+  }
+  if(isGitLabURL(git_url)) {
     gitlab_domain = "https://gitlab.com/";
   }
   return gitlab_domain;
