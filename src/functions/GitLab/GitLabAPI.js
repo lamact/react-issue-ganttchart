@@ -16,11 +16,11 @@ import {
   updateGanttIssue,
  } from '../Common/CommonHelper.js';
 
-export const getGitLabIssuesFromAPI = async (gantt, git_url, token, selected_labels) => {
+export const getGitLabIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels) => {
   axios.get(getGitLabAPIURLIssueFilterdLabel(git_url, token, selected_labels)).then((res) => {
     res.data.map((issue_info) => {
       const gantt_task = generateGanttTaskFromGitLab(issue_info);
-      updateGanttIssue(gantt_task, gantt);
+      updateGanttIssue(gantt_task, gantt_parse);
       return null;
     });
   });

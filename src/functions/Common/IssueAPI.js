@@ -8,6 +8,7 @@ import {
   setGitHubLabelListOfRepoFromAPI,
 } from '../GitHub/GitHubAPI.js';
 import {
+  
   getGitLabIssuesFromAPI,
   updateGitLabIssueFromGanttTask,
   openGitLabIssueAtBrowser,
@@ -15,13 +16,12 @@ import {
   setGitLabLabelListOfRepoFromAPI,
 } from '../GitLab/GitLabAPI.js';
 
-export const getIssuesFromAPI = async (gantt, git_url, token, selected_labels) => {
-  gantt.clearAll(); 
+export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels) => {
   if (isGitHubURL(git_url)) {
-    getGitHubIssuesFromAPI(gantt, git_url, selected_labels);
+    getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels);
   }
   if (isGitLabURL(git_url)) {
-    getGitLabIssuesFromAPI(gantt, git_url, token, selected_labels);
+    getGitLabIssuesFromAPI(gantt_parse, git_url, token, selected_labels);
   }
 }
 

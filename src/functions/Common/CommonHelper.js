@@ -46,11 +46,10 @@ export const getGanttUnscheduled = (start_date, due_date) => {
   return unscheduled;
 }
 
-export const updateGanttIssue = (issue, gantt) => {
+export const updateGanttIssue = (issue, gantt_parse) => {
   let data = [];
   let links = [];
   data.push(issue);
   data = { data: data, links: links }
-  gantt.parse(data);
-  gantt.sort("start_date", false);
+  gantt_parse(data);
 } 

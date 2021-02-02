@@ -12,12 +12,12 @@ import {
 } from './GitHubHelper.js';
 import { updateGanttIssue } from '../Common/CommonHelper.js';
 
-export const getGitHubIssuesFromAPI = async (gantt, git_url, selected_labels) => {
+export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labels) => {
   axios.get(getGitHubAPIURLIssueFilterdLabel(git_url, selected_labels)).then((res) => {
     res.data.map((issue_info) => {
       axios.get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number)).then((res) => {
         const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
-        updateGanttIssue(gantt_task, gantt);
+        updateGanttIssue(gantt_task, gantt_parse);
       });
       return null;
     });

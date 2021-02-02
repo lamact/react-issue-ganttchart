@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Gantt from './components/Gantt';
 import Toolbar from './components/Toolbar';
 import { bake_cookie, read_cookie } from 'sfcookies';
 import { setLabelListOfRepoFromAPI } from './functions/Common/IssueAPI.js';
 import './App.css';
-import { withRouter } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +17,6 @@ class App extends Component {
       labels: [],
       selected_labels: [],
     };
-    this.GanttRef = React.createRef();
   }
 
   handleZoomChange = (zoom) => {
@@ -37,7 +36,7 @@ class App extends Component {
 
   updateGantt = async () => {
     setLabelListOfRepoFromAPI(this, this.state.git_url, this.state.token);
-    this.GanttRef.current.updateGantt();
+    console.log(this.state.selected_labels)
   }
 
   handleUpdateClick = () => {
@@ -106,7 +105,6 @@ class App extends Component {
         </div>
         <div className="gantt-container">
           <Gantt
-            ref={this.GanttRef}
             zoom={currentZoom}
             git_url={git_url}
             token={token}
