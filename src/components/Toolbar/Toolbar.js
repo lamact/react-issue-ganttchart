@@ -10,15 +10,16 @@ import { Multiselect } from 'multiselect-react-dropdown';
 const Toolbar = (props) => {
   const { classes } = props;
   return (
-    <form noValidate >
+    <form noValidate onSubmit={props.handleSubmit}>
       <TextField
         className={classes.root}
         required
         placeholder="https://github.com/lamact/react-issue-ganttchart"
-        defaultValue="https://github.com/lamact/react-issue-ganttchart"
         label="Git Repository URL"
         style={{ width: "25%", verticalAlign: "middle" }}
         onChange={(e) => { props.onGitURLChange(e.target.value) }}
+        inputRef={props.register}
+        name="git_url"
       />
       <TextField
         className={classes.root}
@@ -32,9 +33,9 @@ const Toolbar = (props) => {
       <Multiselect
         className={classes.root}
         options={props.labels}
-        selectedValues={props.selectedValue}
-        onSelect={(options) => { props.onLabelChange(options) }}
-        onRemove={(options) => { props.onLabelChange(options) }}
+        selectedValues={props.selected_labels}
+        onSelect={(options) => { props.onSelectedLabelChange(options) }}
+        onRemove={(options) => { props.onSelectedLabelChange(options) }}
         displayValue="name"
         style={selector_style}
         placeholder="filter by labels"

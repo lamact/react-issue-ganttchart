@@ -26,14 +26,14 @@ export const getGitLabIssuesFromAPI = async (gantt_parse, git_url, token, select
   });
 };
 
-export const setGitLabLabelListOfRepoFromAPI = async (_this, git_url, token) => {
+export const setGitLabLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   axios.get(getGitLabAPIURLLabel(git_url, token)).then((res) => {
     let label_list = [];
     res.data.map((lebel_info) => {
       label_list.push(lebel_info);
       return null;
     });
-    _this.setState({ labels: label_list });
+    setLabels(label_list);
   });
 };
 

@@ -1,3 +1,5 @@
+import { isValidVariable } from './CommonHelper.js';
+
 const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
@@ -85,4 +87,33 @@ export const replaceProgressInDescriptionString = (description, write_float_numb
   } else {
     return "progress: " + write_round_str + "  \n" + description;
   }
+}
+
+export const convertLabelsListToString = (label_list) => {
+  let label_str = "";
+  if (isValidVariable(label_list)) {
+    label_list.map((label) => {
+      label_str += label.id + ":" + label.name + ","
+      return null;
+    });
+  }
+  return label_str;
+}
+
+export const convertLabelsStringToList = (label_str) => {
+  let label_list = [];
+  if (isValidVariable(label_str)) {
+    const split_label = label_str.split(',');
+    split_label.forEach((element, index, array) => {
+      if (index < split_label.length - 1) {
+        const id_label = element.split(':');
+        const label = {
+          id: id_label[0],
+          name: id_label[1],
+        }
+        label_list.push(label)
+      }
+    });
+  }
+  return label_list;
 }

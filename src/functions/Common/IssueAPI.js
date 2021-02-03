@@ -25,12 +25,12 @@ export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_lab
   }
 }
 
-export const setLabelListOfRepoFromAPI = async (_this, git_url, token) => {
+export const setLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   if (isGitHubURL(git_url)) {
-    setGitHubLabelListOfRepoFromAPI(_this, git_url);
+    setGitHubLabelListOfRepoFromAPI(setLabels, git_url);
   }
   if (isGitLabURL(git_url)) {
-    setGitLabLabelListOfRepoFromAPI(_this, git_url, token);
+    setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
   }
 }
 

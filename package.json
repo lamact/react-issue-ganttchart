@@ -15,6 +15,7 @@
     "multiselect-react-dropdown": "^1.6.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-hook-form": "^6.15.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.3.1",
     "sfcookies": "^1.0.2"

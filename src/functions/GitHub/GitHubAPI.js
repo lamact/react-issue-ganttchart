@@ -24,14 +24,14 @@ export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labe
   });
 };
 
-export const setGitHubLabelListOfRepoFromAPI = async (_this, git_url) => {
+export const setGitHubLabelListOfRepoFromAPI = async (setLabels, git_url) => {
   axios.get(getGitHubAPIURLLabel(git_url)).then((res) => {
     let label_list = [];
     res.data.map((lebel_info) => {
       label_list.push(lebel_info);
       return null;
     });
-    _this.setState({ labels: label_list });
+    setLabels(label_list);
   });
 };
 

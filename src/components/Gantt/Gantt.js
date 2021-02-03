@@ -12,7 +12,7 @@ const Gantt = (props) => {
   const containerRef = useRef(null);
   useEffect(() => {
     setGanttConfig(gantt);
-    attachEvent(gantt,props);
+    attachEvent(gantt, props);
     gantt.init(containerRef.current);
     gantt.ext.zoom.setLevel(props.zoom);
     gantt.clearAll();
@@ -20,7 +20,19 @@ const Gantt = (props) => {
       gantt.parse(data);
       gantt.sort("start_date", false);
     }, props.git_url, props.token, props.selected_labels);
-  })
+  }, [])
+
+  useEffect(() => {
+    gantt.ext.zoom.setLevel(props.zoom);
+  }, [props.zoom])
+
+  useEffect(() => {
+    gantt.clearAll();
+    getIssuesFromAPI((data) => {
+      gantt.parse(data);
+      gantt.sort("start_date", false);
+    }, props.git_url, props.token, props.selected_labels);
+  }, [props.git_url, props.token, props.selected_labels, props.update])
 
   return (
     <div
@@ -67,7 +79,7 @@ const setGanttConfig = (gantt) => {
   gantt.ext.zoom.init(zoom_level);
 }
 
-const attachEvent = (gantt,props) => {
+const attachEvent = (gantt, props) => {
   gantt.attachEvent("onTaskDblClick", (gantt_task_id, e) => {
     openIssueAtBrowser(gantt_task_id, props.git_url);
   });

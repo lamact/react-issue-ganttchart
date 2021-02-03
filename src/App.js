@@ -1,118 +1,115 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import Gantt from './components/Gantt';
+import React, { useReducer, useEffect } from 'react'
+import { useForm } from "react-hook-form";
 import Toolbar from './components/Toolbar';
-import { bake_cookie, read_cookie } from 'sfcookies';
+import Gantt from './components/Gantt';
+import { bake_cookie } from 'sfcookies';
+import { withRouter } from 'react-router-dom';
 import { setLabelListOfRepoFromAPI } from './functions/Common/IssueAPI.js';
-import './App.css';
+import { convertLabelsListToString, convertLabelsStringToList } from './functions/Common/Parser.js';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentZoom: 'Weeks',
-      messages: [],
-      git_url: '',
-      token: '',
-      labels: [],
-      selected_labels: [],
-    };
+const initialState = {
+  currentZoom: 'Weeks',
+  update: 0,
+  git_url: '',
+  token: 'Tokens that have not yet been entered',
+  labels: [],
+  selected_labels: [],
+}
+
+const reducerFunc = (state, action) => {
+  switch (action.type) {
+    case 'zoomChange':
+      return { ...state, currentZoom: handleZoomChange(action.value) }
+    case 'gitURLChange':
+      return { ...state, git_url: handleGitURLChange(action.value.props, action.value.git_url, state.selected_labels) }
+    case 'tokenChange':
+      return { ...state, token: action.value }
+    case 'labelChange':
+      return { ...state, labels: action.value }
+    case 'selectedLabelsChange':
+      return { ...state, selected_labels: handleSelectedLabelsChange(action.value.props, state.git_url, action.value.selected_labels) }
+    case 'updateClick':
+      return { ...state, update: state.update + 1 }
+    case 'setStateFromURLQueryString':
+      return setStateFromURLQueryString(state, action.value.props, action.value.setValue)
+    default:
+      return state
   }
+}
 
-  handleZoomChange = (zoom) => {
-    this.setState({
-      currentZoom: zoom
-    });
-    bake_cookie('currentZoom', zoom);
-  }
+const handleZoomChange = (zoom) => {
+  bake_cookie('currentZoom', zoom);
+  return zoom;
+}
 
-  handleTokenChange = (token) => {
-    this.setState({ token });
-  }
+const handleGitURLChange = (props, git_url, selected_labels) => {
+  const params = new URLSearchParams(props.location.search);
+  params.set('giturl', git_url);
+  params.set('labels', convertLabelsListToString(selected_labels));
+  props.history.push({
+    search: params.toString(),
+  });
+  return git_url;
+}
 
-  handleGitURLChange = (git_url) => {
-    this.setState({ git_url });
-  }
+const handleSelectedLabelsChange = (props, git_url, selected_labels) => {
+  const params = new URLSearchParams(props.location.search);
+  params.set('giturl', git_url);
+  params.set('labels', convertLabelsListToString(selected_labels));
+  props.history.push({
+    search: params.toString(),
+  });
+  return selected_labels;
+}
 
-  updateGantt = async () => {
-    setLabelListOfRepoFromAPI(this, this.state.git_url, this.state.token);
-    console.log(this.state.selected_labels)
-  }
+const setStateFromURLQueryString = (state, props, setValue) => {
+  const params = new URLSearchParams(props.location.search);
+  state.git_url = params.get('giturl');
+  state.selected_labels = convertLabelsStringToList(params.get('labels'));
+  setValue("git_url", state.git_url)
+  return state;
+}
 
-  handleUpdateClick = () => {
-    bake_cookie('access_token', this.state.token);
-    this.changeQueryStringFromState();
-    this.updateGantt();
-  }
+const App = (props) => {
+  const [state, dispatch] = useReducer(reducerFunc, initialState);
+  const { register, handleSubmit, setValue } = useForm();
 
-  handleLabelChange = (selected_labels) => {
-    this.setState({ selected_labels });
-    this.updateGantt();
-  }
+  useEffect(() => {
+    dispatch({ type: 'setStateFromURLQueryString', value: { props: props, setValue: setValue } });
+  }, [props.location]);
 
-  changeQueryStringFromState = () => {
-    const params = new URLSearchParams(this.props.location.search);
-    params.set('giturl', this.state.git_url);
-    params.set('labels', this.state.selected_labels);
-    this.props.history.push({
-      search: params.toString(),
-    });
-  }
+  useEffect(() => {
+    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }) }, state.git_url, state.token);
+  }, [state.git_url, state.token]);
 
-  setStateFromQueryString = () => {
-    const params = new URLSearchParams(this.props.location.search);
-    this.setState({ git_url: params.get('giturl') });
-  }
-
-  componentWillMount = () => {
-    this.setStateFromQueryString();
-  };
-
-  componentWillReceiveProps = nextProps => {
-    if (nextProps.location !== this.props.location) {
-      this.setStateFromQueryString();
-    }
-  };
-
-  componentDidMount() {
-    this.setState({
-      token: read_cookie('access_token')
-    });
-    if (read_cookie('currentZoom') === 'Weeks' || read_cookie('currentZoom') === 'Days')
-      this.setState({
-        currentZoom: read_cookie('currentZoom')
-      });
-    this.updateGantt();
-  }
-
-  render() {
-    const { currentZoom, git_url, token, labels, selected_labels } = this.state;
-    return (
-      <div>
-        <div className="zoom-bar">
-          <Toolbar
-            zoom={currentZoom}
-            onZoomChange={this.handleZoomChange}
-            git_url={git_url}
-            onGitURLChange={this.handleGitURLChange}
-            token={token}
-            onTokenChange={this.handleTokenChange}
-            onUpdateClick={this.handleUpdateClick}
-            labels={labels}
-            selected_labels={selected_labels}
-            onLabelChange={this.handleLabelChange}
-          />
-        </div>
-        <div className="gantt-container">
-          <Gantt
-            zoom={currentZoom}
-            git_url={git_url}
-            token={token}
-          />
-        </div>
+  return (
+    <>
+      <div className="zoom-bar">
+        <Toolbar
+          zoom={state.currentZoom}
+          onZoomChange={(zoom) => dispatch({ type: 'zoomChange', value: zoom })}
+          onGitURLChange={(git_url) => dispatch({ type: 'gitURLChange', value: { props: props, git_url: git_url } })}
+          token={state.token}
+          onTokenChange={(token) => dispatch({ type: 'tokenChange', value: token })}
+          onUpdateClick={() => dispatch({ type: 'updateClick' })}
+          labels={state.labels}
+          selected_labels={state.selected_labels}
+          onSelectedLabelChange={(selected_labels) => dispatch({ type: 'selectedLabelsChange', value: { props: props, selected_labels: selected_labels } })}
+          handleSubmit={handleSubmit((data) => console.log(data))}
+          register={register}
+        />
       </div>
-    );
-  }
+      <div className="gantt-container">
+        <Gantt
+          zoom={state.currentZoom}
+          git_url={state.git_url}
+          token={state.token}
+          selected_labels={state.selected_labels}
+          update={state.update}
+        />
+      </div>
+    </>
+  )
 }
 
 export default withRouter(App);
