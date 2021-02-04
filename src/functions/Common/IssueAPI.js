@@ -1,5 +1,5 @@
 import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
-import { isGitLabURL } from '../GitLab/GitLabURLHelper.js';
+import { isGitLabURL, getSelfHostingGitLabDomain } from '../GitLab/GitLabURLHelper.js';
 import {
   getGitHubIssuesFromAPI,
   updateGitHubIssueFromGanttTask,
@@ -38,7 +38,7 @@ export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
   if (isGitHubURL(git_url)) {
     updateGitHubIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
   }
-  if (isGitLabURL(git_url)) {
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     updateGitLabIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
   }
 }
@@ -49,7 +49,7 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   console.log("gfweggq")
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
   }
-  if (isGitLabURL(git_url)) {
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     openGitLabIssueAtBrowser(gantt_task_id, git_url);
   }
 };
@@ -58,7 +58,7 @@ export const openNewIssueAtBrowser = (gantt_task_id, git_url) => {
   if (isGitHubURL(git_url)) {
     openGitHubNewIssueAtBrowser(gantt_task_id, git_url);
   }
-  if (isGitLabURL(git_url)) {
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     openGitLabNewIssueAtBrowser(gantt_task_id, git_url);
   }
 }
