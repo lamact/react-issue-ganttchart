@@ -6,7 +6,6 @@ const GitHubURL = "https://github.com/";
 
 export const isGitHubURL = (git_url) => {
   console.log(git_url)
-  console.log(/github\.com/.test(git_url))
   return /github\.com/.test(git_url);
 }
 
@@ -35,16 +34,23 @@ export const getGitHubAPIURLIssuebyNumber = (git_url, number) => {
 }
 
 export const getGitHubAPIURLIssueFilterdLabel = (git_url, labels) => {
-  let labels_url_str = "";
+  let url_query_str = "";
+  let assignee_str = ""
   if (isValidVariable(labels)) {
-    labels_url_str += "?labels="
+    url_query_str += "?labels="
     labels.map((label) => {
-      labels_url_str += label.name + ","
+      if (label.type === "label") {
+        url_query_str += label.name + ","
+      }
+      if (label.type === "assignee") {
+        assignee_str = "&assignee=" + label.name
+      }
       return null;
     });
+    url_query_str += assignee_str;
   }
   const url = adjustURL(git_url);
-  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/issues' + labels_url_str;
+  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/issues' + url_query_str;
 }
 
 export const getGitHubAPIURLLabel = (git_url) => {

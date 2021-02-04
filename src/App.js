@@ -2,10 +2,15 @@ import React, { useReducer, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
-import { bake_cookie } from 'sfcookies';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
 import { setLabelListOfRepoFromAPI } from './functions/Common/IssueAPI.js';
 import { convertLabelsListToString, convertLabelsStringToList } from './functions/Common/Parser.js';
+import {
+  updateIssueByAPI,
+  openIssueAtBrowser,
+  openNewIssueAtBrowser,
+} from './functions/Common/IssueAPI.js';
 
 const initialState = {
   currentZoom: 'Weeks',
@@ -19,11 +24,11 @@ const initialState = {
 const reducerFunc = (state, action) => {
   switch (action.type) {
     case 'zoomChange':
-      return { ...state, currentZoom: handleZoomChange(action.value) }
+      return { ...state, currentZoom: action.value }
     case 'gitURLChange':
       return { ...state, git_url: handleGitURLChange(action.value.props, action.value.git_url, state.selected_labels) }
     case 'tokenChange':
-      return { ...state, token: action.value }
+      return { ...state, token: handleTokenChange(action.value) }
     case 'labelChange':
       return { ...state, labels: action.value }
     case 'selectedLabelsChange':
@@ -37,11 +42,6 @@ const reducerFunc = (state, action) => {
   }
 }
 
-const handleZoomChange = (zoom) => {
-  bake_cookie('currentZoom', zoom);
-  return zoom;
-}
-
 const handleGitURLChange = (props, git_url, selected_labels) => {
   const params = new URLSearchParams(props.location.search);
   params.set('giturl', git_url);
@@ -52,7 +52,23 @@ const handleGitURLChange = (props, git_url, selected_labels) => {
   return git_url;
 }
 
+const handleTokenChange = (token) => {
+  bake_cookie('git_token', token);
+  return token;
+}
+
+const filterOnlyOneAssignee = (selected_labels) => {
+  const asigneies_selected_labels = selected_labels.filter((v) => v.type === "assignee");
+  if (asigneies_selected_labels.length > 1) {
+    selected_labels = selected_labels.filter((v) =>
+      v.id !== asigneies_selected_labels[0].id
+    );
+  }
+  return selected_labels;
+}
+
 const handleSelectedLabelsChange = (props, git_url, selected_labels) => {
+  selected_labels = filterOnlyOneAssignee(selected_labels);
   const params = new URLSearchParams(props.location.search);
   params.set('giturl', git_url);
   params.set('labels', convertLabelsListToString(selected_labels));
@@ -72,17 +88,23 @@ const setStateFromURLQueryString = (state, props, setValue) => {
 
 const App = (props) => {
   const [state, dispatch] = useReducer(reducerFunc, initialState);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, setValue } = useForm({ git_url: "", token: "" });
 
   useEffect(() => {
-    console.log("location")
+    setValue("token", read_cookie('git_token'));
+    dispatch({ type: 'tokenChange', value: read_cookie('git_token') })
+    // setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }) }, state.git_url, state.labels, read_cookie('git_token'));
+  }, []);
+
+  useEffect(() => {
     dispatch({ type: 'setStateFromURLQueryString', value: { props: props, setValue: setValue } });
   }, [props.location]);
 
   useEffect(() => {
-    console.log("aa")
-    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }) }, state.git_url, state.labels, state.token);
+    console.log("setLabelListOfRepoFromAPI")
+    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }); console.log(labels) }, state.git_url, state.labels, state.token);
   }, [state.git_url, state.token]);
+
 
   return (
     <>
@@ -97,7 +119,6 @@ const App = (props) => {
           labels={state.labels}
           selected_labels={state.selected_labels}
           onSelectedLabelChange={(selected_labels) => dispatch({ type: 'selectedLabelsChange', value: { props: props, selected_labels: selected_labels } })}
-          handleSubmit={handleSubmit((data) => console.log(data))}
           register={register}
         />
       </div>
@@ -108,6 +129,9 @@ const App = (props) => {
           token={state.token}
           selected_labels={state.selected_labels}
           update={state.update}
+          openIssueAtBrowser={(gantt_task_id) => openIssueAtBrowser(gantt_task_id, state.git_url)}
+          openNewIssueAtBrowser={(gantt_task_id) => openNewIssueAtBrowser(gantt_task_id, state.git_url)}
+          updateIssueByAPI={(gantt_task, gantt) => updateIssueByAPI(gantt_task, state.token, gantt, state.git_url)}
         />
       </div>
     </>

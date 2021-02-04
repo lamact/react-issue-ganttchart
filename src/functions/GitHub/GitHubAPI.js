@@ -29,31 +29,35 @@ export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labe
 };
 
 export const setGitHubLabelListOfRepoFromAPI = async (setLabels, git_url, labels, token) => {
+  console.log(token)
+  console.log(labels)
   setLabels([]);
-    console.log("get " + token)
-  if (isValidVariable(token) && token !== "Access Token") {
-    console.log("get asignee")
-    axios.get(getGitHubAPIURLCollaborators(git_url),
-      { headers: { 'Authorization': `token ${token}` }, data: {} }
-    ).then((res) => {
-      let list = [];
-      console.log(res.data)
-      res.data.map((info) => {
-        list.push({ id: info.id, name: info.login });
-        return null;
-      });
-      setLabels(labels.concat(list));
-    });
-  } else {
-    token = "";
-  }
+  // if (isValidVariable(token) && token !== "Tokens that have not yet been entered") {
+  //   axios.get(getGitHubAPIURLCollaborators(git_url),
+  //     { headers: { 'Authorization': `token ${token}` }, data: {} }
+  //   ).then((res) => {
+  //     let list = [];
+  //     res.data.map((info) => {
+  //       list.push({ id: info.id, name: info.login, type: "assignee" });
+  //       return null;
+  //     });
+  //     console.log("collabo")
+  //     console.log(labels)
+  //     console.log(list)
+  //     setLabels(labels.concat(list));
+  //   });
+  // } else {
+  //   token = "";
+  // }
   axios.get(getGitHubAPIURLLabel(git_url)).then((res) => {
     let list = [];
-    console.log(res.data)
     res.data.map((info) => {
-      list.push(info);
+      list.push({ id: info.id, name: info.name, type: "label" });
       return null;
     });
+      console.log("label")
+      console.log(labels)
+      console.log(list)
     setLabels(labels.concat(list));
   });
 };
@@ -78,6 +82,7 @@ export const updateGitHubIssueFromGanttTask = (gantt_task, token, gantt, git_url
 };
 
 export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
+  console.log(getGitHubURLIssuebyNumber(git_url, gantt_task_id))
   window.open(getGitHubURLIssuebyNumber(git_url, gantt_task_id), "_blank");
 };
 

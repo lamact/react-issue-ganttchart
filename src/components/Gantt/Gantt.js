@@ -3,9 +3,6 @@ import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import {
   getIssuesFromAPI,
-  updateIssueByAPI,
-  openIssueAtBrowser,
-  openNewIssueAtBrowser,
 } from '../../functions/Common/IssueAPI.js';
 
 const Gantt = (props) => {
@@ -81,13 +78,13 @@ const setGanttConfig = (gantt) => {
 
 const attachEvent = (gantt, props) => {
   gantt.attachEvent("onTaskDblClick", (gantt_task_id, e) => {
-    openIssueAtBrowser(gantt_task_id, props.git_url);
+    props.openIssueAtBrowser(gantt_task_id);
   });
   gantt.attachEvent("onTaskCreated", (gantt_task_id, e) => {
-    openNewIssueAtBrowser(gantt_task_id, props.git_url);
+    props.openNewIssueAtBrowser(gantt_task_id);
   });
   gantt.attachEvent("onAfterTaskUpdate", (id, gantt_task) => {
-    updateIssueByAPI(gantt_task, props.token, gantt, props.git_url);
+    props.updateIssueByAPI(gantt_task, gantt);
   });
 }
 

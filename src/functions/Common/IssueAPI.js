@@ -8,15 +8,18 @@ import {
   setGitHubLabelListOfRepoFromAPI,
 } from '../GitHub/GitHubAPI.js';
 import {
-  
   getGitLabIssuesFromAPI,
   updateGitLabIssueFromGanttTask,
   openGitLabIssueAtBrowser,
   openGitLabNewIssueAtBrowser,
   setGitLabLabelListOfRepoFromAPI,
 } from '../GitLab/GitLabAPI.js';
+import { isValidVariable } from '../Common/CommonHelper.js';
 
 export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
   if (isGitHubURL(git_url)) {
     getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels);
   }
@@ -26,6 +29,9 @@ export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_lab
 }
 
 export const setLabelListOfRepoFromAPI = async (setLabels, git_url, labels, token) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
   if (isGitHubURL(git_url)) {
     setGitHubLabelListOfRepoFromAPI(setLabels, git_url, labels, token);
   }
@@ -35,6 +41,9 @@ export const setLabelListOfRepoFromAPI = async (setLabels, git_url, labels, toke
 }
 
 export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
   if (isGitHubURL(git_url)) {
     updateGitHubIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
   }
@@ -44,7 +53,12 @@ export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
 }
 
 export const openIssueAtBrowser = (gantt_task_id, git_url) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
   console.log("awqa")
+  console.log(git_url)
+  console.log(gantt_task_id)
   if (isGitHubURL(git_url)) {
   console.log("gfweggq")
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
@@ -55,6 +69,9 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
 };
 
 export const openNewIssueAtBrowser = (gantt_task_id, git_url) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
   if (isGitHubURL(git_url)) {
     openGitHubNewIssueAtBrowser(gantt_task_id, git_url);
   }

@@ -79,7 +79,7 @@ export const getProgressFromDescriptionString = (description) => {
 export const replaceProgressInDescriptionString = (description, write_float_number) => {
   const progress = getProgressFromDescriptionString(description);
   let write_round_str = Math.round(write_float_number * 10) / 10;
-  if (write_float_number === "1"){
+  if (write_float_number === "1") {
     write_float_number = "1.0"
   }
   if (progress != null) {
@@ -93,7 +93,7 @@ export const convertLabelsListToString = (label_list) => {
   let label_str = "";
   if (isValidVariable(label_list)) {
     label_list.map((label) => {
-      label_str += label.id + ":" + label.name + ","
+      label_str += label.id + ":" + label.name + ":" + label.type + ","
       return null;
     });
   }
@@ -110,6 +110,7 @@ export const convertLabelsStringToList = (label_str) => {
         const label = {
           id: id_label[0],
           name: id_label[1],
+          type: id_label[2],
         }
         label_list.push(label)
       }
