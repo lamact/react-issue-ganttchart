@@ -5,6 +5,8 @@ const GitHubAPIURL = "https://api.github.com/repos/";
 const GitHubURL = "https://github.com/";
 
 export const isGitHubURL = (git_url) => {
+  console.log(git_url)
+  console.log(/github\.com/.test(git_url))
   return /github\.com/.test(git_url);
 }
 
@@ -48,6 +50,11 @@ export const getGitHubAPIURLIssueFilterdLabel = (git_url, labels) => {
 export const getGitHubAPIURLLabel = (git_url) => {
   const url = adjustURL(git_url);
   return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/labels';
+}
+
+export const getGitHubAPIURLCollaborators = (git_url) => {
+  const url = adjustURL(git_url);
+  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/collaborators';
 }
 
 export const getGitHubURLIssuebyNumber = (git_url, number) => {

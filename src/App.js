@@ -75,11 +75,13 @@ const App = (props) => {
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
+    console.log("location")
     dispatch({ type: 'setStateFromURLQueryString', value: { props: props, setValue: setValue } });
   }, [props.location]);
 
   useEffect(() => {
-    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }) }, state.git_url, state.token);
+    console.log("aa")
+    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }) }, state.git_url, state.labels, state.token);
   }, [state.git_url, state.token]);
 
   return (

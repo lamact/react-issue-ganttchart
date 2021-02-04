@@ -25,9 +25,9 @@ export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_lab
   }
 }
 
-export const setLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
+export const setLabelListOfRepoFromAPI = async (setLabels, git_url, labels, token) => {
   if (isGitHubURL(git_url)) {
-    setGitHubLabelListOfRepoFromAPI(setLabels, git_url);
+    setGitHubLabelListOfRepoFromAPI(setLabels, git_url, labels, token);
   }
   if (isGitLabURL(git_url)) {
     setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
@@ -44,7 +44,9 @@ export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
 }
 
 export const openIssueAtBrowser = (gantt_task_id, git_url) => {
+  console.log("awqa")
   if (isGitHubURL(git_url)) {
+  console.log("gfweggq")
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
   }
   if (isGitLabURL(git_url)) {
