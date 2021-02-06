@@ -1,4 +1,4 @@
-import { isValidVariable } from './CommonHelper.js';
+import { isValidVariable, isValidIDName } from './CommonHelper.js';
 
 const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
@@ -6,6 +6,7 @@ const removeLastSlash = (url) => {
   }
   return url;
 }
+
 const removeLastSpace = (url) => {
   if (url.length > 1 && / +$/.test(url)) {
     url = url.slice(0, -1);
@@ -89,31 +90,36 @@ export const replaceProgressInDescriptionString = (description, write_float_numb
   }
 }
 
-export const convertLabelsListToString = (label_list) => {
-  let label_str = "";
-  if (isValidVariable(label_list)) {
-    label_list.map((label) => {
-      label_str += label.id + ":" + label.name +  ","
+export const convertIDNameListToString = (list) => {
+  let string = "";
+  if (isValidVariable(list)) {
+    list.map((info) => {
+      if (isValidIDName(info)) {
+        string += info.id + ":" + info.name + ","
+        console.log(string)
+      }
       return null;
     });
   }
-  return label_str;
+  return string;
 }
 
-export const convertLabelsStringToList = (label_str) => {
-  let label_list = [];
-  if (isValidVariable(label_str)) {
-    const split_label = label_str.split(',');
-    split_label.forEach((element, index, array) => {
-      if (index < split_label.length - 1) {
-        const id_label = element.split(':');
+export const convertIDNamesStringToList = (string) => {
+  let list = [];
+  if (isValidVariable(string)) {
+    const split_string = string.split(',');
+    split_string.forEach((element, index, array) => {
+      if (index < split_string.length - 1) {
+        const info = element.split(':');
         const label = {
-          id: id_label[0],
-          name: id_label[1],
+          id: info[0],
+          name: info[1],
         }
-        label_list.push(label)
+        list.push(label)
       }
     });
+  } else {
+    list = [{ id: 0, name: "" }];
   }
-  return label_list;
+  return list;
 }

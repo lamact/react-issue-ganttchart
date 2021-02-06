@@ -7,8 +7,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Multiselect } from 'multiselect-react-dropdown';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { validVariable } from '../../functions/Common/CommonHelper.js';
-
 
 const Toolbar = (props) => {
   const { classes } = props;
@@ -26,7 +24,7 @@ const Toolbar = (props) => {
       />
       <TextField
         className={classes.root}
-        // type="password"
+        type="password"
         placeholder="Access Token"
         label="Access Token"
         style={{ width: "10%", verticalAlign: "middle" }}
@@ -52,9 +50,16 @@ const Toolbar = (props) => {
         size="small"
         options={props.member_list}
         getOptionLabel={(option) => option.name}
-        onChange={(e,assignee) => { props.onSelectedAssigneeChange(validVariable(assignee.name)) }}
+        value={props.selected_assignee}
+        onChange={(e, assignee) => { props.onSelectedAssigneeChange(assignee) }}
         style={{ width: "15%", verticalAlign: "middle", display: "inline-block", marginRight: "15px" }}
-        renderInput={(params) => <TextField {...params} className={classes.root} label="Assignee" variant="standard" />}
+        renderInput={(params) =>
+          <TextField
+            {...params}
+            className={classes.root}
+            label="Assignee"
+            variant="standard"
+          />}
       />
       <ButtonGroup size="small" style={{ height: "34px" }} >
         <Button onClick={(e) => { props.onZoomChange("Weeks") }}>Weeks</Button>

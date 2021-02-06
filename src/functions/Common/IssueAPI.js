@@ -14,18 +14,19 @@ import {
   openGitLabIssueAtBrowser,
   openGitLabNewIssueAtBrowser,
   setGitLabLabelListOfRepoFromAPI,
+  setGitLabMemberListOfRepoFromAPI,
 } from '../GitLab/GitLabAPI.js';
 import { isValidVariable } from '../Common/CommonHelper.js';
 
-export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels) => {
+export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels, selected_assignee) => {
   if(!isValidVariable(git_url)){
     return null;
   }
   if (isGitHubURL(git_url)) {
-    getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels);
+    getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels, selected_assignee);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
-    getGitLabIssuesFromAPI(gantt_parse, git_url, token, selected_labels);
+    getGitLabIssuesFromAPI(gantt_parse, git_url, token, selected_labels, selected_assignee);
   }
 }
 
@@ -48,9 +49,9 @@ export const setMemberListOfRepoFromAPI = async (setMemberList, git_url, token) 
   if (isGitHubURL(git_url)) {
     setGitHubMemberListOfRepoFromAPI(setMemberList, git_url, token);
   }
-  // if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
-  //   setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
-  // }
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+    setGitLabMemberListOfRepoFromAPI(setMemberList, git_url, token);
+  }
 }
 
 export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
@@ -69,11 +70,7 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   if(!isValidVariable(git_url)){
     return null;
   }
-  console.log("openIssueAtBrowser")
-  console.log(git_url)
-  console.log(gantt_task_id)
   if (isGitHubURL(git_url)) {
-  console.log("openIssueAtBrowser:isGitHubURL")
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {

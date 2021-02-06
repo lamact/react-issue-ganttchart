@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {
   getGitHubAPIURLIssuebyNumber,
-  getGitHubAPIURLIssueFilterdLabel,
+  getGitHubAPIURLIssueFilterd,
   getGitHubAPIURLLabel,
+  getGitHubAPIURLCollaborators,
   getGitHubURLIssuebyNumber,
   getGitHubURLNewIssueWithTemplate,
-  getGitHubAPIURLCollaborators,
 } from './GitHubURLHelper.js';
 import {
   generateGanttTaskFromGitHub,
@@ -16,8 +16,8 @@ import {
   isValidVariable,
 } from '../Common/CommonHelper.js';
 
-export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labels) => {
-  axios.get(getGitHubAPIURLIssueFilterdLabel(git_url, selected_labels)).then((res) => {
+export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labels, selected_assignee) => {
+  axios.get(getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee)).then((res) => {
     res.data.map((issue_info) => {
       axios.get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number)).then((res) => {
         const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
@@ -41,8 +41,6 @@ export const setGitHubLabelListOfRepoFromAPI = async (setLabels, git_url, token)
 
 export const setGitHubMemberListOfRepoFromAPI = async (setLabels, git_url, token) => {
   if (isValidVariable(token) && token !== "Tokens that have not yet been entered") {
-  console.log("srhshrhsrhr") 
-   console.log(token)
     axios.get(getGitHubAPIURLCollaborators(git_url),
       { headers: { 'Authorization': `token ${token}` }, data: {} }
     ).then((res) => {
@@ -53,6 +51,8 @@ export const setGitHubMemberListOfRepoFromAPI = async (setLabels, git_url, token
       });
       setLabels(list);
     });
+  } else {
+    console.warn("token is not valid!")
   };
 }
 

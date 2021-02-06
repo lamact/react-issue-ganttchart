@@ -12,11 +12,6 @@ const Gantt = (props) => {
     attachEvent(gantt, props);
     gantt.init(containerRef.current);
     gantt.ext.zoom.setLevel(props.zoom);
-    gantt.clearAll();
-    getIssuesFromAPI((data) => {
-      gantt.parse(data);
-      gantt.sort("start_date", false);
-    }, props.git_url, props.token, props.selected_labels);
   }, [])
 
   useEffect(() => {
@@ -28,8 +23,8 @@ const Gantt = (props) => {
     getIssuesFromAPI((data) => {
       gantt.parse(data);
       gantt.sort("start_date", false);
-    }, props.git_url, props.token, props.selected_labels);
-  }, [props.git_url, props.token, props.selected_labels, props.update])
+    }, props.git_url, props.token, props.selected_labels, props.selected_assignee);
+  }, [props.git_url, props.token, props.selected_labels, props.selected_assignee, props.update])
 
   return (
     <div
@@ -70,8 +65,15 @@ const setGanttConfig = (gantt) => {
   gantt.config.keep_grid_width = true;
   gantt.config.grid_resize = true;
 
-  gantt.config.show_unscheduled = true;
   gantt.config.sort = true;
+
+  gantt.config.columns = [
+    { name: "id", label: "No.", align: "left", tree: true, width: '*' },
+    { name: "start_date", label: "Start ", align: "center", width: "90" },
+    { name: "due_date", label: "due ", align: "center", width: "90" },
+    { name: "assignee", label: "Assignee", align: "center", width: '160' },
+    { name: "add", label: "" }
+  ];
 
   gantt.ext.zoom.init(zoom_level);
 }
