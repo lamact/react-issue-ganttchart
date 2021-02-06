@@ -44,6 +44,8 @@ const reducerFunc = (state, action) => {
       return { ...state, update: state.update + 1 }
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(state, action.value.props, action.value.setValue)
+    case 'openIssueAtBrowser':
+      return { ...state,gantt_task_id:openIssueAtBrowser(action.value, state.git_url)}
     default:
       return state
   }
@@ -141,7 +143,7 @@ const App = (props) => {
           token={state.token}
           selected_labels={state.selected_labels}
           update={state.update}
-          openIssueAtBrowser={(gantt_task_id) => openIssueAtBrowser(gantt_task_id, state.git_url)}
+          openIssueAtBrowser={(gantt_task_id) => dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })}
           openNewIssueAtBrowser={(gantt_task_id) => openNewIssueAtBrowser(gantt_task_id, state.git_url)}
           updateIssueByAPI={(gantt_task, gantt) => updateIssueByAPI(gantt_task, state.token, gantt, state.git_url)}
         />
