@@ -1,8 +1,5 @@
 import { adjustURL } from '../Common/Parser.js';
-<<<<<<< HEAD
 import { isValidVariable } from '../Common/CommonHelper.js';
-=======
->>>>>>> origin/main
 
 export const isGitLabURL = (git_url) => {
   return /gitlab\.com/.test(git_url);
