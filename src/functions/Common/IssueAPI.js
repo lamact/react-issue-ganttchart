@@ -23,7 +23,7 @@ export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_lab
   if (isGitHubURL(git_url)) {
     getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels);
   }
-  if (isGitLabURL(git_url)) {
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     getGitLabIssuesFromAPI(gantt_parse, git_url, token, selected_labels);
   }
 }
@@ -35,7 +35,7 @@ export const setLabelListOfRepoFromAPI = async (setLabels, git_url, labels, toke
   if (isGitHubURL(git_url)) {
     setGitHubLabelListOfRepoFromAPI(setLabels, git_url, labels, token);
   }
-  if (isGitLabURL(git_url)) {
+  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
   }
 }
@@ -56,11 +56,11 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   if(!isValidVariable(git_url)){
     return null;
   }
-  console.log("awqa")
+  console.log("openIssueAtBrowser")
   console.log(git_url)
   console.log(gantt_task_id)
   if (isGitHubURL(git_url)) {
-  console.log("gfweggq")
+  console.log("openIssueAtBrowser:isGitHubURL")
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
