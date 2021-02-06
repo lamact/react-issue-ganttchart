@@ -5,7 +5,6 @@ const GitHubAPIURL = "https://api.github.com/repos/";
 const GitHubURL = "https://github.com/";
 
 export const isGitHubURL = (git_url) => {
-  console.log(git_url)
   return /github\.com/.test(git_url);
 }
 
@@ -39,12 +38,7 @@ export const getGitHubAPIURLIssueFilterdLabel = (git_url, labels) => {
   if (isValidVariable(labels)) {
     url_query_str += "?labels="
     labels.map((label) => {
-      if (label.type === "label") {
-        url_query_str += label.name + ","
-      }
-      if (label.type === "assignee") {
-        assignee_str = "&assignee=" + label.name
-      }
+      url_query_str += label.name + ","
       return null;
     });
     url_query_str += assignee_str;

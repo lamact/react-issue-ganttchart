@@ -4,9 +4,10 @@ import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
-import { setLabelListOfRepoFromAPI } from './functions/Common/IssueAPI.js';
 import { convertLabelsListToString, convertLabelsStringToList } from './functions/Common/Parser.js';
 import {
+  setLabelListOfRepoFromAPI,
+  setMemberListOfRepoFromAPI,
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
@@ -19,6 +20,8 @@ const initialState = {
   token: 'Tokens that have not yet been entered',
   labels: [],
   selected_labels: [],
+  member_list: [],
+  selected_assignee: "",
 }
 
 const reducerFunc = (state, action) => {
@@ -32,7 +35,11 @@ const reducerFunc = (state, action) => {
     case 'labelChange':
       return { ...state, labels: action.value }
     case 'selectedLabelsChange':
-      return { ...state, selected_labels: handleSelectedLabelsChange(action.value.props, state.git_url, action.value.selected_labels) }
+      return { ...state, selected_labels: handleSelectedLabelsChange(action.value.props, state.git_url, action.value.selected_labels, state.selected_assignee) }
+    case 'memberListChange':
+      return { ...state, member_list: action.value }
+    case 'selectedAssigneeChange':
+      return { ...state, selected_assignee: handleselectedAssigneeChange(action.value.props, state.git_url, state.selected_labels, action.value.selected_assignee) }
     case 'updateClick':
       return { ...state, update: state.update + 1 }
     case 'setStateFromURLQueryString':
@@ -57,31 +64,33 @@ const handleTokenChange = (token) => {
   return token;
 }
 
-const filterOnlyOneAssignee = (selected_labels) => {
-  const asigneies_selected_labels = selected_labels.filter((v) => v.type === "assignee");
-  if (asigneies_selected_labels.length > 1) {
-    selected_labels = selected_labels.filter((v) =>
-      v.id !== asigneies_selected_labels[0].id
-    );
-  }
-  return selected_labels;
-}
-
-const handleSelectedLabelsChange = (props, git_url, selected_labels) => {
-  selected_labels = filterOnlyOneAssignee(selected_labels);
+const handleSelectedLabelsChange = (props, git_url, selected_labels, assignee) => {
   const params = new URLSearchParams(props.location.search);
   params.set('giturl', git_url);
   params.set('labels', convertLabelsListToString(selected_labels));
+  params.set('assignee', assignee);
   props.history.push({
     search: params.toString(),
   });
   return selected_labels;
 }
 
+const handleselectedAssigneeChange = (props, git_url, selected_labels, assignee) => {
+  const params = new URLSearchParams(props.location.search);
+  params.set('giturl', git_url);
+  params.set('labels', convertLabelsListToString(selected_labels));
+  params.set('assignee', assignee);
+  props.history.push({
+    search: params.toString(),
+  });
+  return assignee;
+}
+
 const setStateFromURLQueryString = (state, props, setValue) => {
   const params = new URLSearchParams(props.location.search);
   state.git_url = params.get('giturl');
   state.selected_labels = convertLabelsStringToList(params.get('labels'));
+  state.selected_assignee = params.get('assignee');
   setValue("git_url", state.git_url)
   return state;
 }
@@ -102,9 +111,9 @@ const App = (props) => {
 
   useEffect(() => {
     console.log("setLabelListOfRepoFromAPI")
-    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }); console.log(labels) }, state.git_url, state.labels, state.token);
+    setLabelListOfRepoFromAPI((labels) => { dispatch({ type: 'labelChange', value: labels }); }, state.git_url, state.token);
+    setMemberListOfRepoFromAPI((setMemberList) => { dispatch({ type: 'memberListChange', value: setMemberList }); }, state.git_url, state.token);
   }, [state.git_url, state.token]);
-
 
   return (
     <>
@@ -119,9 +128,12 @@ const App = (props) => {
           labels={state.labels}
           selected_labels={state.selected_labels}
           onSelectedLabelChange={(selected_labels) => dispatch({ type: 'selectedLabelsChange', value: { props: props, selected_labels: selected_labels } })}
+          member_list={state.member_list}
+          onSelectedAssigneeChange={(assignee) => dispatch({ type: 'selectedAssigneeChange', value: { props: props, selected_assignee: assignee }  })}
           register={register}
         />
       </div>
+      {/* (member) => dispatch({ type: 'selectedAssigneeChange' , value: token})} */}
       <div className="gantt-container">
         <Gantt
           zoom={state.currentZoom}

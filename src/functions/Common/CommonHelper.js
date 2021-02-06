@@ -4,6 +4,14 @@ export const isValidVariable = (variable) => {
   return (variable !== null && variable !== [] && variable !== void 0)
 }
 
+export const validVariable = (variable) => {
+  if(isValidVariable(variable)){
+    return variable;
+  } else {
+    return "";
+  }
+}
+
 const calculateDuration = (start_date, due_date) => {
   const start_date_moment = moment(start_date);
   const due_date_moment = moment(due_date);

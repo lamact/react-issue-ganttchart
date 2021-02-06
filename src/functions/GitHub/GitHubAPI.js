@@ -28,39 +28,33 @@ export const getGitHubIssuesFromAPI = async (gantt_parse, git_url, selected_labe
   });
 };
 
-export const setGitHubLabelListOfRepoFromAPI = async (setLabels, git_url, labels, token) => {
-  console.log(token)
-  console.log(labels)
-  setLabels([]);
-  // if (isValidVariable(token) && token !== "Tokens that have not yet been entered") {
-  //   axios.get(getGitHubAPIURLCollaborators(git_url),
-  //     { headers: { 'Authorization': `token ${token}` }, data: {} }
-  //   ).then((res) => {
-  //     let list = [];
-  //     res.data.map((info) => {
-  //       list.push({ id: info.id, name: info.login, type: "assignee" });
-  //       return null;
-  //     });
-  //     console.log("collabo")
-  //     console.log(labels)
-  //     console.log(list)
-  //     setLabels(labels.concat(list));
-  //   });
-  // } else {
-  //   token = "";
-  // }
+export const setGitHubLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   axios.get(getGitHubAPIURLLabel(git_url)).then((res) => {
     let list = [];
     res.data.map((info) => {
-      list.push({ id: info.id, name: info.name, type: "label" });
+      list.push({ id: info.id, name: info.name });
       return null;
     });
-      console.log("label")
-      console.log(labels)
-      console.log(list)
-    setLabels(labels.concat(list));
+    setLabels(list);
   });
 };
+
+export const setGitHubMemberListOfRepoFromAPI = async (setLabels, git_url, token) => {
+  if (isValidVariable(token) && token !== "Tokens that have not yet been entered") {
+  console.log("srhshrhsrhr") 
+   console.log(token)
+    axios.get(getGitHubAPIURLCollaborators(git_url),
+      { headers: { 'Authorization': `token ${token}` }, data: {} }
+    ).then((res) => {
+      let list = [];
+      res.data.map((info) => {
+        list.push({ id: info.id, name: info.login });
+        return null;
+      });
+      setLabels(list);
+    });
+  };
+}
 
 export const updateGitHubIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
   const url = getGitHubAPIURLIssuebyNumber(git_url, gantt_task.id);

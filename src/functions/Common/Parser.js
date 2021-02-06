@@ -93,7 +93,7 @@ export const convertLabelsListToString = (label_list) => {
   let label_str = "";
   if (isValidVariable(label_list)) {
     label_list.map((label) => {
-      label_str += label.id + ":" + label.name + ":" + label.type + ","
+      label_str += label.id + ":" + label.name +  ","
       return null;
     });
   }
@@ -110,7 +110,6 @@ export const convertLabelsStringToList = (label_str) => {
         const label = {
           id: id_label[0],
           name: id_label[1],
-          type: id_label[2],
         }
         label_list.push(label)
       }

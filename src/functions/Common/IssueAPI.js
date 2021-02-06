@@ -6,6 +6,7 @@ import {
   openGitHubIssueAtBrowser,
   openGitHubNewIssueAtBrowser,
   setGitHubLabelListOfRepoFromAPI,
+  setGitHubMemberListOfRepoFromAPI,
 } from '../GitHub/GitHubAPI.js';
 import {
   getGitLabIssuesFromAPI,
@@ -28,16 +29,28 @@ export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_lab
   }
 }
 
-export const setLabelListOfRepoFromAPI = async (setLabels, git_url, labels, token) => {
+export const setLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   if(!isValidVariable(git_url)){
     return null;
   }
   if (isGitHubURL(git_url)) {
-    setGitHubLabelListOfRepoFromAPI(setLabels, git_url, labels, token);
+    setGitHubLabelListOfRepoFromAPI(setLabels, git_url, token);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
     setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
   }
+}
+
+export const setMemberListOfRepoFromAPI = async (setMemberList, git_url, token) => {
+  if(!isValidVariable(git_url)){
+    return null;
+  }
+  if (isGitHubURL(git_url)) {
+    setGitHubMemberListOfRepoFromAPI(setMemberList, git_url, token);
+  }
+  // if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  //   setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
+  // }
 }
 
 export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
