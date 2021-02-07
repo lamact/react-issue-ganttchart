@@ -16,14 +16,17 @@ import {
   calculateDueDate,
   updateGanttIssue,
 } from '../Common/CommonHelper.js';
+import { removeFirstSharp } from '../Common/Parser.js';
 
-export const getGitLabIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels, assignee) => {
+export const getGitLabIssuesFromAPI = async (gantt_parse, gantt, git_url, token, selected_labels, assignee) => {
   axios.get(getGitLabAPIURLIssueFilterd(git_url, token, selected_labels, assignee)).then((res) => {
     res.data.map((issue_info) => {
       const gantt_task = generateGanttTaskFromGitLab(issue_info);
       updateGanttIssue(gantt_task, gantt_parse);
       return null;
     });
+  }).catch((err) => {
+    gantt.message({ text: 'failed get GitLab issue. check your url or token.', type: 'error' })
   });
 };
 
@@ -52,32 +55,42 @@ export const setGitLabMemberListOfRepoFromAPI = async (setLabels, git_url, token
 export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
   axios.get(getGitLabAPIURLIssue(git_url, token)).then((res) => {
     res.data.map((issue_info) => {
-      if (issue_info.iid === gantt_task.id) {
+      if (issue_info.iid === removeFirstSharp(gantt_task.id)) {
         const description = updateGitLabDescriptionStringFromGanttTask(issue_info.description, gantt_task);
         const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
         const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
-        const put_url = getGitabAPIURLIssuebyNumber(git_url, token, gantt_task.id)
+        const put_url = getGitabAPIURLIssuebyNumber(git_url, token, removeFirstSharp(gantt_task.id))
           + "&description=" + description
           + "&due_date=" + due_date_str;
         axios.put(put_url).then((res) => {
-          console.log("success update issue")
+          gantt.message({ text: 'success update issue' });
         }).catch((err) => {
-          alert('failed update GitLab issue. check your token.')
+          gantt.message({ text: 'failed update GitLab issue. check your token.', type: 'error' });
           getGitLabIssuesFromAPI(gantt, git_url);
         });
       }
       return null;
     });
+  }).catch((err) => {
+    gantt.message({ text: 'failed get GitLab issue. check your token.', type: 'error' });
+    getGitLabIssuesFromAPI(gantt, git_url);
   });
+  ;
 };
 
 export const openGitLabIssueAtBrowser = (id, git_url) => {
-  window.open(getGitLabURLIssuebyNumber(git_url, id), "_blank");
+  window.open(getGitLabURLIssuebyNumber(git_url, removeFirstSharp(id)), "_blank");
 };
 
-export const openGitLabNewIssueAtBrowser = (id, git_url) => {
+export const openGitLabNewIssueAtBrowser = (gantt_task, git_url) => {
   let body = "";
-  body += "start_date:%20" + new Date().toLocaleDateString("ja-JP") + "%20%20%0D%0A";
-  body += "progress:%200.1%0D%0A";
+  body += "start_date: " + new Date().toLocaleDateString("ja-JP") + "  \n";
+  body += "progress: 0.1  \n";
+  if ("parent" in gantt_task) {
+    body += "parent: " + gantt_task.parent + "  \n";
+  } else {
+    body += "parent: #0  \n";
+  }
+  body = encodeURIComponent(body);
   window.open(getGitLabURLNewIssueWithTemplate(git_url) + body, "_blank");
 };

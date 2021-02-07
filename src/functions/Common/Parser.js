@@ -1,5 +1,13 @@
 import { isValidVariable, isValidIDName } from './CommonHelper.js';
 
+export const removeFirstSharp = (id_str) => {
+  console.log(id_str)
+  if (id_str.length > 1 && /^#/.test(id_str)) {
+    id_str = id_str.substring(1);
+  }
+  return id_str;
+}
+
 const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
@@ -90,13 +98,34 @@ export const replaceProgressInDescriptionString = (description, write_float_numb
   }
 }
 
+export const getParentFromDescriptionString = (description) => {
+  if (description == null) {
+    return null;
+  }
+  let str = description.match(/parent: #\d{1,10}/);
+  if (str == null) {
+    return null;
+  }
+  str = str[0].match(/\d{1,10}/)[0];
+  return parseInt(str);
+}
+
+export const replaceParentInDescriptionString = (description, parnet_str) => {
+  const parent = getParentFromDescriptionString(description);
+  if (parent != null) {
+    return description.replace(/parent: #\d{1,10}/, "parent: #" + parnet_str);
+  } else {
+    return "parent: #" + parnet_str + "  \n" + description;
+  }
+}
+
+
 export const convertIDNameListToString = (list) => {
   let string = "";
   if (isValidVariable(list)) {
     list.map((info) => {
       if (isValidIDName(info)) {
         string += info.id + ":" + info.name + ","
-        console.log(string)
       }
       return null;
     });
