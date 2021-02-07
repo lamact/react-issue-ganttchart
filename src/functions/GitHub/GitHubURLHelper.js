@@ -1,4 +1,5 @@
 import { adjustURL } from '../Common/Parser.js';
+import { isValidVariable, isValidIDName } from '../Common/CommonHelper.js';
 
 const GitHubAPIURL = "https://api.github.com/repos/";
 const GitHubURL = "https://github.com/";
@@ -31,17 +32,25 @@ export const getGitHubAPIURLIssuebyNumber = (git_url, number) => {
   return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/issues/' + number;
 }
 
-export const getGitHubAPIURLIssueFilterdLabel = (git_url, labels) => {
-  let labels_url_str = "";
-  if (labels !== null || labels !== []) {
-    labels_url_str += "?labels="
+export const getGitHubAPIURLIssueFilterd = (git_url, labels, assignee) => {
+  let url_query_str = "";
+  let assignee_str = ""
+  if (isValidVariable(labels)) {
+    url_query_str += "?labels="
     labels.map((label) => {
-      labels_url_str += label.name + ","
+      if (isValidIDName(label)) {
+        url_query_str += label.name + ",";
+      }
       return null;
     });
   }
+  if (isValidIDName(assignee)) {
+    if (assignee.name !== "") {
+      url_query_str += "&assignee=" + assignee.name;
+    }
+  }
   const url = adjustURL(git_url);
-  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/issues' + labels_url_str;
+  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/issues' + url_query_str;
 }
 
 export const getGitHubAPIURLLabel = (git_url) => {
@@ -49,13 +58,18 @@ export const getGitHubAPIURLLabel = (git_url) => {
   return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/labels';
 }
 
+export const getGitHubAPIURLCollaborators = (git_url) => {
+  const url = adjustURL(git_url);
+  return GitHubAPIURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + '/collaborators';
+}
+
 export const getGitHubURLIssuebyNumber = (git_url, number) => {
   const url = adjustURL(git_url);
-  return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url)+ "/issues/" + number;
+  return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url) + "/issues/" + number;
 }
 
 export const getGitHubURLNewIssueWithTemplate = (git_url) => {
   const url = adjustURL(git_url);
   return GitHubURL + getGitHubNameSpaceFromGitURL(url) + "/" + getGitHubProjectFromGitURL(url)
-         + "/issues/new?assignees=&labels=&title=&body=";
+    + "/issues/new?assignees=&labels=&title=&body=";
 }

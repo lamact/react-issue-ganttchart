@@ -8,14 +8,14 @@ Repository URL and personal access token are required, but not the rest.
 No backend is required, and the token is stored in a cookie.  
 
 ## Demo
-https://lamact.github.io/react-issue-ganttchart/
+https://lamact.github.io/react-issue-ganttchart/&giturl=https%3A%2F%2Fgithub.com%2Flamact%2Freact-issue-ganttchart&labels=2680639989%3Aenhancement%2C
 
 ## Requirements
 - Your Repository's Path (github.com / gitlab.com / your.self-host.gitlab.com)  
   ex) https://github.com/lamact/react-issue-ganttchart
 
 - Personal Access Token:   
-  GitHub: https://github.com/settings/tokens/new Scopes: public_repo, write:discussion  
+  GitHub: https://github.com/settings/tokens/new Scopes: public_repo, write:discussion, read:org  
   GitLab: https://gitlab.com/-/profile/personal_access_tokens 
 
 ## How to start on your server

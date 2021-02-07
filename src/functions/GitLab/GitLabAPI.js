@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {
-  getGitLabAPIURLIssueFilterdLabel,
+  getGitLabAPIURLIssueFilterd,
   getGitLabAPIURLIssue,
   getGitLabAPIURLLabel,
+  getGitLabAPIURLMember,
   getGitabAPIURLIssuebyNumber,
   getGitLabURLIssuebyNumber,
   getGitLabURLNewIssueWithTemplate,
@@ -11,31 +12,42 @@ import {
   generateGanttTaskFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
 } from './GitLabHelper.js';
-import { 
+import {
   calculateDueDate,
   updateGanttIssue,
- } from '../Common/CommonHelper.js';
+} from '../Common/CommonHelper.js';
 
-export const getGitLabIssuesFromAPI = async (gantt, git_url, token, selected_labels) => {
-  axios.get(getGitLabAPIURLIssueFilterdLabel(git_url, token, selected_labels)).then((res) => {
+export const getGitLabIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels, assignee) => {
+  axios.get(getGitLabAPIURLIssueFilterd(git_url, token, selected_labels, assignee)).then((res) => {
     res.data.map((issue_info) => {
       const gantt_task = generateGanttTaskFromGitLab(issue_info);
-      updateGanttIssue(gantt_task, gantt);
+      updateGanttIssue(gantt_task, gantt_parse);
       return null;
     });
   });
 };
 
-export const setGitLabLabelListOfRepoFromAPI = async (_this, git_url, token) => {
+export const setGitLabLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   axios.get(getGitLabAPIURLLabel(git_url, token)).then((res) => {
-    let label_list = [];
+    let list = [];
     res.data.map((lebel_info) => {
-      label_list.push(lebel_info);
+      list.push(lebel_info);
       return null;
     });
-    _this.setState({ labels: label_list });
+    setLabels(list);
   });
 };
+
+export const setGitLabMemberListOfRepoFromAPI = async (setLabels, git_url, token) => {
+  axios.get(getGitLabAPIURLMember(git_url, token)).then((res) => {
+    let list = [];
+    res.data.map((info) => {
+      list.push({ id: info.id, name: info.name });
+      return null;
+    });
+    setLabels(list);
+  });
+}
 
 export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
   axios.get(getGitLabAPIURLIssue(git_url, token)).then((res) => {

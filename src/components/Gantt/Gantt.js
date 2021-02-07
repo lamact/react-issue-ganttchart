@@ -1,123 +1,93 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import {
   getIssuesFromAPI,
-  updateIssueByAPI,
-  openIssueAtBrowser,
-  openNewIssueAtBrowser,
 } from '../../functions/Common/IssueAPI.js';
 
-export default class Gantt extends Component {
+const Gantt = (props) => {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    setGanttConfig(gantt);
+    attachEvent(gantt, props);
+    gantt.init(containerRef.current);
+    gantt.ext.zoom.setLevel(props.zoom);
+  }, [])
 
-  constructor(props) {
-    super(props);
-    this.initZoom();
-  }
+  useEffect(() => {
+    gantt.ext.zoom.setLevel(props.zoom);
+  }, [props.zoom])
 
-  // instance of gantt.dataProcessor
-  dataProcessor = null;
+  useEffect(() => {
+    gantt.clearAll();
+    getIssuesFromAPI((data) => {
+      gantt.parse(data);
+      gantt.sort("start_date", false);
+    }, props.git_url, props.token, props.selected_labels, props.selected_assignee);
+  }, [props.git_url, props.token, props.selected_labels, props.selected_assignee, props.update])
 
-  initZoom() {
-    gantt.ext.zoom.init({
-      levels: [
-        {
-          name: 'Days',
-          scale_height: 60,
-          min_column_width: 70,
-          scales: [
-            { unit: 'week', step: 1, format: '%M, %d week' },
-            { unit: 'day', step: 1, format: '%d %M' }
-          ]
-        },
-        {
-          name: 'Weeks',
-          scale_height: 60,
-          min_column_width: 70,
-          scales: [
-            { unit: "month", step: 1, format: '%Y %F' },
-            { unit: 'week', step: 1, format: '%M, %d week' },
-          ]
-        }
-      ]
-    });
-  }
-
-  setZoom(value) {
-    gantt.ext.zoom.setLevel(value);
-  }
-
-  initGanttDataProcessor() {
-    /**
-     * type: "task"|"link"
-     * action: "create"|"update"|"delete"
-     * item: data object object
-     */
-    const onDataUpdated = this.props.onDataUpdated;
-    this.dataProcessor = gantt.createDataProcessor((type, action, item, id) => {
-      return new Promise((resolve, reject) => {
-        if (onDataUpdated) {
-          onDataUpdated(type, action, item, id);
-        }
-
-        // if onDataUpdated changes returns a permanent id of the created item, you can return it from here so dhtmlxGantt could apply it
-        // resolve({id: databaseId});
-        return resolve();
-      });
-    });
-  }
-
-  updateGantt(selected_labels) {
-    getIssuesFromAPI(gantt, this.props.git_url, this.props.token, selected_labels);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.zoom !== nextProps.zoom;
-  }
-
-  componentDidMount() {
-    gantt.config.xml_date = "%Y/%m/%d %H:%i";
-    gantt.config.order_branch = true;
-    gantt.config.order_branch_free = true;
-
-    gantt.config.keep_grid_width = true;
-    gantt.config.grid_resize = true;
-
-    gantt.config.show_unscheduled = true;
-    gantt.config.sort = true;
-
-    gantt.attachEvent("onTaskDblClick", (gantt_task_id, e) => {
-      openIssueAtBrowser(gantt_task_id, this.props.git_url);
-    });
-
-    gantt.attachEvent("onTaskCreated", (gantt_task_id, e) => {
-      openNewIssueAtBrowser(gantt_task_id, this.props.git_url);
-    });
-
-    gantt.attachEvent("onAfterTaskUpdate", (id, gantt_task) => {
-      updateIssueByAPI(gantt_task, this.props.token, gantt, this.props.git_url);
-    });
-
-    gantt.init(this.ganttContainer);
-    this.initGanttDataProcessor();
-    this.updateGantt();
-  }
-
-  componentWillUnmount() {
-    if (this.dataProcessor) {
-      this.dataProcessor.destructor();
-      this.dataProcessor = null;
-    }
-  }
-
-  render() {
-    const { zoom } = this.props;
-    this.setZoom(zoom);
-    return (
-      <div
-        ref={(input) => { this.ganttContainer = input }}
-        style={{ width: '100%', height: '100%' }}
-      ></div>
-    );
-  }
+  return (
+    <div
+      ref={containerRef}
+      style={{ width: '100%', height: '100%' }}
+    ></div>
+  );
 }
+
+const zoom_level = {
+  levels: [
+    {
+      name: 'Days',
+      scale_height: 60,
+      min_column_width: 70,
+      scales: [
+        { unit: 'week', step: 1, format: '%M, %d week' },
+        { unit: 'day', step: 1, format: '%d %M' }
+      ]
+    },
+    {
+      name: 'Weeks',
+      scale_height: 60,
+      min_column_width: 70,
+      scales: [
+        { unit: "month", step: 1, format: '%Y %F' },
+        { unit: 'week', step: 1, format: '%M, %d week' },
+      ]
+    }
+  ]
+};
+
+const setGanttConfig = (gantt) => {
+  gantt.config.xml_date = "%Y/%m/%d %H:%i";
+  gantt.config.order_branch = true;
+  gantt.config.order_branch_free = true;
+
+  gantt.config.keep_grid_width = true;
+  gantt.config.grid_resize = true;
+
+  gantt.config.sort = true;
+
+  gantt.config.columns = [
+    { name: "id", label: "No.", align: "left", tree: true, width: '*' },
+    { name: "start_date", label: "Start ", align: "center", width: "90" },
+    { name: "due_date", label: "due ", align: "center", width: "90" },
+    { name: "assignee", label: "Assignee", align: "center", width: '160' },
+    { name: "add", label: "" }
+  ];
+
+  gantt.ext.zoom.init(zoom_level);
+}
+
+const attachEvent = (gantt, props) => {
+  gantt.attachEvent("onTaskDblClick", (gantt_task_id, e) => {
+    props.openIssueAtBrowser(gantt_task_id);
+  });
+  gantt.attachEvent("onTaskCreated", (gantt_task_id, e) => {
+    props.openNewIssueAtBrowser(gantt_task_id);
+  });
+  gantt.attachEvent("onAfterTaskUpdate", (id, gantt_task) => {
+    props.updateIssueByAPI(gantt_task, gantt);
+  });
+}
+
+export default Gantt;

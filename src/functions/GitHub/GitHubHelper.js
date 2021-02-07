@@ -9,9 +9,16 @@ import {
 import {
   calculateDueDate,
   getGanttStartDate,
-  getGanttUnscheduled,
+  getGanttDueDate,
   getGanttDuration,
 } from '../Common/CommonHelper.js';
+
+const getGitHubAssignee = (issue_info) => {
+  if(issue_info.assignee !== null){
+    return issue_info.assignee.login;
+  }
+  return ""
+}
 
 export const generateGanttTaskFromGitHub = (description, issue_info) => {
   const start_date = getStartDateFromDescriptionString(description);
@@ -21,9 +28,10 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     id: issue_info.number,
     text: issue_info.title,
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
+    due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     duration: getGanttDuration(start_date, due_date),
     progress: getProgressFromDescriptionString(description),
-    unscheduled: getGanttUnscheduled(start_date, due_date),
+    assignee: getGitHubAssignee(issue_info),
   }
   return gantt_task;
 }

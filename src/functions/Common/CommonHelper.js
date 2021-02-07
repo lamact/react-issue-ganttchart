@@ -1,5 +1,26 @@
 import moment from 'moment';
 
+export const isValidVariable = (variable) => {
+  if (variable !== null && variable !== [] && variable !== void 0 && variable !== "") {
+    return true;
+  }
+  if (Array.isArray(variable)) {
+    return variable.length > 0;
+  }
+  return false;
+}
+
+export const validVariable = (variable) => {
+  if (isValidVariable(variable)) {
+    return variable;
+  } else {
+    return "";
+  }
+}
+export const isValidIDName = (id_name) => {
+  return isValidVariable(id_name) && 'id' in id_name && 'name' in id_name;
+}
+
 const calculateDuration = (start_date, due_date) => {
   const start_date_moment = moment(start_date);
   const due_date_moment = moment(due_date);
@@ -22,6 +43,16 @@ export const getGanttStartDate = (start_date, due_date, created_at) => {
   return start_date_str;
 }
 
+export const getGanttDueDate = (start_date, due_date, created_at) => {
+  let due_date_str = null;
+  if (start_date != null && due_date != null) {
+    due_date_str = new Date(due_date).toISOString().split('T')[0];
+  } else {
+    due_date_str = new Date(created_at).toISOString().split('T')[0];
+  }
+  return due_date_str;
+}
+
 export const getGanttDuration = (start_date, due_date) => {
   let duration = null;
   if (start_date != null && due_date != null) {
@@ -32,21 +63,10 @@ export const getGanttDuration = (start_date, due_date) => {
   return duration;
 }
 
-export const getGanttUnscheduled = (start_date, due_date) => {
-  let unscheduled = null;
-  if (start_date != null && due_date != null) {
-    unscheduled = false;
-  } else {
-    unscheduled = true;
-  }
-  return unscheduled;
-}
-
-export const updateGanttIssue = (issue, gantt) => {
+export const updateGanttIssue = (issue, gantt_parse) => {
   let data = [];
   let links = [];
   data.push(issue);
   data = { data: data, links: links }
-  gantt.parse(data);
-  gantt.sort("start_date", false);
+  gantt_parse(data);
 } 

@@ -1,9 +1,12 @@
+import { isValidVariable, isValidIDName } from './CommonHelper.js';
+
 const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
   }
   return url;
 }
+
 const removeLastSpace = (url) => {
   if (url.length > 1 && / +$/.test(url)) {
     url = url.slice(0, -1);
@@ -77,7 +80,7 @@ export const getProgressFromDescriptionString = (description) => {
 export const replaceProgressInDescriptionString = (description, write_float_number) => {
   const progress = getProgressFromDescriptionString(description);
   let write_round_str = Math.round(write_float_number * 10) / 10;
-  if (write_float_number === "1"){
+  if (write_float_number === "1") {
     write_float_number = "1.0"
   }
   if (progress != null) {
@@ -85,4 +88,38 @@ export const replaceProgressInDescriptionString = (description, write_float_numb
   } else {
     return "progress: " + write_round_str + "  \n" + description;
   }
+}
+
+export const convertIDNameListToString = (list) => {
+  let string = "";
+  if (isValidVariable(list)) {
+    list.map((info) => {
+      if (isValidIDName(info)) {
+        string += info.id + ":" + info.name + ","
+        console.log(string)
+      }
+      return null;
+    });
+  }
+  return string;
+}
+
+export const convertIDNamesStringToList = (string) => {
+  let list = [];
+  if (isValidVariable(string)) {
+    const split_string = string.split(',');
+    split_string.forEach((element, index, array) => {
+      if (index < split_string.length - 1) {
+        const info = element.split(':');
+        const label = {
+          id: info[0],
+          name: info[1],
+        }
+        list.push(label)
+      }
+    });
+  } else {
+    list = [{ id: 0, name: "" }];
+  }
+  return list;
 }
