@@ -34,6 +34,20 @@ const Gantt = (props) => {
   );
 }
 
+  var daysStyle = function(date){
+    var today = new Date();
+    var yearToStr = gantt.date.date_to_str("%y");
+    var monthToStr = gantt.date.date_to_str("%m");    
+    var dayToStr = gantt.date.date_to_str("%d");
+    var dateToStr = gantt.date.date_to_str("%D");
+  if (yearToStr(today) == yearToStr(date) && monthToStr(today) == monthToStr(date) && dayToStr(today) == dayToStr(date))
+    return "todayline";
+    else if (dateToStr(date) == "Sun"||dateToStr(date) == "Sat")  
+    return "updColor";
+    return "";
+};
+
+
 const zoom_level = {
   levels: [
     {
@@ -42,7 +56,7 @@ const zoom_level = {
       min_column_width: 70,
       scales: [
         { unit: 'week', step: 1, format: '%M, %d week' },
-        { unit: 'day', step: 1, format: '%d %M' }
+        { unit: 'day', step: 1, format: '%d %M',css:daysStyle }
       ]
     },
     {
