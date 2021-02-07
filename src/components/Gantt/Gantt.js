@@ -34,18 +34,6 @@ const Gantt = (props) => {
   );
 }
 
-  var daysStyle = function(date){
-    var today = new Date();
-    var yearToStr = gantt.date.date_to_str("%y");
-    var monthToStr = gantt.date.date_to_str("%m");    
-    var dayToStr = gantt.date.date_to_str("%d");
-    var dateToStr = gantt.date.date_to_str("%D");
-  if (yearToStr(today) == yearToStr(date) && monthToStr(today) == monthToStr(date) && dayToStr(today) == dayToStr(date))
-    return "todayline";
-    else if (dateToStr(date) == "Sun"||dateToStr(date) == "Sat")  
-    return "updColor";
-    return "";
-};
 
 
 const zoom_level = {
@@ -55,8 +43,7 @@ const zoom_level = {
       scale_height: 60,
       min_column_width: 70,
       scales: [
-        { unit: 'week', step: 1, format: '%M, %d week' },
-        { unit: 'day', step: 1, format: '%d %M',css:daysStyle }
+        { unit: 'day', step: 1, format: '%n/%d' }
       ]
     },
     {
@@ -64,8 +51,8 @@ const zoom_level = {
       scale_height: 60,
       min_column_width: 70,
       scales: [
-        { unit: "month", step: 1, format: '%Y %F' },
-        { unit: 'week', step: 1, format: '%M, %d week' },
+        { unit: "month", step: 1, format: '%Y年 %n月' },
+        { unit: 'week', step: 1, format: '%n/%d~' },
       ]
     }
   ]
@@ -89,6 +76,15 @@ const setGanttConfig = (gantt) => {
     { name: "add", label: "" }
   ];
 
+  gantt.templates.timeline_cell_class = function (item, date) {
+    if (date.toLocaleDateString() == new Date().toLocaleDateString()) {
+      return "today";
+    }
+    if (date.getDay() == 0 || date.getDay() == 6) {
+      return "weekend"
+    }
+  };
+
   gantt.ext.zoom.init(zoom_level);
 }
 
@@ -103,5 +99,4 @@ const attachEvent = (gantt, props) => {
     props.updateIssueByAPI(gantt_task, gantt);
   });
 }
-
 export default Gantt;
