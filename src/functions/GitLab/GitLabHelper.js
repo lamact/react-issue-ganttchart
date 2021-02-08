@@ -5,6 +5,7 @@ import {
   replaceProgressInDescriptionString,
   getParentFromDescriptionString,
   replaceParentInDescriptionString,
+  removeFirstSharp,
 } from '../Common/Parser.js';
 import {
   getGanttStartDate,
@@ -40,7 +41,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
 export const updateGitLabDescriptionStringFromGanttTask = (description, gantt_task) => {
   let start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
   if ("parent" in gantt_task) {
-    description = replaceParentInDescriptionString(description, "#" + gantt_task.parent);
+    description = replaceParentInDescriptionString(description, "#" + removeFirstSharp(gantt_task.parent));
   } else {
     description = replaceParentInDescriptionString(description, "#0");
   }

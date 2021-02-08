@@ -19,13 +19,16 @@ import { removeFirstSharp } from '../Common/Parser.js';
 
 export const getGitHubIssuesFromAPI = async (gantt_parse, gantt, git_url, selected_labels, selected_assignee) => {
   axios.get(getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee)).then((res) => {
+    let data = [];
+    let links = [];
     res.data.map((issue_info) => {
       axios.get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number)).then((res) => {
         const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
-        updateGanttIssue(gantt_task, gantt_parse);
+        data.push(gantt_task);
       });
       return null;
     });
+    gantt_parse({ data: data, links: links });
   }).catch((err) => {
     gantt.message({ text: 'failed get GitHub issue. check your url or token.', type: 'error' })
   });
@@ -69,7 +72,7 @@ export const updateGitHubIssueFromGanttTask = (gantt_task, token, gantt, git_url
         'Authorization': `token ${token}`
       }
     }).then((res) => {
-      gantt.message({ text: 'success update issue' });
+      gantt.message({ text: 'success update issue.  ' + gantt_task.id });
     }).catch((err) => {
       gantt.message({ text: 'failed update GitHub issue. check your token.', type: 'error' });
       getGitHubIssuesFromAPI(gantt, git_url);

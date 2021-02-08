@@ -20,11 +20,14 @@ import { removeFirstSharp } from '../Common/Parser.js';
 
 export const getGitLabIssuesFromAPI = async (gantt_parse, gantt, git_url, token, selected_labels, assignee) => {
   axios.get(getGitLabAPIURLIssueFilterd(git_url, token, selected_labels, assignee)).then((res) => {
+    let data = [];
+    let links = [];
     res.data.map((issue_info) => {
       const gantt_task = generateGanttTaskFromGitLab(issue_info);
-      updateGanttIssue(gantt_task, gantt_parse);
+      data.push(gantt_task);
       return null;
     });
+    gantt_parse({ data: data, links: links });
   }).catch((err) => {
     gantt.message({ text: 'failed get GitLab issue. check your url or token.', type: 'error' })
   });
@@ -55,7 +58,7 @@ export const setGitLabMemberListOfRepoFromAPI = async (setLabels, git_url, token
 export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
   axios.get(getGitLabAPIURLIssue(git_url, token)).then((res) => {
     res.data.map((issue_info) => {
-      if (issue_info.iid === removeFirstSharp(gantt_task.id)) {
+      if (parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))) {
         const description = updateGitLabDescriptionStringFromGanttTask(issue_info.description, gantt_task);
         const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
         const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
@@ -63,7 +66,7 @@ export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url
           + "&description=" + description
           + "&due_date=" + due_date_str;
         axios.put(put_url).then((res) => {
-          gantt.message({ text: 'success update issue' });
+          gantt.message({ text: 'success update issue.  ' + gantt_task.id });
         }).catch((err) => {
           gantt.message({ text: 'failed update GitLab issue. check your token.', type: 'error' });
           getGitLabIssuesFromAPI(gantt, git_url);

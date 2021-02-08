@@ -107,7 +107,6 @@ const setGanttConfig = (gantt) => {
   gantt.plugins({
     quick_info: true
   });
-
   gantt.ext.zoom.init(zoom_level);
 }
 
@@ -124,8 +123,10 @@ const attachEvent = (gantt, props) => {
   gantt.attachEvent("onAfterTaskMove", (id, parent) => {
     let gantt_task = gantt.getTask(id)
     if ("parent" in gantt_task) {
-      gantt_task.parent = parent;
-      props.updateIssueByAPI(gantt_task, gantt);
+      if (gantt_task.parent !== 0) {
+        gantt_task.parent = parent;
+        props.updateIssueByAPI(gantt_task, gantt);
+      }
     }
   });
   gantt.attachEvent("onQuickInfo", (id) => {
@@ -135,16 +136,17 @@ const attachEvent = (gantt, props) => {
       props.openIssueAtBrowser(gantt_task_id);
       return true;
     };
+
     gantt.ext.quickInfo.setContent({
       header: {
         title: "",
         date: ReactDOMServer.renderToStaticMarkup(
-          <div style={{ wordBreak: "normal" }}>{gantt_task.text}</div>
         ).toString(),
       },
-      content: ReactDOMServer.renderToStaticMarkup(
+      content: ReactDOMServer.renderToStaticMarkup(<div>
+        <h3>{gantt_task.text}</h3>
         <ReactMarkdown>{gantt_task.description}</ReactMarkdown>
-      ).toString(),
+      </div>).toString(),
       buttons: ["detail_button"]
     });
   });

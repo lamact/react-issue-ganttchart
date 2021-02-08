@@ -1,7 +1,6 @@
 import { isValidVariable, isValidIDName } from './CommonHelper.js';
 
 export const removeFirstSharp = (id_str) => {
-  console.log(id_str)
   if (id_str.length > 1 && /^#/.test(id_str)) {
     id_str = id_str.substring(1);
   }
@@ -107,18 +106,18 @@ export const getParentFromDescriptionString = (description) => {
     return null;
   }
   str = str[0].match(/\d{1,10}/)[0];
-  return parseInt(str);
+  return "#" + str;
 }
 
 export const replaceParentInDescriptionString = (description, parnet_str) => {
   const parent = getParentFromDescriptionString(description);
+  parnet_str = removeFirstSharp(parnet_str);
   if (parent != null) {
     return description.replace(/parent: #\d{1,10}/, "parent: #" + parnet_str);
   } else {
     return "parent: #" + parnet_str + "  \n" + description;
   }
 }
-
 
 export const convertIDNameListToString = (list) => {
   let string = "";
