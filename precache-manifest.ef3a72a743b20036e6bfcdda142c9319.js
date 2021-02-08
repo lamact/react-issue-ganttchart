@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bd928f5a715e8ac5e24d099d0d95aacf",
+    "revision": "2ab961d4ca7f2f4bde7af1c7c1409a88",
     "url": "/react-issue-ganttchart/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css"
   },
   {
-    "revision": "355f282d252f826baa64",
-    "url": "/react-issue-ganttchart/static/css/main.936daf92.chunk.css"
+    "revision": "fcc6a569fe559b5e183c",
+    "url": "/react-issue-ganttchart/static/css/main.f5d0b08c.chunk.css"
   },
   {
     "revision": "499bb7bb934d057e6f7c",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-issue-ganttchart/static/js/2.6362a0b8.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "355f282d252f826baa64",
+    "revision": "fcc6a569fe559b5e183c",
     "url": "/react-issue-ganttchart/static/js/main.89b4f079.chunk.js"
   },
   {

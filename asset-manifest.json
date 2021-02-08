@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/react-issue-ganttchart/static/css/main.936daf92.chunk.css",
+    "main.css": "/react-issue-ganttchart/static/css/main.f5d0b08c.chunk.css",
     "main.js": "/react-issue-ganttchart/static/js/main.89b4f079.chunk.js",
     "main.js.map": "/react-issue-ganttchart/static/js/main.89b4f079.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.234ea6c8.js",
@@ -9,17 +9,17 @@
     "static/js/2.6362a0b8.chunk.js": "/react-issue-ganttchart/static/js/2.6362a0b8.chunk.js",
     "static/js/2.6362a0b8.chunk.js.map": "/react-issue-ganttchart/static/js/2.6362a0b8.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
-    "precache-manifest.af3223ddc5f0bce1291f27658668b996.js": "/react-issue-ganttchart/precache-manifest.af3223ddc5f0bce1291f27658668b996.js",
+    "precache-manifest.ef3a72a743b20036e6bfcdda142c9319.js": "/react-issue-ganttchart/precache-manifest.ef3a72a743b20036e6bfcdda142c9319.js",
     "service-worker.js": "/react-issue-ganttchart/service-worker.js",
     "static/css/2.7592fcad.chunk.css.map": "/react-issue-ganttchart/static/css/2.7592fcad.chunk.css.map",
-    "static/css/main.936daf92.chunk.css.map": "/react-issue-ganttchart/static/css/main.936daf92.chunk.css.map",
+    "static/css/main.f5d0b08c.chunk.css.map": "/react-issue-ganttchart/static/css/main.f5d0b08c.chunk.css.map",
     "static/js/2.6362a0b8.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.6362a0b8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.234ea6c8.js",
     "static/css/2.7592fcad.chunk.css",
     "static/js/2.6362a0b8.chunk.js",
-    "static/css/main.936daf92.chunk.css",
+    "static/css/main.f5d0b08c.chunk.css",
     "static/js/main.89b4f079.chunk.js"
   ]
 }
