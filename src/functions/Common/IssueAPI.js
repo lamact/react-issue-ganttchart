@@ -18,15 +18,15 @@ import {
 } from '../GitLab/GitLabAPI.js';
 import { isValidVariable } from '../Common/CommonHelper.js';
 
-export const getIssuesFromAPI = async (gantt_parse, git_url, token, selected_labels, selected_assignee) => {
+export const getIssuesFromAPI = async (gantt_parse, gantt, git_url, token, selected_labels, selected_assignee) => {
   if(!isValidVariable(git_url)){
     return null;
   }
   if (isGitHubURL(git_url)) {
-    getGitHubIssuesFromAPI(gantt_parse, git_url, selected_labels, selected_assignee);
+    getGitHubIssuesFromAPI(gantt_parse, gantt, git_url, selected_labels, selected_assignee);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
-    getGitLabIssuesFromAPI(gantt_parse, git_url, token, selected_labels, selected_assignee);
+    getGitLabIssuesFromAPI(gantt_parse, gantt, git_url, token, selected_labels, selected_assignee);
   }
 }
 
@@ -78,14 +78,14 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   }
 };
 
-export const openNewIssueAtBrowser = (gantt_task_id, git_url) => {
+export const openNewIssueAtBrowser = (gantt_task, git_url) => {
   if(!isValidVariable(git_url)){
     return null;
   }
   if (isGitHubURL(git_url)) {
-    openGitHubNewIssueAtBrowser(gantt_task_id, git_url);
+    openGitHubNewIssueAtBrowser(gantt_task, git_url);
   }
   if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
-    openGitLabNewIssueAtBrowser(gantt_task_id, git_url);
+    openGitLabNewIssueAtBrowser(gantt_task, git_url);
   }
 }

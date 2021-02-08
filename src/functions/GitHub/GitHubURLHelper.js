@@ -34,7 +34,6 @@ export const getGitHubAPIURLIssuebyNumber = (git_url, number) => {
 
 export const getGitHubAPIURLIssueFilterd = (git_url, labels, assignee) => {
   let url_query_str = "";
-  let assignee_str = ""
   if (isValidVariable(labels)) {
     url_query_str += "?labels="
     labels.map((label) => {

@@ -46,9 +46,9 @@ export const getGanttStartDate = (start_date, due_date, created_at) => {
 export const getGanttDueDate = (start_date, due_date, created_at) => {
   let due_date_str = null;
   if (start_date != null && due_date != null) {
-    due_date_str = new Date(due_date).toISOString().split('T')[0];
+    due_date_str = new Date(due_date);
   } else {
-    due_date_str = new Date(created_at).toISOString().split('T')[0];
+    due_date_str = new Date(created_at);
   }
   return due_date_str;
 }
