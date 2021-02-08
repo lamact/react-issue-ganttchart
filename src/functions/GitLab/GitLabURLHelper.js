@@ -7,6 +7,9 @@ export const isGitLabURL = (git_url) => {
 }
 
 export const getSelfHostingGitLabDomain = (git_url) => {
+  if (isGitHubURL(git_url) || isGitLabURL(git_url)) {
+    return null;
+  }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 3) {
     return split_git_url[2];

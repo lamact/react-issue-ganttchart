@@ -9,6 +9,10 @@ import {
   openNewIssueAtBrowser,
 } from '../Common/IssueAPI.js';
 import { isValidVariable } from '../Common/CommonHelper.js';
+import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
+import { isGitLabURL, getSelfHostingGitLabDomain } from '../GitLab/GitLabURLHelper.js';
+
+import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
   currentZoom: 'Days',
@@ -69,6 +73,17 @@ const handleUpdateIssueByAPI = (state, action) => {
 
 const handleGitURLChange = (props, git_url, selected_labels, selected_assignee) => {
   setURLQuery(props, git_url, selected_labels, selected_assignee);
+
+  if (isGitHubURL(git_url)) {
+    gantt.message({ text: 'Access GitHub.com' });
+  }
+  if (isGitLabURL(git_url)) {
+    gantt.message({ text: 'Access GitLab.com' });
+  }
+  if (getSelfHostingGitLabDomain(git_url) !== null) {
+    gantt.message({ text: 'Access Maybe GitLab.self-host' });
+  }
+
   return git_url;
 }
 
@@ -103,7 +118,7 @@ const setStateFromURLQueryString = (state, props, setValue) => {
   state.git_url = params.get('giturl');
 
   const selected_labels = convertIDNamesStringToList(params.get('labels'));
-  if (selected_labels[0].name !== "" ) {
+  if (selected_labels[0].name !== "") {
     state.selected_labels = selected_labels;
   }
 
