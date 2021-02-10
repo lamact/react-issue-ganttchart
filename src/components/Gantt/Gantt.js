@@ -104,6 +104,17 @@ const setGanttConfig = (gantt) => {
     }
   };
 
+  gantt.templates.rightside_text = function(start, end, task){
+    return task.text;
+  };
+  
+  gantt.templates.task_text=function(start,end,task){
+    return "";
+  };
+  gantt.templates.progress_text = function (start, end, task) {
+    return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
+  };
+  
   gantt.plugins({
     quick_info: true
   });
