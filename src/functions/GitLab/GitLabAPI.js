@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {
   getGitLabAPIURLIssueFilterd,
-  getGitLabAPIURLIssue,
   getGitLabAPIURLLabel,
   getGitLabAPIURLMember,
   getGitabAPIURLIssuebyNumber,
@@ -56,8 +55,8 @@ export const setGitLabMemberListOfRepoFromAPI = async (setLabels, git_url, token
 }
 
 export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url) => {
-  axios.get(getGitLabAPIURLIssue(git_url, token)).then((res) => {
-    res.data.map((issue_info) => {
+  axios.get(getGitabAPIURLIssuebyNumber(git_url, token, removeFirstSharp(gantt_task.id))).then((res) => {
+      const issue_info = res.data;
       if (parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))) {
         const description = updateGitLabDescriptionStringFromGanttTask(issue_info.description, gantt_task);
         const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
@@ -72,11 +71,8 @@ export const updateGitLabIssueFromGanttTask = (gantt_task, token, gantt, git_url
           getGitLabIssuesFromAPI(gantt, git_url);
         });
       }
-      return null;
-    });
   }).catch((err) => {
     gantt.message({ text: 'failed get GitLab issue. check your token.', type: 'error' });
-    getGitLabIssuesFromAPI(gantt, git_url);
   });
   ;
 };

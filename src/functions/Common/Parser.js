@@ -73,24 +73,27 @@ export const replaceDueDateInDescriptionString = (description, write_str) => {
 }
 
 export const getProgressFromDescriptionString = (description) => {
-  if (description == null) {
+  if (description === null) {
     return null;
   }
   let str = description.match(/progress: \d{1}\.\d{1}/);
-  if (str == null) {
-    return 0.1;
+  if (str === null) {
+    str = description.match(/progress: \d{1}/);
+    if (str === null) {
+      return null;
+    } else {
+      str = str[0].match(/\d{1}/)[0];
+    }
+  } else {
+    str = str[0].match(/\d{1}\.\d{1}/)[0];
   }
-  str = str[0].match(/\d{1}\.\d{1}/)[0];
   return parseFloat(str);
 }
 
 export const replaceProgressInDescriptionString = (description, write_float_number) => {
   const progress = getProgressFromDescriptionString(description);
   let write_round_str = Math.round(write_float_number * 10) / 10;
-  if (write_float_number === "1") {
-    write_float_number = "1.0"
-  }
-  if (progress != null) {
+  if (progress !== null) {
     return description.replace(/progress: \d{1}\.\d{1}/, "progress: " + write_round_str);
   } else {
     return "progress: " + write_round_str + "  \n" + description;
@@ -106,13 +109,15 @@ export const getParentFromDescriptionString = (description) => {
     return null;
   }
   str = str[0].match(/\d{1,10}/)[0];
-  return "#" + str;
+  if (str !== "0") {
+    return "#" + str;
+  }
 }
 
 export const replaceParentInDescriptionString = (description, parnet_str) => {
   const parent = getParentFromDescriptionString(description);
   parnet_str = removeFirstSharp(parnet_str);
-  if (parent != null) {
+  if (parent !== null) {
     return description.replace(/parent: #\d{1,10}/, "parent: #" + parnet_str);
   } else {
     return "parent: #" + parnet_str + "  \n" + description;

@@ -23,7 +23,6 @@ const getGitLabAssignee = (issue_info) => {
 export const generateGanttTaskFromGitLab = (issue_info) => {
   const start_date = getStartDateFromDescriptionString(issue_info.description);
   const due_date = new Date(issue_info.due_date).toLocaleDateString("ja-JP");
-
   const gantt_task = {
     id: "#" + issue_info.iid,
     text: issue_info.title,
