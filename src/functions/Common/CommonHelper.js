@@ -17,8 +17,16 @@ export const validVariable = (variable) => {
     return "";
   }
 }
+
 export const isValidIDName = (id_name) => {
   return isValidVariable(id_name) && 'id' in id_name && 'name' in id_name;
+}
+
+export const isValidURL = (url) => {
+  if (!isValidVariable(url)) {
+    return false;
+  } 
+  return /https:\/\//.test(url);
 }
 
 const calculateDuration = (start_date, due_date) => {

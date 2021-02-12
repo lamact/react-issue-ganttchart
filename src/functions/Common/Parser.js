@@ -7,14 +7,14 @@ export const removeFirstSharp = (id_str) => {
   return id_str;
 }
 
-const removeLastSlash = (url) => {
+export const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
   }
   return url;
 }
 
-const removeLastSpace = (url) => {
+export const removeLastSpace = (url) => {
   if (url.length > 1 && / +$/.test(url)) {
     url = url.slice(0, -1);
   }
