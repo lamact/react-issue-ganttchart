@@ -148,7 +148,7 @@ export const convertIDNamesStringToList = (string) => {
       }
     });
   } else {
-    list = [{ id: 0, name: "" }];
+    list = [{ id: 0, name: '' }];
   }
   return list;
 };

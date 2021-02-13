@@ -46,14 +46,14 @@ export const orgRound = (value, base) => {
 };
 
 const calculateDuration = (start_date, due_date) => {
-  const start_date_moment = moment(start_date);
-  const due_date_moment = moment(due_date);
+  const start_date_moment = moment(start_date, 'YYYY-MM-DD');
+  const due_date_moment = moment(due_date, 'YYYY-MM-DD');
   return due_date_moment.diff(start_date_moment, 'days') + 1;
 };
 
 export const calculateDueDate = (start_date_str, duration) => {
   const start_date = new Date(start_date_str);
-  const due_date = moment(start_date)
+  const due_date = moment(start_date, 'YYYY-MM-DD')
     .add(duration - 1, 'd')
     .toDate();
   return due_date.toLocaleDateString('ja-JP');
