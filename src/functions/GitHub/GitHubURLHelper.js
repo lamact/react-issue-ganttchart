@@ -1,9 +1,10 @@
-import { adjustURL } from '../Common/Parser.js';
 import {
   isValidVariable,
   isValidIDName,
   isValidURL,
+  isNumber,
 } from '../Common/CommonHelper.js';
+import { removeFirstSharp } from '../Common/Parser.js';
 
 const GitHubAPIURL = 'https://api.github.com/repos/';
 const GitHubURL = 'https://github.com/';
@@ -44,12 +45,11 @@ export const getGitHubAPIURLIssue = (git_url) => {
   if (!isGitHubURL(git_url)) {
     return null;
   }
-  const url = adjustURL(git_url);
   return (
     GitHubAPIURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/issues'
   );
 };
@@ -58,12 +58,11 @@ export const getGitHubAPIURLIssuebyNumber = (git_url, number) => {
   if (!isGitHubURL(git_url) || !isValidVariable(number)) {
     return null;
   }
-  const url = adjustURL(git_url);
   return (
     GitHubAPIURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/issues/' +
     number
   );
@@ -90,12 +89,11 @@ export const getGitHubAPIURLIssueFilterd = (git_url, labels, assignee) => {
       url_query_str += '&assignee=' + assignee.name;
     }
   }
-  const url = adjustURL(git_url);
   return (
     GitHubAPIURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/issues' +
     url_query_str
   );
@@ -105,12 +103,11 @@ export const getGitHubAPIURLLabel = (git_url) => {
   if (!isGitHubURL(git_url)) {
     return null;
   }
-  const url = adjustURL(git_url);
   return (
     GitHubAPIURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/labels'
   );
 };
@@ -119,12 +116,11 @@ export const getGitHubAPIURLCollaborators = (git_url) => {
   if (!isGitHubURL(git_url)) {
     return null;
   }
-  const url = adjustURL(git_url);
   return (
     GitHubAPIURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/collaborators'
   );
 };
@@ -133,12 +129,18 @@ export const getGitHubURLIssuebyNumber = (git_url, number) => {
   if (!isGitHubURL(git_url) || !isValidVariable(number)) {
     return null;
   }
-  const url = adjustURL(git_url);
+  if (!isNumber(number)) {
+    console.log(number)
+    number = removeFirstSharp(number);
+  }
+  if (number <= 0) {
+    return null;
+  }
   return (
     GitHubURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/issues/' +
     number
   );
@@ -148,12 +150,11 @@ export const getGitHubURLNewIssueWithTemplate = (git_url) => {
   if (!isGitHubURL(git_url)) {
     return null;
   }
-  const url = adjustURL(git_url);
   return (
     GitHubURL +
-    getGitHubNameSpaceFromGitURL(url) +
+    getGitHubNameSpaceFromGitURL(git_url) +
     '/' +
-    getGitHubProjectFromGitURL(url) +
+    getGitHubProjectFromGitURL(git_url) +
     '/issues/new?assignees=&labels=&title=&body='
   );
 };

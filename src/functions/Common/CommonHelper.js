@@ -29,6 +29,13 @@ export const isValidURL = (url) => {
   return /https:\/\//.test(url);
 }
 
+export const isNumber = (n) => {
+  if ( typeof(n) === 'number' && Number.isFinite(n) ) {
+    return true;
+  }
+  return false;
+};
+
 const calculateDuration = (start_date, due_date) => {
   const start_date_moment = moment(start_date);
   const due_date_moment = moment(due_date);

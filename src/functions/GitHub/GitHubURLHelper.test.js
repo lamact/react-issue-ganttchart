@@ -7,6 +7,8 @@ import {
   getGitHubAPIURLIssueFilterd,
   getGitHubAPIURLLabel,
   getGitHubAPIURLCollaborators,
+  getGitHubURLIssuebyNumber,
+  getGitHubURLNewIssueWithTemplate,
 } from './GitHubURLHelper';
 
 describe('isGitHubURL', () => {
@@ -182,16 +184,24 @@ describe('getGitHubAPIURLIssueFilterd', () => {
         [{ id: 1, name: 'todo' }],
         { id: 1, name: 'yhzz' }
       )
-    ).toBe("https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,&assignee=yhzz");
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,&assignee=yhzz'
+    );
   });
   test('true', () => {
     expect(
       getGitHubAPIURLIssueFilterd(
         'https://github.com/lamact/react-issue-ganttchart/',
-        [{ id: 1, name: 'todo' },{ id: 2, name: 'doing' },{ id: 3, name: 'done' }],
+        [
+          { id: 1, name: 'todo' },
+          { id: 2, name: 'doing' },
+          { id: 3, name: 'done' },
+        ],
         { id: 1, name: 'yhzz' }
       )
-    ).toBe("https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,doing,done,&assignee=yhzz");
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,doing,done,&assignee=yhzz'
+    );
   });
   test('true', () => {
     expect(
@@ -200,7 +210,9 @@ describe('getGitHubAPIURLIssueFilterd', () => {
         [{ id: 1, name: 'todo' }],
         []
       )
-    ).toBe("https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,");
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,'
+    );
   });
   test('true', () => {
     expect(
@@ -209,7 +221,9 @@ describe('getGitHubAPIURLIssueFilterd', () => {
         [],
         { id: 1, name: 'yhzz' }
       )
-    ).toBe("https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=&assignee=yhzz");
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=&assignee=yhzz'
+    );
   });
   test('true', () => {
     expect(
@@ -218,7 +232,9 @@ describe('getGitHubAPIURLIssueFilterd', () => {
         [{ id: 1, name: 'todo' }],
         []
       )
-    ).toBe("https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,");
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,'
+    );
   });
   test('null', () => {
     expect(
@@ -229,17 +245,16 @@ describe('getGitHubAPIURLIssueFilterd', () => {
   });
 });
 
-
 describe('getGitHubAPIURLLabel', () => {
   test('true', () => {
     expect(
       getGitHubAPIURLLabel('https://github.com/lamact/react-issue-ganttchart/')
-    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/collaborators');
+    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/labels');
   });
   test('false', () => {
     expect(
       getGitHubAPIURLLabel('https://github.com/lamact/react-issue-ganttchart/')
-    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/collaborators');
+    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/labels');
   });
   test('null', () => {
     expect(
@@ -248,45 +263,75 @@ describe('getGitHubAPIURLLabel', () => {
   });
 });
 
-
 describe('getGitHubAPIURLCollaborators', () => {
   test('true', () => {
     expect(
-      getGitHubAPIURLCollaborators('https://github.com/lamact/react-issue-ganttchart/')
-    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/labels');
+      getGitHubAPIURLCollaborators(
+        'https://github.com/lamact/react-issue-ganttchart/'
+      )
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/collaborators'
+    );
   });
   test('false', () => {
     expect(
-      getGitHubAPIURLCollaborators('https://github.com/lamact/react-issue-ganttchart/')
-    ).toBe('https://api.github.com/repos/lamact/react-issue-ganttchart/labels');
+      getGitHubAPIURLCollaborators(
+        'https://github.com/lamact/react-issue-ganttchart/'
+      )
+    ).toBe(
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/collaborators'
+    );
   });
   test('null', () => {
-    expect(
-      getGitHubAPIURLCollaborators('github.com/lamact')
-    ).toBe(null);
+    expect(getGitHubAPIURLCollaborators('github.com/lamact')).toBe(null);
   });
 });
-
 
 describe('getGitHubURLIssuebyNumber', () => {
   test('true', () => {
     expect(
-      getGitHubURLIssuebyNumber('https://github.com/lamact/react-issue-ganttchart/',15)
-    ).toBe('https://github.com/lamact/react-issue-ganttchart/15');
+      getGitHubURLIssuebyNumber(
+        'https://github.com/lamact/react-issue-ganttchart/',
+        15
+      )
+    ).toBe('https://github.com/lamact/react-issue-ganttchart/issues/15');
   });
   test('null', () => {
     expect(
-      getGitHubURLIssuebyNumber('https://github.com/lamact/react-issue-ganttchart/',"#15")
+      getGitHubURLIssuebyNumber(
+        'https://github.com/lamact/react-issue-ganttchart/',
+        '#12'
+      )
+    ).toBe("https://github.com/lamact/react-issue-ganttchart/issues/12");
+  });
+  test('null', () => {
+    expect(
+      getGitHubURLIssuebyNumber(
+        'https://github.com/lamact/react-issue-ganttchart/',
+        0
+      )
     ).toBe(null);
   });
   test('null', () => {
     expect(
-      getGitHubURLIssuebyNumber('https://github.com/lamact/react-issue-ganttchart/',0)
+      getGitHubURLIssuebyNumber('github.com/lamact/react-issue-ganttchart/', 2)
     ).toBe(null);
+  });
+});
+
+describe('getGitHubURLNewIssueWithTemplate', () => {
+  test('true', () => {
+    expect(
+      getGitHubURLNewIssueWithTemplate(
+        'https://github.com/lamact/react-issue-ganttchart/'
+      )
+    ).toBe(
+      'https://github.com/lamact/react-issue-ganttchart/issues/new?assignees=&labels=&title=&body='
+    );
   });
   test('null', () => {
     expect(
-      getGitHubURLIssuebyNumber('github.com/lamact/react-issue-ganttchart/',2)
+      getGitHubURLIssuebyNumber('github.com/lamact/react-issue-ganttchart/')
     ).toBe(null);
   });
 });

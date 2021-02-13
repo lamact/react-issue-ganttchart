@@ -1,12 +1,10 @@
 import {
-  getStartDateFromDescriptionString,
-  replaceStartDateInDescriptionString,
   getDueDateFromDescriptionString,
-  replaceDueDateInDescriptionString,
   getProgressFromDescriptionString,
-  replaceProgressInDescriptionString,
   getParentFromDescriptionString,
-  replaceParentInDescriptionString,
+  getDateFromDescriptionYaml,
+  getNumberFromDescriptionYaml,
+  replacePropertyInDescriptionString,
 } from '../Common/Parser.js';
 import {
   calculateDueDate,
@@ -14,43 +12,54 @@ import {
   getGanttDueDate,
   getGanttDuration,
 } from '../Common/CommonHelper.js';
+import yaml from 'js-yaml';
 
 const getGitHubAssignee = (issue_info) => {
   if (issue_info.assignee !== null) {
     return issue_info.assignee.login;
   }
-  return ""
-}
+  return '';
+};
 
 export const generateGanttTaskFromGitHub = (description, issue_info) => {
-  const start_date = getStartDateFromDescriptionString(description);
-  const due_date = getDueDateFromDescriptionString(description);
+  const start_date = getDateFromDescriptionYaml(description, 'start_date');
+  const due_date = getDateFromDescriptionYaml(description, 'due_date');
 
   const gantt_task = {
-    id: "#" + issue_info.number,
+    id: '#' + issue_info.number,
     text: issue_info.title,
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
     due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     duration: getGanttDuration(start_date, due_date),
-    progress: getProgressFromDescriptionString(description),
+    progress: getNumberFromDescriptionYaml(description, 'progress'),
     assignee: getGitHubAssignee(issue_info),
-    parent: getParentFromDescriptionString(description),
+    parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     description: description,
-  }
+  };
   return gantt_task;
-}
+};
 
-export const updateGitHubDescriptionStringFromGanttTask = (description, gantt_task) => {
-  const start_date_str = new Date(gantt_task.start_date).toLocaleDateString("ja-JP");
-  const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
-  if ("parent" in gantt_task) {
-    description = replaceParentInDescriptionString(description, "#"+gantt_task.parent);
-  } else {
-    description = replaceParentInDescriptionString(description, "#0");
+export const updateGitHubDescriptionStringFromGanttTask = (
+  description,
+  gantt_task
+) => {
+  const start_date_str = new Date(gantt_task.start_date).toLocaleDateString(
+    'ja-JP'
+  );
+  const due_date_str = new Date(gantt_task.due_date).toLocaleDateString(
+    'ja-JP'
+  );
+  console.log(start_date_str);
+  const task = {
+    start_date: start_date_str,
+    due_date: due_date_str,
+    progress: gantt_task.progress,
+  };
+  console.log(yaml.dump(task));
+
+  if ('parent' in gantt_task) {
+    task.parent = gantt_task.parent;
   }
-  description = replaceProgressInDescriptionString(description, gantt_task.progress);
-  description = replaceDueDateInDescriptionString(description, due_date_str);
-  description = replaceStartDateInDescriptionString(description, start_date_str);
-
+  description = replacePropertyInDescriptionString(description, task);
   return description;
-}
+};

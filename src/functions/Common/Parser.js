@@ -1,141 +1,131 @@
-import { isValidVariable, isValidIDName } from './CommonHelper.js';
+import { isValidVariable, isValidIDName, isNumber } from './CommonHelper.js';
+import yaml from 'js-yaml';
+import { gantt } from 'dhtmlx-gantt';
 
 export const removeFirstSharp = (id_str) => {
   if (id_str.length > 1 && /^#/.test(id_str)) {
     id_str = id_str.substring(1);
   }
   return id_str;
-}
+};
 
 export const removeLastSlash = (url) => {
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
   }
   return url;
-}
+};
 
 export const removeLastSpace = (url) => {
   if (url.length > 1 && / +$/.test(url)) {
     url = url.slice(0, -1);
   }
   return url;
-}
+};
 
-export const adjustURL = (git_url) => {
-  let url = git_url;
-  url = removeLastSlash(url);
-  url = removeLastSpace(url);
-  url = removeLastSlash(url);
-  url = removeLastSpace(url);
-  return url;
-}
-
-export const getStartDateFromDescriptionString = (description) => {
-  if (description == null) {
-    return null;
-  }
-  let str = description.match(/start_date: \d{4}\/\d{1,2}\/\d{1,2}/);
-  if (str == null) {
-    return null;
-  }
-  str = str[0].match(/\d{4}\/\d{1,2}\/\d{1,2}/)[0];
-  return new Date(str);
-}
-
-export const replaceStartDateInDescriptionString = (description, write_str) => {
-  const start_date = getStartDateFromDescriptionString(description);
-  if (start_date != null) {
-    return description.replace(/start_date: \d{4}\/\d{1,2}\/\d{1,2}/, "start_date: " + write_str);
-  } else {
-    return "start_date: " + write_str + "  \n" + description;
-  }
-}
-
-export const getDueDateFromDescriptionString = (description) => {
-  if (description == null) {
-    return null;
-  }
-  let str = description.match(/due_date: \d{4}\/\d{1,2}\/\d{1,2}/);
-  if (str == null) {
-    return null;
-  }
-  str = str[0].match(/\d{4}\/\d{1,2}\/\d{1,2}/)[0];
-  return new Date(str);
-}
-
-export const replaceDueDateInDescriptionString = (description, write_str) => {
-  const due_date = getDueDateFromDescriptionString(description);
-  if (due_date != null) {
-    return description.replace(/due_date: \d{4}\/\d{1,2}\/\d{1,2}/, "due_date: " + write_str);
-  } else {
-    return "due_date: " + write_str + "  \n" + description;
-  }
-}
-
-export const getProgressFromDescriptionString = (description) => {
+export const parseYamlSectionFromDescription = (description) => {
   if (description === null) {
     return null;
   }
-  let str = description.match(/progress: \d{1}\.\d{1}/);
-  if (str === null) {
-    str = description.match(/progress: \d{1}/);
-    if (str === null) {
-      return null;
-    } else {
-      str = str[0].match(/\d{1}/)[0];
-    }
-  } else {
-    str = str[0].match(/\d{1}\.\d{1}/)[0];
-  }
-  return parseFloat(str);
-}
-
-export const replaceProgressInDescriptionString = (description, write_float_number) => {
-  const progress = getProgressFromDescriptionString(description);
-  let write_round_str = Math.round(write_float_number * 10) / 10;
-  if (progress !== null) {
-    return description.replace(/progress: \d{1}\.\d{1}/, "progress: " + write_round_str);
-  } else {
-    return "progress: " + write_round_str + "  \n" + description;
-  }
-}
-
-export const getParentFromDescriptionString = (description) => {
-  if (description == null) {
+  let str = description.split(/^```yaml/);
+  if (str === null || str.length < 2) {
     return null;
   }
-  let str = description.match(/parent: #\d{1,10}/);
-  if (str == null) {
+  str = str[1].split(/```/);
+  if (str === null || str.length < 2) {
     return null;
   }
-  str = str[0].match(/\d{1,10}/)[0];
-  if (str !== "0") {
-    return "#" + str;
-  }
+  return str[0];
 }
 
-export const replaceParentInDescriptionString = (description, parnet_str) => {
-  const parent = getParentFromDescriptionString(description);
-  parnet_str = removeFirstSharp(parnet_str);
-  if (parent !== null) {
-    return description.replace(/parent: #\d{1,10}/, "parent: #" + parnet_str);
-  } else {
-    return "parent: #" + parnet_str + "  \n" + description;
+export const parseYamlStructFromDescription = (description) => {
+  if (description === null) {
+    return null;
   }
-}
+  const yaml_section = parseYamlSectionFromDescription(description);
+  if (yaml_section === null) {
+    return null;
+  }
+
+  let yaml_struct = null;
+  try {
+    yaml_struct = yaml.load(yaml_section);
+  } catch (e) {
+    gantt.message({ text: 'failed load yaml' + yaml_section, type: 'error' });
+  }
+  return yaml_struct;
+};
+
+export const getStringFromDescriptionYaml = (description, column_name) => {
+  if (description === null) {
+    return null;
+  }
+  const yaml_struct = parseYamlStructFromDescription(description);
+  if (yaml_struct === null || !(column_name in yaml_struct)) {
+    return null;
+  }
+  const string = yaml_struct[column_name];
+  if (typeof string !== 'string') {
+    return null;
+  }
+  return removeLastSpace(removeLastSpace(string));
+};
+
+export const getNumberFromDescriptionYaml = (description, column_name) => {
+  if (description === null) {
+    return null;
+  }
+  const yaml_struct = parseYamlStructFromDescription(description);
+  if (yaml_struct === null || !(column_name in yaml_struct)) {
+    return null;
+  }
+  const number = yaml_struct[column_name];
+  return number;
+};
+
+export const getDateFromDescriptionYaml = (description, column_name) => {
+  if (description === null) {
+    return null;
+  }
+  const date = getStringFromDescriptionYaml(description, column_name);
+  if (!/\d{4}\/\d{1,2}\/\d{1,2}/.test(date)) {
+    return null;
+  }
+  return new Date(date);
+};
+
+export const replacePropertyInDescriptionString = (description, task) => {
+  if (description === null || task === null) {
+    return null;
+  }
+  const task_section = yaml.dump(task);
+  let str = description.split(/^```yaml/);
+  if (str === null || str.length < 2) {
+    return task_section + description;
+  }
+  const first_section = str[0];
+  console.log(first_section)
+  str = str[1].split(/```/);
+  if (str === null || str.length < 2) {
+    return null;
+  }
+  const end_section = str[1];
+  return first_section +`\`\`\`yaml
+` + task_section +`\`\`\`` + end_section;
+} 
 
 export const convertIDNameListToString = (list) => {
-  let string = "";
+  let string = '';
   if (isValidVariable(list)) {
     list.map((info) => {
       if (isValidIDName(info)) {
-        string += info.id + ":" + info.name + ","
+        string += info.id + ':' + info.name + ',';
       }
       return null;
     });
   }
   return string;
-}
+};
 
 export const convertIDNamesStringToList = (string) => {
   let list = [];
@@ -147,12 +137,12 @@ export const convertIDNamesStringToList = (string) => {
         const label = {
           id: info[0],
           name: info[1],
-        }
-        list.push(label)
+        };
+        list.push(label);
       }
     });
   } else {
-    list = [{ id: 0, name: "" }];
+    list = [{ id: 0, name: '' }];
   }
   return list;
-}
+};
