@@ -1,6 +1,7 @@
 import {
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
+  removeFirstSharp,
   replacePropertyInDescriptionString,
 } from '../Common/Parser.js';
 import {
@@ -40,17 +41,20 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   description,
   gantt_task
 ) => {
-  const start_date_str = new Date(gantt_task.start_date).toLocaleDateString(
-    'ja-JP'
-  );
-  const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
+  const start_date_str = new Date(gantt_task.start_date)
+    .toLocaleDateString()
+    .replace(/\-/g, '/');
+  const due_date_str = calculateDueDate(
+    start_date_str,
+    gantt_task.duration
+  ).replace(/\-/g, '/');
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,
     progress: orgRound(gantt_task.progress, 0.01),
   };
   if ('parent' in gantt_task) {
-    task.parent = gantt_task.parent;
+    task.parent = parseInt(removeFirstSharp(gantt_task.parent));
   }
   description = replacePropertyInDescriptionString(description, task);
   return description;

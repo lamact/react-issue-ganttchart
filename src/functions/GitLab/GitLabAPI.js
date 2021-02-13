@@ -91,10 +91,11 @@ export const updateGitLabIssueFromGanttTask = (
       if (
         parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))
       ) {
-        const description = updateGitLabDescriptionStringFromGanttTask(
+        let description = updateGitLabDescriptionStringFromGanttTask(
           issue_info.description,
           gantt_task
         );
+        description = encodeURIComponent(description);
         const start_date_str = new Date(
           gantt_task.start_date
         ).toLocaleDateString('ja-JP');

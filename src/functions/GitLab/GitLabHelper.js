@@ -12,8 +12,10 @@ import {
 } from '../Common/CommonHelper.js';
 
 const getGitLabAssignee = (issue_info) => {
-  if (issue_info.assignee !== null) {
-    return issue_info.assignee.name;
+  if ('assignee' in issue_info) {
+    if ('name' in issue_info.assignee) {
+      return issue_info.assignee.name;
+    }
   }
   return '';
 };
@@ -32,9 +34,14 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     duration: getGanttDuration(start_date, due_date),
     progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
     assignee: getGitLabAssignee(issue_info),
-    parent: getNumberFromDescriptionYaml(issue_info.description, 'parent'),
     description: issue_info.description,
   };
+  let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  if (parent !== null) {
+    if (parent !== 0) {
+      gantt_task.parent = '#' + parent;
+    }
+  }
   return gantt_task;
 };
 
@@ -42,16 +49,15 @@ export const updateGitLabDescriptionStringFromGanttTask = (
   description,
   gantt_task
 ) => {
-  const start_date_str = new Date(gantt_task.start_date).toLocaleDateString(
-    'ja-JP'
-  ); 
+  const start_date_str = new Date(gantt_task.start_date)
+    .toLocaleDateString('ja-JP')
+    .replace(/\-/g, '/');
   const task = {
     start_date: start_date_str,
     progress: orgRound(gantt_task.progress, 0.01),
   };
   if ('parent' in gantt_task) {
-    task.parent = gantt_task.parent;
+    task.parent = parseInt(removeFirstSharp(gantt_task.parent));
   }
-  description = replacePropertyInDescriptionString(description, task);
-  return encodeURIComponent(description);
+  return replacePropertyInDescriptionString(description, task);
 };

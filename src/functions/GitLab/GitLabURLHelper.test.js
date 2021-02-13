@@ -1,4 +1,4 @@
-import { isGitLabURL } from "./GitLabURLHelper";
+import { isGitLabURL } from './GitLabURLHelper';
 
 describe('isGitLabURL', () => {
   test('true', () => {

@@ -17,8 +17,10 @@ const Toolbar = (props) => {
         required
         placeholder="https://github.com/lamact/react-issue-ganttchart"
         label="Git Repository URL"
-        style={{ width: "25%", verticalAlign: "middle" }}
-        onChange={(e) => { props.onGitURLChange(e.target.value) }}
+        style={{ width: '25%', verticalAlign: 'middle' }}
+        onChange={(e) => {
+          props.onGitURLChange(e.target.value);
+        }}
         inputRef={props.register}
         name="git_url"
       />
@@ -27,8 +29,10 @@ const Toolbar = (props) => {
         type="password"
         placeholder="Access Token"
         label="Access Token"
-        style={{ width: "10%", verticalAlign: "middle" }}
-        onChange={(e) => { props.onTokenChange(e.target.value) }}
+        style={{ width: '10%', verticalAlign: 'middle' }}
+        onChange={(e) => {
+          props.onTokenChange(e.target.value);
+        }}
         inputRef={props.register}
         name="token"
       />
@@ -36,8 +40,12 @@ const Toolbar = (props) => {
         className={classes.root}
         options={props.labels}
         selectedValues={props.selected_labels}
-        onSelect={(options) => { props.onSelectedLabelChange(options) }}
-        onRemove={(options) => { props.onSelectedLabelChange(options) }}
+        onSelect={(options) => {
+          props.onSelectedLabelChange(options);
+        }}
+        onRemove={(options) => {
+          props.onSelectedLabelChange(options);
+        }}
         displayValue="name"
         style={selector_style}
         placeholder="filter by labels"
@@ -51,53 +59,75 @@ const Toolbar = (props) => {
         options={props.member_list}
         getOptionLabel={(option) => option.name}
         value={props.selected_assignee}
-        onChange={(e, assignee) => { props.onSelectedAssigneeChange(assignee) }}
-        style={{ width: "15%", verticalAlign: "middle", display: "inline-block", marginRight: "15px" }}
-        renderInput={(params) =>
+        onChange={(e, assignee) => {
+          props.onSelectedAssigneeChange(assignee);
+        }}
+        style={{
+          width: '15%',
+          verticalAlign: 'middle',
+          display: 'inline-block',
+          marginRight: '15px',
+        }}
+        renderInput={(params) => (
           <TextField
             {...params}
             className={classes.root}
             label="Assignee"
             variant="standard"
-          />}
+          />
+        )}
       />
-      <ButtonGroup size="small" style={{ height: "34px" }} >
-        <Button onClick={(e) => { props.onZoomChange("Weeks") }}>Weeks</Button>
-        <Button onClick={(e) => { props.onZoomChange("Days") }}>Days</Button>
+      <ButtonGroup size="small" style={{ height: '34px' }}>
+        <Button
+          onClick={(e) => {
+            props.onZoomChange('Weeks');
+          }}
+        >
+          Weeks
+        </Button>
+        <Button
+          onClick={(e) => {
+            props.onZoomChange('Days');
+          }}
+        >
+          Days
+        </Button>
       </ButtonGroup>
-      <IconButton color="primary" style={{ verticalAlign: "middle" }}>
-        <CachedIcon onClick={(e) => { props.onUpdateClick() }} />
+      <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
+        <CachedIcon
+          onClick={(e) => {
+            props.onUpdateClick();
+          }}
+        />
       </IconButton>
     </form>
   );
-}
+};
 
 const styles = (theme) => ({
   root: {
     '& > *': {
-      fontSize: "13px",
-      marginRight: "4px"
+      fontSize: '13px',
+      marginRight: '4px',
     },
   },
 });
 
-
 const selector_style = {
   multiselectContainer: {
-    width: "30%",
-    display: "inline-block",
-    verticalAlign: "middle",
-    padding: "4px",
-    alignItems: "flex-end",
+    width: '30%',
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    padding: '4px',
+    alignItems: 'flex-end',
   },
   chips: {
-    background: "light blue",
-    fontSize: "15px",
+    background: 'light blue',
+    fontSize: '15px',
   },
   searchBox: {
-    border: "none",
+    border: 'none',
   },
-
-}
+};
 
 export default withStyles(styles)(Toolbar);

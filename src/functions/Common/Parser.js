@@ -27,6 +27,9 @@ export const parseYamlSectionFromDescription = (description) => {
   if (description === null) {
     return null;
   }
+  if (typeof description !== 'string') {
+    return null;
+  }
   let str = description.split(/^```yaml/);
   if (str === null || str.length < 2) {
     return null;
@@ -121,7 +124,7 @@ export const convertIDNameListToString = (list) => {
   let string = '';
   if (isValidVariable(list)) {
     list.map((info) => {
-      if (isValidIDName(info)) {
+      if (isValidIDName(info) && isValidVariable(info.id)) {
         string += info.id + ':' + info.name + ',';
       }
       return null;
@@ -145,7 +148,7 @@ export const convertIDNamesStringToList = (string) => {
       }
     });
   } else {
-    list = [{ id: 0, name: '' }];
+    list = [{ id: 0, name: "" }];
   }
   return list;
 };
