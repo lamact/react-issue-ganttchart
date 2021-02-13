@@ -15,6 +15,9 @@ export const getSelfHostingGitLabDomain = (git_url) => {
   if (isGitHubURL(git_url) || isGitLabURL(git_url)) {
     return null;
   }
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 3) {
     return split_git_url[2];
@@ -23,6 +26,9 @@ export const getSelfHostingGitLabDomain = (git_url) => {
 };
 
 const switchGitLabDomain = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   let gitlab_domain = null;
   const self_hosting_gitlab_domain = getSelfHostingGitLabDomain(git_url);
   if (self_hosting_gitlab_domain !== null) {
@@ -35,14 +41,23 @@ const switchGitLabDomain = (git_url) => {
 };
 
 const getGitLabURL = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   return switchGitLabDomain(git_url);
 };
 
 const getGitLabAPIURL = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   return switchGitLabDomain(git_url) + 'api/v4/projects/';
 };
 
 const getGitLabNameSpaceFromGitURL = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 5) {
     return split_git_url[3];
@@ -50,6 +65,9 @@ const getGitLabNameSpaceFromGitURL = (git_url) => {
 };
 
 const getGitLabProjectFromGitURL = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 5) {
     return split_git_url[4];
@@ -75,6 +93,9 @@ export const getGitLabAPIURLIssueFilterd = (
   labels,
   assignee
 ) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   let post_fix_str = postFixToken(token);
   if (isValidVariable(labels)) {
     post_fix_str += '&labels=';
@@ -102,6 +123,9 @@ export const getGitLabAPIURLIssueFilterd = (
 };
 
 export const getGitabAPIURLIssuebyNumber = (git_url, token, number) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
@@ -115,6 +139,9 @@ export const getGitabAPIURLIssuebyNumber = (git_url, token, number) => {
 };
 
 export const getGitLabAPIURLLabel = (git_url, token) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
@@ -127,6 +154,9 @@ export const getGitLabAPIURLLabel = (git_url, token) => {
 };
 
 export const getGitLabAPIURLMember = (git_url, token) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
@@ -139,6 +169,9 @@ export const getGitLabAPIURLMember = (git_url, token) => {
 };
 
 export const getGitLabURLIssuebyNumber = (git_url, number) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   return (
     getGitLabURL(git_url) +
     getGitLabNameSpaceFromGitURL(git_url) +
@@ -150,6 +183,9 @@ export const getGitLabURLIssuebyNumber = (git_url, number) => {
 };
 
 export const getGitLabURLNewIssueWithTemplate = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
   return (
     getGitLabURL(git_url) +
     getGitLabNameSpaceFromGitURL(git_url) +

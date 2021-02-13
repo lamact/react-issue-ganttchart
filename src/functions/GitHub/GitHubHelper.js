@@ -8,6 +8,7 @@ import {
   getGanttStartDate,
   getGanttDueDate,
   getGanttDuration,
+  orgRound,
 } from '../Common/CommonHelper.js';
 
 const getGitHubAssignee = (issue_info) => {
@@ -39,15 +40,14 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   description,
   gantt_task
 ) => {
-  console.log(gantt_task.due_date)
   const start_date_str = new Date(gantt_task.start_date).toLocaleDateString(
     'ja-JP'
-  ); 
+  );
   const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,
-    progress: gantt_task.progress,
+    progress: orgRound(gantt_task.progress, 0.01),
   };
   if ('parent' in gantt_task) {
     task.parent = gantt_task.parent;

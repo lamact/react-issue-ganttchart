@@ -12,7 +12,7 @@ import {
   updateGitLabDescriptionStringFromGanttTask,
 } from './GitLabHelper.js';
 import { calculateDueDate } from '../Common/CommonHelper.js';
-import { removeFirstSharp } from '../Common/Parser.js';
+import { removeFirstSharp, replacePropertyInDescriptionString } from '../Common/Parser.js';
 
 export const getGitLabIssuesFromAPI = async (
   gantt_parse,
@@ -142,14 +142,13 @@ export const openGitLabIssueAtBrowser = (id, git_url) => {
 };
 
 export const openGitLabNewIssueAtBrowser = (gantt_task, git_url) => {
-  let body = '';
-  body += 'start_date: ' + new Date().toLocaleDateString('ja-JP') + '  \n';
-  body += 'progress: 0.1  \n';
-  if ('parent' in gantt_task) {
-    body += 'parent: ' + gantt_task.parent + '  \n';
-  } else {
-    body += 'parent: #0  \n';
-  }
+  const start_date_str = new Date().toLocaleDateString('ja-JP');
+  const task = {
+    start_date: start_date_str,
+    progress: 0.1,
+    parent: parseInt(removeFirstSharp(gantt_task.parent)),
+  };
+  let body = replacePropertyInDescriptionString('', task);
   body = encodeURIComponent(body);
   window.open(getGitLabURLNewIssueWithTemplate(git_url) + body, '_blank');
 };

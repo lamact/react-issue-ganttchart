@@ -130,7 +130,6 @@ export const getGitHubURLIssuebyNumber = (git_url, number) => {
     return null;
   }
   if (!isNumber(number)) {
-    console.log(number)
     number = removeFirstSharp(number);
   }
   if (number <= 0) {

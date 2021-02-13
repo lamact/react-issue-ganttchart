@@ -72,18 +72,17 @@ const handleUpdateIssueByAPI = (state, action) => {
 }
 
 const handleGitURLChange = (props, git_url, selected_labels, selected_assignee) => {
-  setURLQuery(props, git_url, selected_labels, selected_assignee);
-
   if (isGitHubURL(git_url)) {
     gantt.message({ text: 'Access GitHub.com' });
-  }
-  if (isGitLabURL(git_url)) {
+  }else if (isGitLabURL(git_url)) {
     gantt.message({ text: 'Access GitLab.com' });
-  }
-  if (getSelfHostingGitLabDomain(git_url) !== null) {
+  }else if (getSelfHostingGitLabDomain(git_url) !== null) {
     gantt.message({ text: 'Access Maybe GitLab.self-host' });
+  } else {
+    gantt.message({ text: 'Not a valid URL.', type: 'error' });
+    return null;
   }
-
+  setURLQuery(props, git_url, selected_labels, selected_assignee);
   return git_url;
 }
 

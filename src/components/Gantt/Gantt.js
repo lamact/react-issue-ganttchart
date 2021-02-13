@@ -83,6 +83,7 @@ const setGanttConfig = (gantt) => {
   gantt.config.keep_grid_width = true;
   gantt.config.grid_resize = true;
   gantt.config.open_tree_initially = true;
+  gantt.config.fit_tasks = true; 
 
   gantt.config.sort = true;
 
