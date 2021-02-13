@@ -42,7 +42,7 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   gantt_task
 ) => {
   const start_date_str = new Date(gantt_task.start_date)
-    .toLocaleDateString()
+    .toLocaleDateString('ja-JP')
     .replace(/\-/g, '/');
   const due_date_str = calculateDueDate(
     start_date_str,

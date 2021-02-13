@@ -97,7 +97,7 @@ const setGanttConfig = (gantt) => {
   ];
 
   gantt.templates.timeline_cell_class = function (item, date) {
-    if (date.toLocaleDateString() === new Date().toLocaleDateString()) {
+    if (date.toLocaleDateString('ja-JP') === new Date().toLocaleDateString('ja-JP')) {
       return "today";
     }
     if (date.getDay() === 0 || date.getDay() === 6) {
