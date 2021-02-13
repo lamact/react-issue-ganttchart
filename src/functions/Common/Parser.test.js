@@ -120,4 +120,9 @@ describe('replacePropertyInDescriptionString', () => {
       replacePropertyInDescriptionString(success_yaml, chenged_task)
     ).toBe(success_changed_yaml);
   });
+  test('start_date', () => {
+    expect(
+      replacePropertyInDescriptionString(success_changed_yaml, chenged_task)
+    ).toBe(success_changed_yaml);
+  });
 });

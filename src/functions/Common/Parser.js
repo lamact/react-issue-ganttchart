@@ -103,14 +103,12 @@ export const replacePropertyInDescriptionString = (description, task) => {
     `\`\`\`yaml
 ` +
     task_section +
-    `\`\`\`
-`;
+    `\`\`\``;
   let str = description.split(/^```yaml/);
   if (str === null || str.length < 2) {
     return task_section + description;
   }
   const first_section = str[0];
-  console.log(first_section);
   str = str[1].split(/```/);
   if (str === null || str.length < 2) {
     return null;

@@ -11,12 +11,11 @@ import {
   generateGanttTaskFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
 } from './GitHubHelper.js';
-import { updateGanttIssue, isValidVariable } from '../Common/CommonHelper.js';
+import { isValidVariable } from '../Common/CommonHelper.js';
 import {
   removeFirstSharp,
   replacePropertyInDescriptionString,
 } from '../Common/Parser.js';
-import { BorderStyleSharp } from '@material-ui/icons';
 
 export const getGitHubIssuesFromAPI = async (
   gantt_parse,

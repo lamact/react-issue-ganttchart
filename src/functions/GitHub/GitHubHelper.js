@@ -1,7 +1,4 @@
 import {
-  getDueDateFromDescriptionString,
-  getProgressFromDescriptionString,
-  getParentFromDescriptionString,
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
   replacePropertyInDescriptionString,
@@ -12,8 +9,6 @@ import {
   getGanttDueDate,
   getGanttDuration,
 } from '../Common/CommonHelper.js';
-import yaml from 'js-yaml';
-import { gantt } from 'dhtmlx-gantt';
 
 const getGitHubAssignee = (issue_info) => {
   if (issue_info.assignee !== null) {

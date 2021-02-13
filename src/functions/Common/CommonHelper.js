@@ -77,11 +77,3 @@ export const getGanttDuration = (start_date, due_date) => {
   }
   return duration;
 }
-
-export const updateGanttIssue = (issue, gantt_parse) => {
-  let data = [];
-  let links = [];
-  data.push(issue);
-  data = { data: data, links: links }
-  gantt_parse(data);
-} 

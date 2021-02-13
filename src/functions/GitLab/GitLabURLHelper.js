@@ -1,7 +1,13 @@
-import { isValidVariable, isValidIDName } from '../Common/CommonHelper.js';
+import { isValidVariable, isValidIDName, isValidURL } from '../Common/CommonHelper.js';
 import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
 
 export const isGitLabURL = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return false;
+  }
+  if (git_url.split('/').length < 5) {
+    return false;
+  }
   return /gitlab\.com/.test(git_url);
 };
 
@@ -71,7 +77,7 @@ export const getGitLabAPIURLIssueFilterd = (
 ) => {
   let post_fix_str = postFixToken(token);
   if (isValidVariable(labels)) {
-    post_fix_str += 'labels=';
+    post_fix_str += '&labels=';
     labels.map((label) => {
       if (isValidIDName(label)) {
         post_fix_str += label.name + ',';
