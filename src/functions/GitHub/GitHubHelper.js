@@ -13,6 +13,7 @@ import {
   getGanttDuration,
 } from '../Common/CommonHelper.js';
 import yaml from 'js-yaml';
+import { gantt } from 'dhtmlx-gantt';
 
 const getGitHubAssignee = (issue_info) => {
   if (issue_info.assignee !== null) {
@@ -43,12 +44,11 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   description,
   gantt_task
 ) => {
+  console.log(gantt_task.due_date)
   const start_date_str = new Date(gantt_task.start_date).toLocaleDateString(
     'ja-JP'
-  );
-  const due_date_str = new Date(gantt_task.due_date).toLocaleDateString(
-    'ja-JP'
-  );
+  ); 
+  const due_date_str = calculateDueDate(start_date_str, gantt_task.duration);
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,
