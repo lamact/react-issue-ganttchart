@@ -49,14 +49,11 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   const due_date_str = new Date(gantt_task.due_date).toLocaleDateString(
     'ja-JP'
   );
-  console.log(start_date_str);
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,
     progress: gantt_task.progress,
   };
-  console.log(yaml.dump(task));
-
   if ('parent' in gantt_task) {
     task.parent = gantt_task.parent;
   }

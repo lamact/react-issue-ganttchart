@@ -12,7 +12,11 @@ import {
   updateGitHubDescriptionStringFromGanttTask,
 } from './GitHubHelper.js';
 import { updateGanttIssue, isValidVariable } from '../Common/CommonHelper.js';
-import { removeFirstSharp } from '../Common/Parser.js';
+import {
+  removeFirstSharp,
+  replacePropertyInDescriptionString,
+} from '../Common/Parser.js';
+import { BorderStyleSharp } from '@material-ui/icons';
 
 export const getGitHubIssuesFromAPI = async (
   gantt_parse,
@@ -42,10 +46,10 @@ export const getGitHubIssuesFromAPI = async (
     })
     .catch((err) => {
       console.log(err);
-      gantt.message({
-        text: 'failed get GitHub issue. check your url or token.',
-        type: 'error',
-      });
+      // gantt.message({
+      //   text: 'failed get GitHub issue. check your url or token.',
+      //   type: 'error',
+      // });
     });
 };
 
@@ -148,15 +152,15 @@ export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
 };
 
 export const openGitHubNewIssueAtBrowser = (gantt_task, git_url) => {
-  let body = '';
-  body += 'start_date: ' + new Date().toLocaleDateString('ja-JP') + '  \n';
-  body += 'due_date: ' + new Date().toLocaleDateString('ja-JP') + '  \n';
-  body += 'progress: 0.1  \n';
-  if ('parent' in gantt_task) {
-    body += 'parent: ' + gantt_task.parent + '  \n';
-  } else {
-    body += 'parent: #0  \n';
-  }
+  const start_date_str = new Date().toLocaleDateString('ja-JP');
+  const due_date_str = new Date().toLocaleDateString('ja-JP');
+  const task = {
+    start_date: start_date_str,
+    due_date: due_date_str,
+    progress: 0.1,
+    parent: parseInt(removeFirstSharp(gantt_task.parent)),
+  };
+  let body = replacePropertyInDescriptionString('', task);
   body = encodeURIComponent(body);
   window.open(getGitHubURLNewIssueWithTemplate(git_url) + body, '_blank');
 };

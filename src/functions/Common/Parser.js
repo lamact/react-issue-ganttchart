@@ -36,7 +36,7 @@ export const parseYamlSectionFromDescription = (description) => {
     return null;
   }
   return str[0];
-}
+};
 
 export const parseYamlStructFromDescription = (description) => {
   if (description === null) {
@@ -98,21 +98,25 @@ export const replacePropertyInDescriptionString = (description, task) => {
   if (description === null || task === null) {
     return null;
   }
-  const task_section = yaml.dump(task);
+  let task_section = yaml.dump(task);
+  task_section =
+    `\`\`\`yaml
+` +
+    task_section +
+    `\`\`\``;
   let str = description.split(/^```yaml/);
   if (str === null || str.length < 2) {
     return task_section + description;
   }
   const first_section = str[0];
-  console.log(first_section)
+  console.log(first_section);
   str = str[1].split(/```/);
   if (str === null || str.length < 2) {
     return null;
   }
   const end_section = str[1];
-  return first_section +`\`\`\`yaml
-` + task_section +`\`\`\`` + end_section;
-} 
+  return first_section + task_section + end_section;
+};
 
 export const convertIDNameListToString = (list) => {
   let string = '';
