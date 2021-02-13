@@ -23,7 +23,7 @@ export const removeLastSpace = (url) => {
   return url;
 };
 
-export const parseYamlSectionFromDescription = (description) => {
+export const getYamlPartFromDescription = (description) => {
   if (description === null) {
     return null;
   }
@@ -41,20 +41,20 @@ export const parseYamlSectionFromDescription = (description) => {
   return str[0];
 };
 
-export const parseYamlStructFromDescription = (description) => {
+export const parseYamlFromDescription = (description) => {
   if (description === null) {
     return null;
   }
-  const yaml_section = parseYamlSectionFromDescription(description);
-  if (yaml_section === null) {
+  const yaml_part = getYamlPartFromDescription(description);
+  if (yaml_part === null) {
     return null;
   }
 
   let yaml_struct = null;
   try {
-    yaml_struct = yaml.load(yaml_section);
+    yaml_struct = yaml.load(yaml_part);
   } catch (e) {
-    gantt.message({ text: 'failed load yaml' + yaml_section, type: 'error' });
+    gantt.message({ text: 'failed load yaml' + yaml_part, type: 'error' });
   }
   return yaml_struct;
 };
@@ -63,7 +63,7 @@ export const getStringFromDescriptionYaml = (description, column_name) => {
   if (description === null) {
     return null;
   }
-  const yaml_struct = parseYamlStructFromDescription(description);
+  const yaml_struct = parseYamlFromDescription(description);
   if (yaml_struct === null || !(column_name in yaml_struct)) {
     return null;
   }
@@ -78,11 +78,14 @@ export const getNumberFromDescriptionYaml = (description, column_name) => {
   if (description === null) {
     return null;
   }
-  const yaml_struct = parseYamlStructFromDescription(description);
+  const yaml_struct = parseYamlFromDescription(description);
   if (yaml_struct === null || !(column_name in yaml_struct)) {
     return null;
   }
   const number = yaml_struct[column_name];
+  if (typeof number !== 'number') {
+    return null;
+  }
   return number;
 };
 
@@ -109,6 +112,9 @@ export const replacePropertyInDescriptionString = (description, task) => {
     `\`\`\``;
   let str = description.split(/^```yaml/);
   if (str === null || str.length < 2) {
+    if (/```/.test(description)) {
+      return null;
+    }
     return task_section + '\n' + description;
   }
   const first_section = str[0];
@@ -129,8 +135,9 @@ export const convertIDNameListToString = (list) => {
       }
       return null;
     });
+    return string;
   }
-  return string;
+  return null;
 };
 
 export const convertIDNamesStringToList = (string) => {
@@ -140,11 +147,13 @@ export const convertIDNamesStringToList = (string) => {
     split_string.forEach((element, index, array) => {
       if (index < split_string.length - 1) {
         const info = element.split(':');
-        const label = {
-          id: info[0],
-          name: info[1],
-        };
-        list.push(label);
+        if (!isNaN(parseInt(info[0]))) {
+          const label = {
+            id: parseInt(info[0]),
+            name: info[1],
+          };
+          list.push(label);
+        }
       }
     });
   } else {

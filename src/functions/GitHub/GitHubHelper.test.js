@@ -17,18 +17,18 @@ issueの内容
 const issue_info = {
   number: 36,
   title: 'テストissueのタイトル',
-  assignee: { login: 'yhzz' },
+  assignee: { login: 'satoshi' },
   description: description,
 };
 
 const gantt_task = {
   id: '#36',
   text: 'テストissueのタイトル',
-  start_date: '2021-2-5',
+  start_date: '2021/2/5',
   due_date: new Date('2021/2/5'),
   duration: 1,
   progress: 0.5,
-  assignee: 'yhzz',
+  assignee: 'satoshi',
   parent: '#5',
   description: description,
 };

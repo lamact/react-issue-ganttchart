@@ -46,25 +46,40 @@ export const orgRound = (value, base) => {
 };
 
 const calculateDuration = (start_date, due_date) => {
-  const start_date_moment = moment(start_date, 'YYYY-MM-DD');
-  const due_date_moment = moment(due_date, 'YYYY-MM-DD');
+  const start_date_moment = moment(start_date, 'YYYY/MM/DD');
+  const due_date_moment = moment(due_date, 'YYYY/MM/DD');
   return due_date_moment.diff(start_date_moment, 'days') + 1;
 };
 
 export const calculateDueDate = (start_date_str, duration) => {
   const start_date = new Date(start_date_str);
-  const due_date = moment(start_date, 'YYYY-MM-DD')
+  const due_date = moment(start_date, 'YYYY/MM/DD')
     .add(duration - 1, 'd')
     .toDate();
-  return due_date.toLocaleDateString('ja-JP');
+  return date2string(due_date);
+};
+
+export const date2string = (date) => {
+  let string = date.toLocaleDateString('ja-JP');
+  if (!/\d{4}\/\d{1,2}\/\d{1,2}/.test(string)) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    string = year + '/' + month + '/' + day;
+  }
+  return string;
+};
+
+export const adjustDateString = (date_str) => {
+  return date2string(new Date(date_str));
 };
 
 export const getGanttStartDate = (start_date, due_date, created_at) => {
   let start_date_str = null;
   if (start_date != null && due_date != null) {
-    start_date_str = start_date.toLocaleDateString('ja-JP');
+    start_date_str = date2string(start_date);
   } else {
-    start_date_str = new Date(created_at).toLocaleDateString('ja-JP');
+    start_date_str = adjustDateString(created_at);
   }
   return start_date_str;
 };

@@ -11,8 +11,15 @@ import {
   generateGanttTaskFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
 } from './GitLabHelper.js';
-import { calculateDueDate } from '../Common/CommonHelper.js';
-import { removeFirstSharp, replacePropertyInDescriptionString } from '../Common/Parser.js';
+import {
+  adjustDateString,
+  calculateDueDate,
+  date2string,
+} from '../Common/CommonHelper.js';
+import {
+  removeFirstSharp,
+  replacePropertyInDescriptionString,
+} from '../Common/Parser.js';
 
 export const getGitLabIssuesFromAPI = async (
   gantt_parse,
@@ -96,9 +103,7 @@ export const updateGitLabIssueFromGanttTask = (
           gantt_task
         );
         description = encodeURIComponent(description);
-        const start_date_str = new Date(
-          gantt_task.start_date
-        ).toLocaleDateString('ja-JP');
+        const start_date_str = adjustDateString(gantt_task.start_date);
         const due_date_str = calculateDueDate(
           start_date_str,
           gantt_task.duration
@@ -143,7 +148,7 @@ export const openGitLabIssueAtBrowser = (id, git_url) => {
 };
 
 export const openGitLabNewIssueAtBrowser = (gantt_task, git_url) => {
-  const start_date_str = new Date().toLocaleDateString('ja-JP');
+  const start_date_str = date2string(new Date());
   const task = {
     start_date: start_date_str,
     progress: 0.1,

@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
+import { date2string } from '../../functions/Common/CommonHelper.js';
 
 const Gantt = (props) => {
   const containerRef = useRef(null);
@@ -120,8 +121,7 @@ const setGanttConfig = (gantt) => {
 
   gantt.templates.timeline_cell_class = function (item, date) {
     if (
-      date.toLocaleDateString('ja-JP') ===
-      new Date().toLocaleDateString('ja-JP')
+      date2string(date) === date2string(new Date())
     ) {
       return 'today';
     }

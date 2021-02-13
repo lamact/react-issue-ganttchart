@@ -11,7 +11,7 @@ import {
   generateGanttTaskFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
 } from './GitHubHelper.js';
-import { isValidVariable } from '../Common/CommonHelper.js';
+import { date2string, isValidVariable } from '../Common/CommonHelper.js';
 import {
   removeFirstSharp,
   replacePropertyInDescriptionString,
@@ -151,8 +151,8 @@ export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
 };
 
 export const openGitHubNewIssueAtBrowser = (gantt_task, git_url) => {
-  const start_date_str = new Date().toLocaleDateString('ja-JP');
-  const due_date_str = new Date().toLocaleDateString('ja-JP');
+  const start_date_str = date2string(new Date());
+  const due_date_str = date2string(new Date());
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,

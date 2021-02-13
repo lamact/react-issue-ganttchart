@@ -182,10 +182,10 @@ describe('getGitHubAPIURLIssueFilterd', () => {
       getGitHubAPIURLIssueFilterd(
         'https://github.com/lamact/react-issue-ganttchart/',
         [{ id: 1, name: 'todo' }],
-        { id: 1, name: 'yhzz' }
+        { id: 1, name: 'satoshi' }
       )
     ).toBe(
-      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,&assignee=yhzz'
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,&assignee=satoshi'
     );
   });
   test('true', () => {
@@ -197,10 +197,10 @@ describe('getGitHubAPIURLIssueFilterd', () => {
           { id: 2, name: 'doing' },
           { id: 3, name: 'done' },
         ],
-        { id: 1, name: 'yhzz' }
+        { id: 1, name: 'satoshi' }
       )
     ).toBe(
-      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,doing,done,&assignee=yhzz'
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=todo,doing,done,&assignee=satoshi'
     );
   });
   test('true', () => {
@@ -219,10 +219,10 @@ describe('getGitHubAPIURLIssueFilterd', () => {
       getGitHubAPIURLIssueFilterd(
         'https://github.com/lamact/react-issue-ganttchart/',
         [],
-        { id: 1, name: 'yhzz' }
+        { id: 1, name: 'satoshi' }
       )
     ).toBe(
-      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=&assignee=yhzz'
+      'https://api.github.com/repos/lamact/react-issue-ganttchart/issues?labels=&assignee=satoshi'
     );
   });
   test('true', () => {

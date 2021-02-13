@@ -10,6 +10,7 @@ import {
   getGanttDueDate,
   getGanttDuration,
   orgRound,
+  adjustDateString,
 } from '../Common/CommonHelper.js';
 
 const getGitHubAssignee = (issue_info) => {
@@ -40,9 +41,8 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
 export const updateGitHubDescriptionStringFromGanttTask = (
   description,
   gantt_task
-) => {
-  const start_date_str = new Date(gantt_task.start_date)
-    .toLocaleDateString('ja-JP')
+) => { 
+  const start_date_str = adjustDateString(gantt_task.start_date)
     .replace(/\-/g, '/');
   const due_date_str = calculateDueDate(
     start_date_str,

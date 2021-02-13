@@ -9,6 +9,7 @@ import {
   getGanttDueDate,
   getGanttDuration,
   orgRound,
+  adjustDateString,
 } from '../Common/CommonHelper.js';
 
 const getGitLabAssignee = (issue_info) => {
@@ -25,7 +26,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     issue_info.description,
     'start_date'
   );
-  const due_date = new Date(issue_info.due_date).toLocaleDateString('ja-JP');
+  const due_date = adjustDateString(issue_info.due_date);
   const gantt_task = {
     id: '#' + issue_info.iid,
     text: issue_info.title,
@@ -49,9 +50,10 @@ export const updateGitLabDescriptionStringFromGanttTask = (
   description,
   gantt_task
 ) => {
-  const start_date_str = new Date(gantt_task.start_date)
-    .toLocaleDateString('ja-JP')
-    .replace(/\-/g, '/');
+  const start_date_str = adjustDateString(gantt_task.start_date).replace(
+    /\-/g,
+    '/'
+  );
   const task = {
     start_date: start_date_str,
     progress: orgRound(gantt_task.progress, 0.01),

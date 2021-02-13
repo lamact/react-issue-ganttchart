@@ -16,7 +16,7 @@ issueの内容
 const issue_info = {
   iid: 36,
   title: 'テストissueのタイトル',
-  assignee: { name: 'yhzz' },
+  assignee: { name: 'satoshi' },
   due_date: new Date('2021/2/5'),
   description: description,
 };
@@ -24,11 +24,11 @@ const issue_info = {
 const gantt_task = {
   id: '#36',
   text: 'テストissueのタイトル',
-  start_date: '2021-2-5',
+  start_date: '2021/2/5',
   due_date: new Date('2021/2/5'),
   duration: 1,
   progress: 0.5,
-  assignee: 'yhzz',
+  assignee: 'satoshi',
   parent: '#5',
   description: description,
 };
@@ -56,7 +56,7 @@ issueの内容
 const issue_info_dont_have_parent = {
   iid: 36,
   title: 'テストissueのタイトル',
-  assignee: { name: 'yhzz' },
+  assignee: { name: 'satoshi' },
   due_date: new Date('2021/2/5'),
   description: description_dont_have_parent,
 };
@@ -64,11 +64,11 @@ const issue_info_dont_have_parent = {
 const gantt_task_dont_have_parent = {
   id: '#36',
   text: 'テストissueのタイトル',
-  start_date: '2021-2-5',
+  start_date: '2021/2/5',
   due_date: new Date('2021/2/5'),
   duration: 1,
   progress: 0.5,
-  assignee: 'yhzz',
+  assignee: 'satoshi',
   description: description_dont_have_parent,
 };
 
