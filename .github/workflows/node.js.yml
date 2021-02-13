@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,4 +25,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn
-    - run: yarn test
+    - run: yarn test --ci --coverage .
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
