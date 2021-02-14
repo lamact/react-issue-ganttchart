@@ -6,9 +6,12 @@ import {
   getGitLabAPIURL,
   getGitLabNameSpaceFromGitURL,
   getGitLabProjectFromGitURL,
-  postFixToken,
   getGitLabAPIURLIssueFilterd,
   getGitabAPIURLIssuebyNumber,
+  getGitLabAPIURLLabel,
+  getGitLabAPIURLMember,
+  getGitLabURLIssuebyNumber,
+  getGitLabURLNewIssueWithTemplate,
 } from './GitLabURLHelper';
 
 describe('isGitLabURL', () => {
@@ -319,6 +322,84 @@ describe('getGitabAPIURLIssuebyNumber', () => {
         'privateaccesstoken',
         null
       )
+    ).toBe(null);
+  });
+});
+
+describe('getGitLabAPIURLLabel', () => {
+  test('true', () => {
+    expect(
+      getGitLabAPIURLLabel(
+        'https://gitlab.com/lamact/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/labels?access_token=privateaccesstoken'
+    );
+  });
+  test('null', () => {
+    expect(
+      getGitLabAPIURLLabel(
+        'httom/lamact/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(null);
+  });
+});
+
+describe('getGitLabAPIURLMember', () => {
+  test('true', () => {
+    expect(
+      getGitLabAPIURLMember(
+        'https://gitlab.com/lamact/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/members/all?access_token=privateaccesstoken'
+    );
+  });
+  test('null', () => {
+    expect(
+      getGitLabAPIURLMember(
+        'httom/lamact/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(null);
+  });
+});
+
+describe('getGitLabURLIssuebyNumber', () => {
+  test('true', () => {
+    expect(
+      getGitLabURLIssuebyNumber(
+        'https://gitlab.com/lamact/react-issue-ganttchart/',
+        43
+      )
+    ).toBe(
+      'https://gitlab.com/lamact/react-issue-ganttchart/-/issues/43'
+    );
+  });
+  test('null', () => {
+    expect(
+      getGitLabURLIssuebyNumber('httom/lamact/react-issue-ganttchart/', 43)
+    ).toBe(null);
+  });
+});
+
+
+describe('getGitLabURLNewIssueWithTemplate', () => {
+  test('true', () => {
+    expect(
+      getGitLabURLNewIssueWithTemplate(
+        'https://gitlab.com/lamact/react-issue-ganttchart/'
+      )
+    ).toBe(
+      'https://gitlab.com/lamact/react-issue-ganttchart/issues/new?issue[description]='
+    );
+  });
+  test('null', () => {
+    expect(
+      getGitLabURLNewIssueWithTemplate('httom/lamact/react-issue-ganttchart/')
     ).toBe(null);
   });
 });

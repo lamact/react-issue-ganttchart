@@ -36,6 +36,7 @@ export const getGitLabIssuesFromAPI = async (
       let links = [];
       res.data.map((issue_info) => {
         const gantt_task = generateGanttTaskFromGitLab(issue_info);
+        console.log(gantt_task)
         data.push(gantt_task);
         return null;
       });
@@ -43,9 +44,10 @@ export const getGitLabIssuesFromAPI = async (
     })
     .catch((err) => {
       gantt.message({
-        text: 'failed get GitLab issue. check your url or token.',
+        text: 'failed get GitLab issue. check your url or token.'+ err,
         type: 'error',
       });
+      console.error(err)
     });
 };
 
