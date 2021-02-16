@@ -2,10 +2,10 @@
   height: calc(100vh - 50px);
 }
 .past_days {
-  background: #d1d1d1;
+  background: #c7c7c7;
 }
 .weekend {
-  background: #808080;
+  background: #c7c7c7;
 }
 
 .behind .gantt_task_progress_wrapper{
