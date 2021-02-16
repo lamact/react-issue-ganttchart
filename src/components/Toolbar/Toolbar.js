@@ -59,6 +59,7 @@ const Toolbar = (props) => {
         options={props.member_list}
         getOptionLabel={(option) => option.name}
         value={props.selected_assignee}
+        noOptionsText="Enter the token."
         onChange={(e, assignee) => {
           props.onSelectedAssigneeChange(assignee);
         }}
