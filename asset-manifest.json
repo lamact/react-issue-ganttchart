@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/react-issue-ganttchart/static/css/main.56952c84.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.3063af1a.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.3063af1a.chunk.js.map",
+    "main.js": "/react-issue-ganttchart/static/js/main.fcfae9db.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.fcfae9db.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.a6ff6d3e.js",
     "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.a6ff6d3e.js.map",
     "static/css/2.96cca931.chunk.css": "/react-issue-ganttchart/static/css/2.96cca931.chunk.css",
-    "static/js/2.de134558.chunk.js": "/react-issue-ganttchart/static/js/2.de134558.chunk.js",
-    "static/js/2.de134558.chunk.js.map": "/react-issue-ganttchart/static/js/2.de134558.chunk.js.map",
+    "static/js/2.b5c6a638.chunk.js": "/react-issue-ganttchart/static/js/2.b5c6a638.chunk.js",
+    "static/js/2.b5c6a638.chunk.js.map": "/react-issue-ganttchart/static/js/2.b5c6a638.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
     "static/css/2.96cca931.chunk.css.map": "/react-issue-ganttchart/static/css/2.96cca931.chunk.css.map",
     "static/css/main.56952c84.chunk.css.map": "/react-issue-ganttchart/static/css/main.56952c84.chunk.css.map",
-    "static/js/2.de134558.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.de134558.chunk.js.LICENSE.txt"
+    "static/js/2.b5c6a638.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.b5c6a638.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a6ff6d3e.js",
     "static/css/2.96cca931.chunk.css",
-    "static/js/2.de134558.chunk.js",
+    "static/js/2.b5c6a638.chunk.js",
     "static/css/main.56952c84.chunk.css",
-    "static/js/main.3063af1a.chunk.js"
+    "static/js/main.fcfae9db.chunk.js"
   ]
 }
