@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Multiselect } from 'multiselect-react-dropdown';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 const Toolbar = (props) => {
   const { classes } = props;
@@ -101,6 +102,9 @@ const Toolbar = (props) => {
           }}
         />
       </IconButton>
+      <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
+        <GitHubIcon onClick={() => window.open('https://github.com/lamact/react-issue-ganttchart')} />
+      </IconButton>
     </form>
   );
 };
@@ -116,7 +120,7 @@ const styles = (theme) => ({
 
 const selector_style = {
   multiselectContainer: {
-    width: '30%',
+    width: '27%',
     display: 'inline-block',
     verticalAlign: 'middle',
     padding: '4px',
