@@ -84,16 +84,18 @@ export const setMemberListOfRepoFromAPI = async (
   }
 };
 
-export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
+export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
   if (!isValidURL(git_url)) {
     return null;
+  // } else if (gantt_task === gantt.getTask(gantt_task.id)){
+  //   return null;
   } else if (isGitHubURL(git_url)) {
-    updateGitHubIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
+    updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
   ) {
-    updateGitLabIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
+    updateGitLabIssueFromGanttTask(gantt_task, token, gantt, git_url);
   }
 };
 
