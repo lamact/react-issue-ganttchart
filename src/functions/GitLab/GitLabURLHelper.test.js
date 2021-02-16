@@ -124,14 +124,14 @@ describe('getGitLabAPIURL', () => {
   test('true', () => {
     expect(
       getGitLabAPIURL('https://gitlab.com/lamact/react-issue-ganttchart/')
-    ).toBe('https://gitlab.com/api/v4/projects/');
+    ).toBe('https://gitlab.com/api/v4/');
   });
   test('true', () => {
     expect(
       getGitLabAPIURL(
         'https://example.gitlab.com/lamact/react-issue-ganttchart/'
       )
-    ).toBe('https://example.gitlab.com/api/v4/projects/');
+    ).toBe('https://example.gitlab.com/api/v4/');
   });
   test('null', () => {
     expect(getGitLabAPIURL('htttlab.com/lamact/react-issue-ganttchart/')).toBe(
@@ -355,7 +355,7 @@ describe('getGitLabAPIURLMember', () => {
         'privateaccesstoken'
       )
     ).toBe(
-      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/members/all?access_token=privateaccesstoken'
+      'https://gitlab.com/api/v4/groups/lamact/billable_members?access_token=privateaccesstoken'
     );
   });
   test('null', () => {

@@ -52,7 +52,7 @@ export const getGitLabAPIURL = (git_url) => {
   if (!isValidURL(git_url)) {
     return null;
   }
-  return getGitLabDomain(git_url) + 'api/v4/projects/';
+  return getGitLabDomain(git_url) + 'api/v4/';
 };
 
 export const getGitLabNameSpaceFromGitURL = (git_url) => {
@@ -124,6 +124,7 @@ export const getGitLabAPIURLIssueFilterd = (
   post_fix_str += '&per_page=100&state=opened';
   return (
     getGitLabAPIURL(git_url) +
+    'projects/' +
     getGitLabNameSpaceFromGitURL(git_url) +
     '%2F' +
     getGitLabProjectFromGitURL(git_url) +
@@ -145,6 +146,7 @@ export const getGitabAPIURLIssuebyNumber = (git_url, token, number) => {
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
+    'projects/' +
     getGitLabNameSpaceFromGitURL(git_url) +
     '%2F' +
     getGitLabProjectFromGitURL(git_url) +
@@ -161,6 +163,7 @@ export const getGitLabAPIURLLabel = (git_url, token) => {
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
+    'projects/' +
     getGitLabNameSpaceFromGitURL(git_url) +
     '%2F' +
     getGitLabProjectFromGitURL(git_url) +
@@ -176,10 +179,9 @@ export const getGitLabAPIURLMember = (git_url, token) => {
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
+    'groups/' +
     getGitLabNameSpaceFromGitURL(git_url) +
-    '%2F' +
-    getGitLabProjectFromGitURL(git_url) +
-    '/members/all' +
+    '/billable_members' +
     post_fix_str
   );
 };
