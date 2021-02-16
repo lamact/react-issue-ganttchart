@@ -10,11 +10,12 @@ import {
   getGanttDuration,
   orgRound,
   adjustDateString,
+  isValidVariable,
 } from '../Common/CommonHelper.js';
 
 const getGitLabAssignee = (issue_info) => {
-  if ('assignee' in issue_info) {
-    if ('name' in issue_info.assignee) {
+  if (isValidVariable(issue_info) && 'assignee' in issue_info) {
+    if (isValidVariable(issue_info.assignee) && 'name' in issue_info.assignee) {
       return issue_info.assignee.name;
     }
   }

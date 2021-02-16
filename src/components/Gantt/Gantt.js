@@ -5,7 +5,10 @@ import ReactDOMServer from 'react-dom/server';
 
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
-import { date2string } from '../../functions/Common/CommonHelper.js';
+import {
+  calculateDuration,
+  calculateDueDate,
+} from '../../functions/Common/CommonHelper.js';
 
 const Gantt = (props) => {
   const containerRef = useRef(null);
@@ -93,6 +96,9 @@ const setGanttConfig = (gantt) => {
   gantt.config.fit_tasks = true;
 
   gantt.config.sort = true;
+  // gantt.config.show_task_cells = false;
+  // gantt.config.branch_loading = true;
+  // gantt.config.smart_scales = true;
 
   gantt.config.columns = [
     { name: 'wbs', label: 'WBS', width: 40, template: gantt.getWBSCode },
@@ -120,10 +126,8 @@ const setGanttConfig = (gantt) => {
   ];
 
   gantt.templates.timeline_cell_class = function (item, date) {
-    if (
-      date2string(date) === date2string(new Date())
-    ) {
-      return 'today';
+    if (date < new Date()) {
+      return 'past_days';
     }
     if (date.getDay() === 0 || date.getDay() === 6) {
       return 'weekend';
@@ -140,6 +144,23 @@ const setGanttConfig = (gantt) => {
       Math.round(task.progress * 100) +
       '% </span>'
     );
+  };
+
+  gantt.templates.task_class = function (start, end, task) {
+    console.log(
+      calculateDueDate(start, calculateDuration(start, end) * task.progress)
+    );
+    if (
+      new Date(
+        calculateDueDate(
+          start,
+          (calculateDuration(start, end) + 1) * task.progress
+        )
+      ) < new Date()
+    ) {
+      return 'behind';
+    }
+    // return '';
   };
 
   gantt.plugins({

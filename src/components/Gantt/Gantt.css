@@ -1,11 +1,15 @@
 .gantt-container {
   height: calc(100vh - 50px);
 }
-.today {
-  background: #ff9c8a;
+.past_days {
+  background: #c7c7c7;
 }
 .weekend {
-  background: #b2b6b4;
+  background: #c7c7c7;
+}
+
+.behind .gantt_task_progress_wrapper{
+  background: #ff5252;
 }
 
 /* material skin*/

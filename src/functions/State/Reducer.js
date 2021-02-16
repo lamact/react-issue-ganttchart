@@ -2,6 +2,8 @@ import { bake_cookie } from 'sfcookies';
 import {
   convertIDNamesStringToList,
   convertIDNameListToString,
+  removeLastSlash,
+  removeLastSpace,
 } from '../Common/Parser.js';
 import {
   updateIssueByAPI,
@@ -112,6 +114,7 @@ const handleGitURLChange = (
   selected_labels,
   selected_assignee
 ) => {
+  git_url = removeLastSlash(removeLastSpace(git_url));
   if (isGitHubURL(git_url)) {
     gantt.message({ text: 'Access GitHub.com' });
   } else if (isGitLabURL(git_url)) {

@@ -42,10 +42,11 @@ export const getGitLabIssuesFromAPI = async (
       gantt_parse({ data: data, links: links });
     })
     .catch((err) => {
-      gantt.message({
-        text: 'failed get GitLab issue. check your url or token.',
-        type: 'error',
-      });
+      // gantt.message({
+      //   text: 'failed get GitLab issue. check your url or token.'+ err,
+      //   type: 'error',
+      // });
+      console.error(err)
     });
 };
 

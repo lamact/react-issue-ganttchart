@@ -45,7 +45,7 @@ export const orgRound = (value, base) => {
   return Math.round(value / base) * base;
 };
 
-const calculateDuration = (start_date, due_date) => {
+export const calculateDuration = (start_date, due_date) => {
   const start_date_moment = moment(start_date, 'YYYY/MM/DD');
   const due_date_moment = moment(due_date, 'YYYY/MM/DD');
   return due_date_moment.diff(start_date_moment, 'days') + 1;

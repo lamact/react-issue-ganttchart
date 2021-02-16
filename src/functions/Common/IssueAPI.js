@@ -31,8 +31,7 @@ export const getIssuesFromAPI = async (
 ) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
+  } else if (isGitHubURL(git_url)) {
     getGitHubIssuesFromAPI(
       gantt_parse,
       gantt,
@@ -40,8 +39,10 @@ export const getIssuesFromAPI = async (
       selected_labels,
       selected_assignee
     );
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
     getGitLabIssuesFromAPI(
       gantt_parse,
       gantt,
@@ -56,11 +57,12 @@ export const getIssuesFromAPI = async (
 export const setLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
+  } else if (isGitHubURL(git_url)) {
     setGitHubLabelListOfRepoFromAPI(setLabels, git_url, token);
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
     setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
   }
 };
@@ -72,35 +74,40 @@ export const setMemberListOfRepoFromAPI = async (
 ) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
+  } else if (isGitHubURL(git_url)) {
     setGitHubMemberListOfRepoFromAPI(setMemberList, git_url, token);
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
     setGitLabMemberListOfRepoFromAPI(setMemberList, git_url, token);
   }
 };
 
-export const updateIssueByAPI = (gantt_task_id, token, gantt, git_url) => {
+export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
-    updateGitHubIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
-    updateGitLabIssueFromGanttTask(gantt_task_id, token, gantt, git_url);
+  // } else if (gantt_task === gantt.getTask(gantt_task.id)){
+  //   return null;
+  } else if (isGitHubURL(git_url)) {
+    updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
+    updateGitLabIssueFromGanttTask(gantt_task, token, gantt, git_url);
   }
 };
 
 export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
+  } else if (isGitHubURL(git_url)) {
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
     openGitLabIssueAtBrowser(gantt_task_id, git_url);
   }
 };
@@ -108,11 +115,12 @@ export const openIssueAtBrowser = (gantt_task_id, git_url) => {
 export const openNewIssueAtBrowser = (gantt_task, git_url) => {
   if (!isValidURL(git_url)) {
     return null;
-  }
-  if (isGitHubURL(git_url)) {
+  } else if (isGitHubURL(git_url)) {
     openGitHubNewIssueAtBrowser(gantt_task, git_url);
-  }
-  if (isGitLabURL(git_url) || getSelfHostingGitLabDomain(git_url) !== null) {
+  } else if (
+    isGitLabURL(git_url) ||
+    getSelfHostingGitLabDomain(git_url) !== null
+  ) {
     openGitLabNewIssueAtBrowser(gantt_task, git_url);
   }
 };
