@@ -211,5 +211,32 @@ const attachEvent = (gantt, props) => {
       buttons: ['detail_button'],
     });
   });
+  
+  gantt.attachEvent('onTaskDrag', function (id, mode, task, original) {
+    var state = gantt.getState();
+    var minDate = state.min_date,
+      maxDate = state.max_date;
+
+    var scaleStep =
+      gantt.date.add(new Date(), state.scale_step, state.scale_unit) -
+      new Date();
+
+    var showDate,
+      repaint = false;
+    if (mode == 'resize' || mode == 'move') {
+      if (Math.abs(task.start_date - minDate) < scaleStep) {
+        showDate = task.start_date;
+        repaint = true;
+      } else if (Math.abs(task.end_date - maxDate) < scaleStep) {
+        showDate = task.end_date;
+        repaint = true;
+      }
+
+      if (repaint) {
+        gantt.render();
+        gantt.showDate(showDate);
+      }
+    }
+  });
 };
 export default Gantt;
