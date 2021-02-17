@@ -26,9 +26,6 @@ export const setGanttTemplates = (gantt) => {
   };
 
   gantt.templates.task_class = function (start, end, task) {
-    console.log(
-      calculateDueDate(start, calculateDuration(start, end) * task.progress)
-    );
     if (
       new Date(
         calculateDueDate(
@@ -39,6 +36,5 @@ export const setGanttTemplates = (gantt) => {
     ) {
       return 'behind';
     }
-    // return '';
   };
 }

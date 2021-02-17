@@ -5,12 +5,15 @@ export const attachEvent = (gantt, props) => {
   gantt.attachEvent('onTaskDblClick', (gantt_task_id, e) => {
     props.openIssueAtBrowser(gantt_task_id);
   });
+
   gantt.attachEvent('onTaskCreated', (gantt_task_id, e) => {
     props.openNewIssueAtBrowser(gantt_task_id);
   });
+
   gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
     props.updateIssueByAPI(gantt_task, gantt);
   });
+
   gantt.attachEvent('onAfterTaskMove', (id, parent) => {
     let gantt_task = gantt.getTask(id);
     if ('parent' in gantt_task) {
@@ -20,6 +23,9 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
+
+  // Custom QuickInfo
+  // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
   gantt.attachEvent('onQuickInfo', (id) => {
     let gantt_task = gantt.getTask(id);
     gantt.locale.labels.detail_button = 'DETAIL';
@@ -43,6 +49,8 @@ export const attachEvent = (gantt, props) => {
     });
   });
 
+  // Changing the displayed range dynamically
+  // https://docs.dhtmlx.com/gantt/desktop__configuring_time_scale.html#range
   gantt.attachEvent('onTaskDrag', function (id, mode, task, original) {
     var state = gantt.getState();
     var minDate = state.min_date,
