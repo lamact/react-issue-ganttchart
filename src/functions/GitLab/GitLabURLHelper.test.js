@@ -334,7 +334,7 @@ describe('getGitLabAPIURLLabel', () => {
         'privateaccesstoken'
       )
     ).toBe(
-      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/labels?access_token=privateaccesstoken'
+      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/labels?access_token=privateaccesstoken&per_page=100'
     );
   });
   test('null', () => {
@@ -355,7 +355,7 @@ describe('getGitLabAPIURLMember', () => {
         'privateaccesstoken'
       )
     ).toBe(
-      'https://gitlab.com/api/v4/groups/lamact/billable_members?access_token=privateaccesstoken'
+      'https://gitlab.com/api/v4/groups/lamact/members/all?access_token=privateaccesstoken'
     );
   });
   test('null', () => {

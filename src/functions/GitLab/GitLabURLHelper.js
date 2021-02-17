@@ -160,7 +160,9 @@ export const getGitLabAPIURLLabel = (git_url, token) => {
   if (!isValidURL(git_url)) {
     return null;
   }
-  const post_fix_str = postFixToken(token);
+  let post_fix_str = postFixToken(token);
+  post_fix_str += '&per_page=100';
+
   return (
     getGitLabAPIURL(git_url) +
     'projects/' +
@@ -181,7 +183,7 @@ export const getGitLabAPIURLMember = (git_url, token) => {
     getGitLabAPIURL(git_url) +
     'groups/' +
     getGitLabNameSpaceFromGitURL(git_url) +
-    '/billable_members' +
+    '/members/all' +
     post_fix_str
   );
 };
