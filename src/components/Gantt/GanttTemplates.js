@@ -5,11 +5,13 @@ import {
 
 export const setGanttTemplates = (gantt) => {
   gantt.templates.timeline_cell_class = function (item, date) {
-    if (date < new Date()) {
-      return 'past_days';
-    }
     if (date.getDay() === 0 || date.getDay() === 6) {
       return 'weekend';
+    }
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (date < yesterday) {
+      return 'past_days';
     }
   };
 
@@ -37,4 +39,4 @@ export const setGanttTemplates = (gantt) => {
       return 'behind';
     }
   };
-}
+};
