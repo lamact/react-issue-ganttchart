@@ -21,6 +21,7 @@ import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
   currentZoom: 'Weeks',
+  screen: 'Table',
   update: 0,
   git_url: '',
   token: 'Tokens that have not yet been entered',
@@ -34,6 +35,8 @@ export const reducerFunc = (state, action) => {
   switch (action.type) {
     case 'zoomChange':
       return { ...state, currentZoom: action.value };
+    case 'screenChange':
+      return { ...state, screen: action.value };
     case 'gitURLChange':
       return {
         ...state,

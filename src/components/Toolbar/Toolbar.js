@@ -65,7 +65,7 @@ const Toolbar = (props) => {
           props.onSelectedAssigneeChange(assignee);
         }}
         style={{
-          width: '15%',
+          width: '10%',
           verticalAlign: 'middle',
           display: 'inline-block',
           marginRight: '15px',
@@ -93,6 +93,20 @@ const Toolbar = (props) => {
           }}
         >
           Days
+        </Button>
+        <Button
+          onClick={(e) => {
+            props.onScreenChange('Gantt');
+          }}
+        >
+          Gantt
+        </Button>
+        <Button
+          onClick={(e) => {
+            props.onScreenChange('Table');
+          }}
+        >
+          Table
         </Button>
       </ButtonGroup>
       <IconButton color="primary" style={{ verticalAlign: 'middle' }}>

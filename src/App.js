@@ -2,6 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
+import Table from './components/Table';
 import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
 import { initialState, reducerFunc } from './functions/State/Reducer.js';
@@ -49,6 +50,7 @@ const App = (props) => {
         <Toolbar
           zoom={state.currentZoom}
           onZoomChange={(zoom) => dispatch({ type: 'zoomChange', value: zoom })}
+          onScreenChange={(screen) => dispatch({ type: 'screenChange', value: screen })}
           onGitURLChange={(git_url) =>
             dispatch({
               type: 'gitURLChange',
@@ -79,7 +81,9 @@ const App = (props) => {
           register={register}
         />
       </div>
-      <div className="gantt-container">
+
+      {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+        <div className="gantt-container">
         <Gantt
           zoom={state.currentZoom}
           git_url={state.git_url}
@@ -101,6 +105,13 @@ const App = (props) => {
           }
         />
       </div>
+      ) : (
+        <div className="gantt-container">
+        <Table/>
+      </div>
+        )}
+
+      
     </>
   );
 };
