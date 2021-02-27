@@ -17,77 +17,67 @@ import {
   replacePropertyInDescriptionString,
 } from '../Common/Parser.js';
 
+export const getGitHubIssueFromAPI = async (git_url, issue_info) => {
+  return axios
+    .get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number))
+    .then((res) => {
+      const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
+      return gantt_task;
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+};
+
 export const getGitHubIssuesFromAPI = async (
-  gantt_parse,
-  gantt,
   git_url,
   selected_labels,
   selected_assignee
 ) => {
-  axios
+  return axios
     .get(
       getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee)
     )
     .then((res) => {
+      const promise_list = [];
       res.data.map((issue_info) => {
-        axios
-          .get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number))
-          .then((res) => {
-            const gantt_task = generateGanttTaskFromGitHub(
-              res.data.body,
-              issue_info
-            );
-            gantt.addTask(gantt_task);
-            gantt.sort('due_date', false);
-          });
-        return null;
+        promise_list.push(getGitHubIssueFromAPI(git_url, issue_info));
       });
+      return Promise.all(promise_list);
     })
     .catch((err) => {
-      console.log(err);
-      // gantt.message({
-      //   text: 'failed get GitHub issue. check your url or token.',
-      //   type: 'error',
-      // });
+      return Promise.reject(err);
     });
 };
 
-export const setGitHubLabelListOfRepoFromAPI = async (
-  setLabels,
-  git_url,
-  token
-) => {
-  axios.get(getGitHubAPIURLLabel(git_url)).then((res) => {
-    let list = [];
+export const setGitHubLabelListOfRepoFromAPI = async (git_url, token) => {
+  return axios.get(getGitHubAPIURLLabel(git_url)).then((res) => {
+    let labels = [];
     res.data.map((info) => {
-      list.push({ id: info.id, name: info.name });
+      labels.push({ id: info.id, name: info.name });
       return null;
     });
-    setLabels(list);
+    return labels;
   });
 };
 
-export const setGitHubMemberListOfRepoFromAPI = async (
-  setLabels,
-  git_url,
-  token
-) => {
+export const setGitHubMemberListOfRepoFromAPI = async (git_url, token) => {
   if (
     isValidVariable(token) &&
     token !== 'Tokens that have not yet been entered'
   ) {
-    axios
+    return axios
       .get(getGitHubAPIURLCollaborators(git_url), {
         headers: { Authorization: `token ${token}` },
         data: {},
       })
       .then((res) => {
-        let list = [];
+        let members = [];
         res.data.map((info) => {
-          list.push({ id: info.id, name: info.login });
+          members.push({ id: info.id, name: info.login });
           return null;
         });
-        setLabels(list);
+        return members;
       });
   } else {
     console.warn('token is not valid!');
@@ -153,6 +143,9 @@ export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
 export const openGitHubNewIssueAtBrowser = (gantt_task, git_url) => {
   const start_date_str = date2string(new Date());
   const due_date_str = date2string(new Date());
+  if(gantt_task.parent==null){
+    gantt_task.parent = 0;
+  }
   const task = {
     start_date: start_date_str,
     due_date: due_date_str,

@@ -22,30 +22,20 @@ import {
 import { isValidURL } from '../Common/CommonHelper.js';
 
 export const getIssuesFromAPI = async (
-  gantt_parse,
-  gantt,
   git_url,
   token,
   selected_labels,
   selected_assignee
 ) => {
   if (!isValidURL(git_url)) {
-    return null;
+    return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
-    getGitHubIssuesFromAPI(
-      gantt_parse,
-      gantt,
-      git_url,
-      selected_labels,
-      selected_assignee
-    );
+    return getGitHubIssuesFromAPI(git_url, selected_labels, selected_assignee);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
   ) {
-    getGitLabIssuesFromAPI(
-      gantt_parse,
-      gantt,
+    return getGitLabIssuesFromAPI(
       git_url,
       token,
       selected_labels,
@@ -54,41 +44,35 @@ export const getIssuesFromAPI = async (
   }
 };
 
-export const setLabelListOfRepoFromAPI = async (setLabels, git_url, token) => {
+export const setLabelListOfRepoFromAPI = async (git_url, token) => {
   if (!isValidURL(git_url)) {
-    return null;
+    return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
-    setGitHubLabelListOfRepoFromAPI(setLabels, git_url, token);
+    return setGitHubLabelListOfRepoFromAPI(git_url, token);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
   ) {
-    setGitLabLabelListOfRepoFromAPI(setLabels, git_url, token);
+    return setGitLabLabelListOfRepoFromAPI(git_url, token);
   }
 };
 
-export const setMemberListOfRepoFromAPI = async (
-  setMemberList,
-  git_url,
-  token
-) => {
+export const setMemberListOfRepoFromAPI = async (git_url, token) => {
   if (!isValidURL(git_url)) {
-    return null;
+    return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
-    setGitHubMemberListOfRepoFromAPI(setMemberList, git_url, token);
+    return setGitHubMemberListOfRepoFromAPI(git_url, token);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
   ) {
-    setGitLabMemberListOfRepoFromAPI(setMemberList, git_url, token);
+    return setGitLabMemberListOfRepoFromAPI(git_url, token);
   }
 };
 
 export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
   if (!isValidURL(git_url)) {
-    return null;
-  // } else if (gantt_task === gantt.getTask(gantt_task.id)){
-  //   return null;
+    return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
     updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
   } else if (
@@ -101,7 +85,7 @@ export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
 
 export const openIssueAtBrowser = (gantt_task_id, git_url) => {
   if (!isValidURL(git_url)) {
-    return null;
+    return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
     openGitHubIssueAtBrowser(gantt_task_id, git_url);
   } else if (

@@ -51,6 +51,14 @@ export const calculateDuration = (start_date, due_date) => {
   return due_date_moment.diff(start_date_moment, 'days') + 1;
 };
 
+export const calculateStartDate = (due_date_str, duration) => {
+  const due_date = new Date(due_date_str);
+  const start_date = moment(due_date, 'YYYY/MM/DD')
+    .add(-duration, 'd')
+    .toDate();
+  return date2string(start_date);
+};
+
 export const calculateDueDate = (start_date_str, duration) => {
   const start_date = new Date(start_date_str);
   const due_date = moment(start_date, 'YYYY/MM/DD')
@@ -60,6 +68,12 @@ export const calculateDueDate = (start_date_str, duration) => {
 };
 
 export const date2string = (date) => {
+  if (Object.prototype.toString.call(date) !== '[object Date]') {
+    return null;
+  } else if (isNaN(date.getFullYear())) {
+    return null;
+  }
+
   let string = date.toLocaleDateString('ja-JP');
   if (!/\d{4}\/\d{1,2}\/\d{1,2}/.test(string)) {
     const year = date.getFullYear();

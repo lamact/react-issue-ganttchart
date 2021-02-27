@@ -5,6 +5,9 @@ import {
 
 export const setGanttTemplates = (gantt) => {
   gantt.templates.timeline_cell_class = function (item, date) {
+    if (Object.prototype.toString.call(date) !== '[object Date]') {
+      return null;
+    }
     if (date.getDay() === 0 || date.getDay() === 6) {
       return 'weekend';
     }
@@ -28,7 +31,11 @@ export const setGanttTemplates = (gantt) => {
   };
 
   gantt.templates.task_class = function (start, end, task) {
-    if (
+    if (task.progress < 0.01) {
+      if (start <= new Date()) {
+        return 'behind';
+      }
+    } else if (
       new Date(
         calculateDueDate(
           start,

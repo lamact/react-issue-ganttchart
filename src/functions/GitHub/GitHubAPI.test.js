@@ -1,9 +1,12 @@
-import React from 'react';
+import MockAdapter from "axios-mock-adapter";
 import axios from 'axios';
 
-jest.mock('axios');
 
-// describe('setGitHubLabelListOfRepoFromAPI', () => {
+describe('setGitHubLabelListOfRepoFromAPI', () => {
+  const mockAxios = new MockAdapter(axios);
+  mockAxios.onGet("https://api.github.com/repos/lamact/react-issue-ganttchart/labels").reply(200, 
+      [{ id: 1, name: "aa" }],);
+
 //   test('true', async () => {
 //     const stories = [
 //       { objectID: '1', title: 'Hello' },
@@ -20,14 +23,4 @@ jest.mock('axios');
 //       );
 //     });
 //   });
-// });
-
-describe('true is truthy and false is falsy', () => {
-  test('true is truthy', () => {
-    expect(true).toBe(true);
-  });
-
-  test('false is falsy', () => {
-    expect(false).toBe(false);
-  });
 });

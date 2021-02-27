@@ -1,5 +1,9 @@
 import ReactMarkdown from 'react-markdown';
 import ReactDOMServer from 'react-dom/server';
+import {
+  calculateStartDate,
+  calculateDueDate,
+} from '../../functions/Common/CommonHelper';
 
 export const attachEvent = (gantt, props) => {
   gantt.attachEvent('onTaskDblClick', (gantt_task_id, e) => {
@@ -8,6 +12,13 @@ export const attachEvent = (gantt, props) => {
 
   gantt.attachEvent('onTaskCreated', (gantt_task_id, e) => {
     props.openNewIssueAtBrowser(gantt_task_id);
+  });
+
+  gantt.attachEvent('onBeforeTaskUpdate', (id, gantt_task) => {
+    updateParentTaskDate(gantt, gantt_task);
+    gantt.getChildren(gantt_task.id).map((child_gantt_task_id) => {
+      updateChildTaskDate(gantt, gantt_task, child_gantt_task_id);
+    });
   });
 
   gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
@@ -77,4 +88,55 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
+};
+
+export const updateParentTaskDate = (gantt, gantt_task) => {
+  if (!'parent' in gantt_task) {
+    return null;
+  }
+  if (gantt_task.parent === 0) {
+    return null;
+  }
+  let parent_gantt_task = gantt.getTask(gantt_task.parent).valueOf();
+  if (
+    parent_gantt_task.start_date.getTime() > gantt_task.start_date.getTime()
+  ) {
+    parent_gantt_task.start_date = gantt_task.start_date;
+    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
+    gantt.render();
+  }
+  if (parent_gantt_task.end_date.getTime() < gantt_task.end_date.getTime()) {
+    parent_gantt_task.end_date = gantt_task.end_date;
+    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
+    gantt.render();
+  }
+};
+
+export const updateChildTaskDate = (gantt, gantt_task, child_gantt_task_id) => {
+  let child_gantt_task = gantt.getTask(child_gantt_task_id).valueOf();
+  const date_duration = child_gantt_task.duration.valueOf();
+  console.log(date_duration)
+  if (child_gantt_task.start_date.getTime() < gantt_task.start_date.getTime()) {
+    child_gantt_task.start_date = gantt_task.start_date;
+    console.log(date_duration)
+    console.log(calculateDueDate(gantt_task.start_date, date_duration));
+    console.log(date_duration)
+    child_gantt_task.duration = date_duration;
+    console.log(date_duration)
+    console.log(child_gantt_task.duration)
+    // child_gantt_task.end_date = new Date(
+    //   calculateDueDate(gantt_task.start_date, date_duration)
+    // );
+    console.log(child_gantt_task);
+    gantt.updateTask(child_gantt_task.id, child_gantt_task);
+    gantt.render();
+  }
+  if (child_gantt_task.end_date.getTime() > gantt_task.end_date.getTime()) {
+    child_gantt_task.start_date = new Date(
+      calculateStartDate(gantt_task.end_date, date_duration)
+    );
+    child_gantt_task.end_date = gantt_task.end_date;
+    gantt.updateTask(child_gantt_task.id, child_gantt_task);
+    gantt.render();
+  }
 };

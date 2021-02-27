@@ -9,6 +9,7 @@ import {
   setLabelListOfRepoFromAPI,
   setMemberListOfRepoFromAPI,
 } from './functions/Common/IssueAPI.js';
+import { gantt } from 'dhtmlx-gantt';
 
 const App = (props) => {
   const [state, dispatch] = useReducer(reducerFunc, initialState);
@@ -27,20 +28,20 @@ const App = (props) => {
   }, [props.location]);
 
   useEffect(() => {
-    setLabelListOfRepoFromAPI(
-      (labels) => {
+    setLabelListOfRepoFromAPI(state.git_url, state.token)
+      .then((labels) => {
         dispatch({ type: 'labelChange', value: labels });
-      },
-      state.git_url,
-      state.token
-    );
-    setMemberListOfRepoFromAPI(
-      (setMemberList) => {
-        dispatch({ type: 'memberListChange', value: setMemberList });
-      },
-      state.git_url,
-      state.token
-    );
+      })
+      .catch((err) => {
+        gantt.message({ text: err, type: 'error' });
+      });
+    setMemberListOfRepoFromAPI(state.git_url, state.token)
+      .then((members) => {
+        dispatch({ type: 'memberListChange', value: members });
+      })
+      .catch((err) => {
+        gantt.message({ text: err, type: 'error' });
+      });
   }, [state.git_url, state.token, state.selected_assignee]);
 
   return (

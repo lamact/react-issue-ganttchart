@@ -22,62 +22,60 @@ import {
 } from '../Common/Parser.js';
 
 export const getGitLabIssuesFromAPI = async (
-  gantt_parse,
-  gantt,
   git_url,
   token,
   selected_labels,
   assignee
 ) => {
-  axios
+  return axios
     .get(getGitLabAPIURLIssueFilterd(git_url, token, selected_labels, assignee))
     .then((res) => {
       let data = [];
-      let links = [];
       res.data.map((issue_info) => {
         const gantt_task = generateGanttTaskFromGitLab(issue_info);
         data.push(gantt_task);
         return null;
       });
-      gantt_parse({ data: data, links: links });
+      return data;
     })
     .catch((err) => {
-      // gantt.message({
-      //   text: 'failed get GitLab issue. check your url or token.'+ err,
-      //   type: 'error',
-      // });
-      console.error(err)
+      console.error(err);
+      return Promise.reject(err);
     });
 };
 
-export const setGitLabLabelListOfRepoFromAPI = async (
-  setLabels,
-  git_url,
-  token
-) => {
-  axios.get(getGitLabAPIURLLabel(git_url, token)).then((res) => {
-    let list = [];
-    res.data.map((lebel_info) => {
-      list.push(lebel_info);
-      return null;
+export const setGitLabLabelListOfRepoFromAPI = async (git_url, token) => {
+  axios
+    .get(getGitLabAPIURLLabel(git_url, token))
+    .then((res) => {
+      let labels = [];
+      res.data.map((lebel_info) => {
+        labels.push(lebel_info);
+        return null;
+      });
+      return labels;
+    })
+    .catch((err) => {
+      console.error(err);
+      return Promise.reject(err);
     });
-    setLabels(list);
-  });
 };
 
-export const setGitLabMemberListOfRepoFromAPI = async (
-  setLabels,
-  git_url,
-  token
-) => {
-  axios.get(getGitLabAPIURLMember(git_url, token)).then((res) => {
-    let list = [];
-    res.data.map((info) => {
-      list.push({ id: info.id, name: info.name });
-      return null;
+export const setGitLabMemberListOfRepoFromAPI = async (git_url, token) => {
+  return axios
+    .get(getGitLabAPIURLMember(git_url, token))
+    .then((res) => {
+      let members = [];
+      res.data.map((info) => {
+        members.push({ id: info.id, name: info.name });
+        return null;
+      });
+      return members;
+    })
+    .catch((err) => {
+      console.error(err);
+      return Promise.reject(err);
     });
-    setLabels(list);
-  });
 };
 
 export const updateGitLabIssueFromGanttTask = (
@@ -150,6 +148,9 @@ export const openGitLabIssueAtBrowser = (id, git_url) => {
 
 export const openGitLabNewIssueAtBrowser = (gantt_task, git_url) => {
   const start_date_str = date2string(new Date());
+  if(gantt_task.parent==null){
+    gantt_task.parent = 0;
+  }
   const task = {
     start_date: start_date_str,
     progress: 0.1,
