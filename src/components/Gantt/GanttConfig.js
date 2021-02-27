@@ -47,8 +47,7 @@ export const setGanttConfig = (gantt) => {
         var wbscode = gantt.getWBSCode(gantt.getTask(obj.id));
         console.log(obj.update+" < "+befweek.toLocaleDateString())
         if (obj.update < befweek.toLocaleDateString()) {
-        var mark="<span class='overdue'>i</span>";
-        
+        var mark="<a title='There is no update for a week.'><span class='overdue'>i</span></a>";
         return wbscode+mark;
     }
         return wbscode;
