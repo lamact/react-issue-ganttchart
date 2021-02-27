@@ -38,7 +38,23 @@ export const setGanttConfig = (gantt) => {
   gantt.config.sort = true;
 
   gantt.config.columns = [
-    { name: 'wbs', label: 'WBS', width: 40, template: gantt.getWBSCode },
+       { name: 'wbs', 
+      label: 'WBS', 
+      width: 80, 
+     template:(obj) => {
+	    var befweek=new Date();
+        befweek.setDate(befweek.getDate() - 7);
+        var wbscode = gantt.getWBSCode(gantt.getTask(obj.id));
+        console.log(obj.update+" < "+befweek.toLocaleDateString())
+        if (obj.update < befweek.toLocaleDateString()) {
+        var mark="<span class='overdue'>i</span>";
+        
+        return wbscode+mark;
+    }
+        return wbscode;
+      },
+      
+    },
     { name: 'id', label: 'No.', align: 'left', tree: true, width: '*' },
     {
       name: 'start_date',

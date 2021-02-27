@@ -94,6 +94,16 @@ export const getGanttDueDate = (start_date, due_date, created_at) => {
   return due_date_str;
 };
 
+export const getGanttUpdateDate = (created_at,updated_at) => {
+  let updated_date_str = null;
+  if (updated_at != null) {
+    updated_date_str = adjustDateString(updated_at);
+  } else {
+    updated_date_str = adjustDateString(created_at);
+  }
+  return updated_date_str;
+};
+
 export const getGanttDuration = (start_date, due_date) => {
   let duration = null;
   if (start_date != null && due_date != null) {
