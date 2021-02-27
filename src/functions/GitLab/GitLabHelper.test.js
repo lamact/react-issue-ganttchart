@@ -19,6 +19,7 @@ const issue_info = {
   assignee: { name: 'satoshi' },
   due_date: new Date('2021/2/5'),
   description: description,
+  updated_at:new Date('2021/2/5'),
 };
 
 const gantt_task = {
@@ -31,6 +32,7 @@ const gantt_task = {
   assignee: 'satoshi',
   parent: '#5',
   description: description,
+  update:'2021/2/5',
 };
 
 describe('have parent', () => {
@@ -59,6 +61,7 @@ const issue_info_dont_have_parent = {
   assignee: { name: 'satoshi' },
   due_date: new Date('2021/2/5'),
   description: description_dont_have_parent,
+  updated_at:new Date('2021/2/5'),
 };
 
 const gantt_task_dont_have_parent = {
@@ -70,6 +73,7 @@ const gantt_task_dont_have_parent = {
   progress: 0.5,
   assignee: 'satoshi',
   description: description_dont_have_parent,
+  update:'2021/2/5',
 };
 
 describe('have parent', () => {

@@ -12,6 +12,18 @@
   background: #ff5252;
 }
 
+.overdue {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(151, 149, 149);
+  text-align:center;
+  line-height: 16px;
+  color: white;
+  margin-left: 5px
+		}
+
 /* material skin*/
 .buttonBg {
   background: #fff;
