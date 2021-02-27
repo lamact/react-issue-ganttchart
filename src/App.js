@@ -82,9 +82,10 @@ const App = (props) => {
         />
       </div>
 
-      {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+      {/* {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する */}
         <div className="gantt-container">
-        <Gantt
+          <Gantt
+            screen={state.screen}
           zoom={state.currentZoom}
           git_url={state.git_url}
           token={state.token}
@@ -103,15 +104,8 @@ const App = (props) => {
               value: { gantt_task: gantt_task, gantt: gantt },
             })
           }
-        />
+        /> 
       </div>
-      ) : (
-        <div className="gantt-container">
-        <Table/>
-      </div>
-        )}
-
-      
     </>
   );
 };

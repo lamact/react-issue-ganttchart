@@ -37,6 +37,7 @@ export const getGitHubIssuesFromAPI = async (
               res.data.body,
               issue_info
             );
+            //console.log(gantt_task)
             gantt.addTask(gantt_task);
             gantt.sort('due_date', false);
           });

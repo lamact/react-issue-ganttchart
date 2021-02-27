@@ -5,6 +5,7 @@ import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
 import { attachEvent } from './GanttAttachEvent.js';
 import { setGanttTemplates } from './GanttTemplates.js';
 import { setGanttConfig } from './GanttConfig.js';
+import Table from '../Table';
 
 const Gantt = (props) => {
   const containerRef = useRef(null);
@@ -51,7 +52,22 @@ const Gantt = (props) => {
   ]);
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%' }}></div>
+    <div style={{ width: '100%', height: '80%', padding: '20px' }}>
+      
+      <div ref={containerRef} style={{ width: '100%', height: '50%' }}></div>
+      
+      {props.screen === 'Table' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+        <div style={{ width: '100%', height: '50%' }}>
+          <Table
+            data={gantt.getTaskByTime()}
+          />
+        </div>
+        
+      ) : (
+        <div></div>
+          
+         )}
+      </div>
   );
 };
 
