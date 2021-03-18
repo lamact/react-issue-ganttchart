@@ -40,6 +40,7 @@ describe('setGitHubLabelListOfRepoFromAPI', () => {
           progress: null,
           start_date: '2000/1/1',
           text: undefined,
+          update: '2000/1/1',
         },
       ]);
     });
