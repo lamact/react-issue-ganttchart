@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/react-issue-ganttchart/static/css/main.e7178d74.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.bee95a26.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.bee95a26.chunk.js.map",
+    "main.css": "/react-issue-ganttchart/static/css/main.0110822c.chunk.css",
+    "main.js": "/react-issue-ganttchart/static/js/main.3053c47b.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.3053c47b.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.c69c31e6.js",
     "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.c69c31e6.js.map",
     "static/css/2.cb11bccb.chunk.css": "/react-issue-ganttchart/static/css/2.cb11bccb.chunk.css",
@@ -10,14 +10,14 @@
     "static/js/2.4a1f7b3a.chunk.js.map": "/react-issue-ganttchart/static/js/2.4a1f7b3a.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
     "static/css/2.cb11bccb.chunk.css.map": "/react-issue-ganttchart/static/css/2.cb11bccb.chunk.css.map",
-    "static/css/main.e7178d74.chunk.css.map": "/react-issue-ganttchart/static/css/main.e7178d74.chunk.css.map",
+    "static/css/main.0110822c.chunk.css.map": "/react-issue-ganttchart/static/css/main.0110822c.chunk.css.map",
     "static/js/2.4a1f7b3a.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.4a1f7b3a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c69c31e6.js",
     "static/css/2.cb11bccb.chunk.css",
     "static/js/2.4a1f7b3a.chunk.js",
-    "static/css/main.e7178d74.chunk.css",
-    "static/js/main.bee95a26.chunk.js"
+    "static/css/main.0110822c.chunk.css",
+    "static/js/main.3053c47b.chunk.js"
   ]
 }
