@@ -5,6 +5,7 @@ import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
 import { attachEvent } from './GanttAttachEvent.js';
 import { setGanttTemplates } from './GanttTemplates.js';
 import { setGanttConfig } from './GanttConfig.js';
+import { isValidVariable } from '../../functions/Common/CommonHelper.js';
 
 const Gantt = (props) => {
   const containerRef = useRef(null);
@@ -30,18 +31,25 @@ const Gantt = (props) => {
   }, [props.zoom]);
 
   useEffect(() => {
-    gantt.clearAll();
     getIssuesFromAPI(
-      (data) => {
-        gantt.parse(data);
-        gantt.sort('start_date', false);
-      },
-      gantt,
       props.git_url,
       props.token,
       props.selected_labels,
       props.selected_assignee
-    );
+    )
+      .then((data) => {
+        if (isValidVariable(data)) {
+          gantt.clearAll();
+          data.map((d) => {
+            gantt.addTask(d);
+          });
+          gantt.sort('due_date', false);
+          gantt.render();
+        }
+      })
+      .catch((err) => {
+        gantt.message({ text: err, type: 'error' });
+      });
   }, [
     props.git_url,
     props.token,
