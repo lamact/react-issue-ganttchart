@@ -10,7 +10,6 @@
 
 .behind .gantt_task_progress {
   background-color: #f32222;
-
 }
 .behind .gantt_task_progress_wrapper {
   background: #ff6666;
@@ -18,6 +17,18 @@
 .behind .gantt_task_content {
   font-size: 12px;
   color: #ffffff;
+}
+
+.overdue {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(151, 149, 149);
+  text-align: center;
+  line-height: 16px;
+  color: white;
+  margin-left: 5px;
 }
 
 .buttonBg {

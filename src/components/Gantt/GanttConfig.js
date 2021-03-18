@@ -13,9 +13,7 @@ const zoom_level = {
       name: 'Weeks',
       scale_height: 30,
       min_column_width: 70,
-      scales: [
-        { unit: 'week', step: 1, format: '%n/%d~' },
-      ],
+      scales: [{ unit: 'week', step: 1, format: '%n/%d~' }],
     },
   ],
 };
@@ -43,37 +41,40 @@ export const setGanttConfig = (gantt) => {
   gantt.config.sort = true;
 
   gantt.config.columns = [
-       { name: 'wbs', 
-      label: 'WBS', 
-      width: 80, 
-     template:(obj) => {
-	    var befweek=new Date();
+    {
+      name: 'id',
+      label: 'No.',
+      align: 'left',
+      tree: true,
+      width: '120',
+      template: (obj) => {
+        var befweek = new Date();
         befweek.setDate(befweek.getDate() - 7);
-        var wbscode = gantt.getWBSCode(gantt.getTask(obj.id));
-        console.log(obj.update+" < "+befweek.toLocaleDateString())
+        var task_id = gantt.getTask(obj.id);
+        console.log(obj.update + ' < ' + befweek.toLocaleDateString());
         if (obj.update < befweek.toLocaleDateString()) {
-        var mark="<a title='There is no update for a week.'><span class='overdue'>i</span></a>";
-        return wbscode+mark;
-    }
-        return wbscode;
+          return (
+            obj.id +
+            "<a title='There is no update for a week.'><span class='overdue'>i</span></a>"
+          );
+        }
+        return '';
       },
-      
     },
-    { name: 'id', label: 'No.', align: 'left', tree: true, width: '*' },
     {
       name: 'start_date',
       label: 'Start ',
       align: 'center',
-      width: '70',
+      width: '60',
       template: (obj) => {
         return shortenDate(obj.start_date);
       },
     },
     {
       name: 'due_date',
-      label: 'due ',
+      label: 'Due ',
       align: 'center',
-      width: '70',
+      width: '60',
       template: (obj) => {
         return shortenDate(obj.due_date);
       },
