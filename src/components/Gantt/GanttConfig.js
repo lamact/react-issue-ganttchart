@@ -43,8 +43,23 @@ export const setGanttConfig = (gantt) => {
   gantt.config.sort = true;
 
   gantt.config.columns = [
-    // { name: 'wbs', label: 'WBS', template: gantt.getWBSCode, width: '30' },
-    { name: 'id', label: 'No.', align: 'left', tree: true, width: '100' },
+       { name: 'wbs', 
+      label: 'WBS', 
+      width: 80, 
+     template:(obj) => {
+	    var befweek=new Date();
+        befweek.setDate(befweek.getDate() - 7);
+        var wbscode = gantt.getWBSCode(gantt.getTask(obj.id));
+        console.log(obj.update+" < "+befweek.toLocaleDateString())
+        if (obj.update < befweek.toLocaleDateString()) {
+        var mark="<a title='There is no update for a week.'><span class='overdue'>i</span></a>";
+        return wbscode+mark;
+    }
+        return wbscode;
+      },
+      
+    },
+    { name: 'id', label: 'No.', align: 'left', tree: true, width: '*' },
     {
       name: 'start_date',
       label: 'Start ',
