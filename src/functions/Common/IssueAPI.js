@@ -74,12 +74,12 @@ export const updateIssueByAPI = (gantt_task, token, gantt, git_url) => {
   if (!isValidURL(git_url)) {
     return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
-    updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
+    return updateGitHubIssueFromGanttTask(gantt_task, token, gantt, git_url);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
   ) {
-    updateGitLabIssueFromGanttTask(gantt_task, token, gantt, git_url);
+    return updateGitLabIssueFromGanttTask(gantt_task, token, gantt, git_url);
   }
 };
 

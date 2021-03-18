@@ -97,35 +97,51 @@ export const updateGitHubIssueFromGanttTask = (
   axios
     .get(url)
     .then((res) => {
-      axios
-        .post(
-          url,
-          {
-            body: updateGitHubDescriptionStringFromGanttTask(
-              res.data.body,
-              gantt_task
-            ),
-          },
-          {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          }
-        )
-        .then((res) => {
-          gantt.message({ text: 'success update issue.  ' + gantt_task.id });
-        })
-        .catch((err) => {
-          gantt.message({
-            text: 'failed update GitHub issue. check your token.',
-            type: 'error',
-          });
-          getGitHubIssuesFromAPI(gantt, git_url);
+      const issue_info = res.data;
+      if (
+        updateGitHubDescriptionStringFromGanttTask(
+          issue_info.body,
+          gantt_task
+        ) == null
+      ) {
+        gantt.message({
+          text: 'failed update issue. ' + gantt_task.text,
+          type: 'error',
         });
+      } else {
+        if (gantt_task !== generateGanttTaskFromGitHub(issue_info)) {
+          axios
+            .post(
+              url,
+              {
+                body: updateGitHubDescriptionStringFromGanttTask(
+                  issue_info.body,
+                  gantt_task
+                ),
+              },
+              {
+                headers: {
+                  Authorization: `token ${token}`,
+                },
+              }
+            )
+            .then((res) => {
+              gantt.message({
+                text: 'success update issue.  ' + gantt_task.id,
+              });
+            })
+            .catch((err) => {
+              gantt.message({
+                text: 'failed update GitHub issue. check your token.' + err,
+                type: 'error',
+              });
+            });
+        }
+      }
     })
     .catch((err) => {
       gantt.message({
-        text: 'failed get GitHub issue. check your url.',
+        text: 'failed get GitHub issue. check your url.' + err,
         type: 'error',
       });
       getGitHubIssuesFromAPI(gantt, git_url);
@@ -143,7 +159,7 @@ export const openGitHubIssueAtBrowser = (gantt_task_id, git_url) => {
 export const openGitHubNewIssueAtBrowser = (gantt_task, git_url) => {
   const start_date_str = date2string(new Date());
   const due_date_str = date2string(new Date());
-  if(gantt_task.parent==null){
+  if (gantt_task.parent == null) {
     gantt_task.parent = 0;
   }
   const task = {

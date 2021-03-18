@@ -5,10 +5,7 @@ import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
 import { attachEvent } from './GanttAttachEvent.js';
 import { setGanttTemplates } from './GanttTemplates.js';
 import { setGanttConfig } from './GanttConfig.js';
-import {
-  calculateDueDate,
-  isValidVariable,
-} from '../../functions/Common/CommonHelper.js';
+import { isValidVariable } from '../../functions/Common/CommonHelper.js';
 
 const Gantt = (props) => {
   const containerRef = useRef(null);
@@ -46,7 +43,7 @@ const Gantt = (props) => {
           data.map((d) => {
             gantt.addTask(d);
           });
-          gantt.sort('start_date', false);
+          gantt.sort('due_date', false);
           gantt.render();
         }
       })

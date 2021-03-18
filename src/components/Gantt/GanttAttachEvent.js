@@ -14,15 +14,15 @@ export const attachEvent = (gantt, props) => {
     props.openNewIssueAtBrowser(gantt_task_id);
   });
 
-  gantt.attachEvent('onBeforeTaskUpdate', (id, gantt_task) => {
+  gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
     updateParentTaskDate(gantt, gantt_task);
     gantt.getChildren(gantt_task.id).map((child_gantt_task_id) => {
       updateChildTaskDate(gantt, gantt_task, child_gantt_task_id);
     });
+    props.updateIssueByAPI(gantt_task, gantt);
   });
 
-  gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
-    props.updateIssueByAPI(gantt_task, gantt);
+  gantt.attachEvent('onBeforeTaskUpdate', (id, mode, gantt_task) => {
   });
 
   gantt.attachEvent('onAfterTaskMove', (id, parent) => {
@@ -115,19 +115,11 @@ export const updateParentTaskDate = (gantt, gantt_task) => {
 export const updateChildTaskDate = (gantt, gantt_task, child_gantt_task_id) => {
   let child_gantt_task = gantt.getTask(child_gantt_task_id).valueOf();
   const date_duration = child_gantt_task.duration.valueOf();
-  console.log(date_duration)
   if (child_gantt_task.start_date.getTime() < gantt_task.start_date.getTime()) {
     child_gantt_task.start_date = gantt_task.start_date;
-    console.log(date_duration)
-    console.log(calculateDueDate(gantt_task.start_date, date_duration));
-    console.log(date_duration)
-    child_gantt_task.duration = date_duration;
-    console.log(date_duration)
-    console.log(child_gantt_task.duration)
-    // child_gantt_task.end_date = new Date(
-    //   calculateDueDate(gantt_task.start_date, date_duration)
-    // );
-    console.log(child_gantt_task);
+    child_gantt_task.end_date = new Date(
+      calculateDueDate(gantt_task.start_date, date_duration)
+    );
     gantt.updateTask(child_gantt_task.id, child_gantt_task);
     gantt.render();
   }

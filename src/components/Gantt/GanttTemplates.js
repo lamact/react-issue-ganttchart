@@ -31,6 +31,10 @@ export const setGanttTemplates = (gantt) => {
   };
 
   gantt.templates.task_class = function (start, end, task) {
+    
+    if (task.progress == 1) {
+      return '';
+    }
     if (task.progress < 0.01) {
       if (start <= new Date()) {
         return 'behind';

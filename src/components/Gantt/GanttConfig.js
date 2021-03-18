@@ -2,16 +2,18 @@ const zoom_level = {
   levels: [
     {
       name: 'Days',
-      scale_height: 60,
-      min_column_width: 70,
-      scales: [{ unit: 'day', step: 1, format: '%n/%d' }],
+      scale_height: 30,
+      min_column_width: 25,
+      scales: [
+        { unit: 'month', step: 1, format: '%n' },
+        { unit: 'day', step: 1, format: '%d' },
+      ],
     },
     {
       name: 'Weeks',
-      scale_height: 60,
+      scale_height: 30,
       min_column_width: 70,
       scales: [
-        { unit: 'month', step: 1, format: '%Y年 %n月' },
         { unit: 'week', step: 1, format: '%n/%d~' },
       ],
     },

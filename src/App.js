@@ -4,7 +4,7 @@ import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
 import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
-import { initialState, reducerFunc } from './functions/State/Reducer.js';
+import { initialState, reducerFunc } from './State/Reducer.js';
 import {
   setLabelListOfRepoFromAPI,
   setMemberListOfRepoFromAPI,

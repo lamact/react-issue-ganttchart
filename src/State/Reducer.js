@@ -4,23 +4,23 @@ import {
   convertIDNameListToString,
   removeLastSlash,
   removeLastSpace,
-} from '../Common/Parser.js';
+} from '../functions/Common/Parser.js';
 import {
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
-} from '../Common/IssueAPI.js';
-import { isValidIDName, isValidVariable } from '../Common/CommonHelper.js';
-import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
+} from '../functions/Common/IssueAPI.js';
+import { isValidVariable } from '../functions/Common/CommonHelper.js';
+import { isGitHubURL } from '../functions/GitHub/GitHubURLHelper.js';
 import {
   isGitLabURL,
   getSelfHostingGitLabDomain,
-} from '../GitLab/GitLabURLHelper.js';
+} from '../functions/GitLab/GitLabURLHelper.js';
 
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  currentZoom: 'Weeks',
+  currentZoom: 'Days',
   update: 0,
   git_url: '',
   token: 'Tokens that have not yet been entered',
