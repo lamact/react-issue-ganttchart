@@ -35,7 +35,6 @@ export const setGanttTemplates = (gantt) => {
   };
 
   gantt.templates.task_class = function (start, end, task) {
-    
     if (task.progress == 1) {
       return '';
     }
