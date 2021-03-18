@@ -4,15 +4,18 @@
 .past_days {
   background: #8b8b8b13;
 }
+.today {
+  background: #60daffa6;
+}
 .weekend {
   background: #8b8b8b13;
 }
 
 .behind .gantt_task_progress {
-  background-color: #f32222;
+  background-color: #ff4b4b;
 }
 .behind .gantt_task_progress_wrapper {
-  background: #ff6666;
+  background: #ff8b8b;
 }
 .behind .gantt_task_content {
   font-size: 12px;

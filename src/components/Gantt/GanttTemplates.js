@@ -16,6 +16,10 @@ export const setGanttTemplates = (gantt) => {
     if (date < yesterday) {
       return 'past_days';
     }
+    var today = new Date();
+    if (date.getDate() === today.getDate()) {
+      return 'today';
+    }
   };
 
   gantt.templates.rightside_text = function (start, end, task) {
@@ -31,7 +35,6 @@ export const setGanttTemplates = (gantt) => {
   };
 
   gantt.templates.task_class = function (start, end, task) {
-    
     if (task.progress == 1) {
       return '';
     }
