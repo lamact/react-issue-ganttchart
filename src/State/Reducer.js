@@ -20,7 +20,7 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  currentZoom: 'Weeks',
+  currentZoom: 'Days',
   update: 0,
   git_url: '',
   token: 'Tokens that have not yet been entered',
