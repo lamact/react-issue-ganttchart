@@ -8,6 +8,10 @@ export const setGanttTemplates = (gantt) => {
     if (Object.prototype.toString.call(date) !== '[object Date]') {
       return null;
     }
+    var today = new Date();
+    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth()) {
+      return 'today';
+    }
     if (date.getDay() === 0 || date.getDay() === 6) {
       return 'weekend';
     }
@@ -16,22 +20,10 @@ export const setGanttTemplates = (gantt) => {
     if (date < yesterday) {
       return 'past_days';
     }
-    var today = new Date();
-    if (date.getDate() === today.getDate()) {
-      return 'today';
-    }
-  };
-
-  gantt.templates.rightside_text = function (start, end, task) {
-    return task.text;
   };
 
   gantt.templates.task_text = function (start, end, task) {
-    return (
-      "<span style='text-align:left;'>" +
-      Math.round(task.progress * 100) +
-      '% </span>'
-    );
+    return task.text;
   };
 
   gantt.templates.task_class = function (start, end, task) {
