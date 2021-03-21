@@ -50,7 +50,6 @@ export const setGanttConfig = (gantt) => {
       template: (obj) => {
         var befweek = new Date();
         befweek.setDate(befweek.getDate() - 7);
-        var task_id = gantt.getTask(obj.id);
         console.log(obj.update + ' < ' + befweek.toLocaleDateString());
         if (obj.update < befweek.toLocaleDateString()) {
           return (
@@ -58,7 +57,7 @@ export const setGanttConfig = (gantt) => {
             "<a title='There is no update for a week.'><span class='overdue'>i</span></a>"
           );
         }
-        return '';
+        return obj.id;
       },
     },
     {
