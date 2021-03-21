@@ -35,30 +35,30 @@ export const attachEvent = (gantt, props) => {
     }
   });
 
-  // Custom QuickInfo
-  // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
-  gantt.attachEvent('onQuickInfo', (id) => {
-    let gantt_task = gantt.getTask(id);
-    gantt.locale.labels.detail_button = 'DETAIL';
-    gantt.$click.buttons.detail_button = (gantt_task_id) => {
-      props.openIssueAtBrowser(gantt_task_id);
-      return true;
-    };
+  // // Custom QuickInfo
+  // // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
+  // gantt.attachEvent('onQuickInfo', (id) => {
+  //   let gantt_task = gantt.getTask(id);
+  //   gantt.locale.labels.detail_button = 'DETAIL';
+  //   gantt.$click.buttons.detail_button = (gantt_task_id) => {
+  //     props.openIssueAtBrowser(gantt_task_id);
+  //     return true;
+  //   };
 
-    gantt.ext.quickInfo.setContent({
-      header: {
-        title: '',
-        date: ReactDOMServer.renderToStaticMarkup().toString(),
-      },
-      content: ReactDOMServer.renderToStaticMarkup(
-        <div>
-          <h3>{gantt_task.text}</h3>
-          <ReactMarkdown>{gantt_task.description}</ReactMarkdown>
-        </div>
-      ).toString(),
-      buttons: ['detail_button'],
-    });
-  });
+  //   gantt.ext.quickInfo.setContent({
+  //     header: {
+  //       title: '',
+  //       date: ReactDOMServer.renderToStaticMarkup().toString(),
+  //     },
+  //     content: ReactDOMServer.renderToStaticMarkup(
+  //       <div>
+  //         <h3>{gantt_task.text}</h3>
+  //         <ReactMarkdown>{gantt_task.description}</ReactMarkdown>
+  //       </div>
+  //     ).toString(),
+  //     buttons: ['detail_button'],
+  //   });
+  // });
 
   // Changing the displayed range dynamically
   // https://docs.dhtmlx.com/gantt/desktop__configuring_time_scale.html#range
