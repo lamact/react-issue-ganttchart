@@ -8,6 +8,10 @@ export const setGanttTemplates = (gantt) => {
     if (Object.prototype.toString.call(date) !== '[object Date]') {
       return null;
     }
+    var today = new Date();
+    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth()) {
+      return 'today';
+    }
     if (date.getDay() === 0 || date.getDay() === 6) {
       return 'weekend';
     }
@@ -15,10 +19,6 @@ export const setGanttTemplates = (gantt) => {
     yesterday.setDate(yesterday.getDate() - 1);
     if (date < yesterday) {
       return 'past_days';
-    }
-    var today = new Date();
-    if (date.getDate() === today.getDate()) {
-      return 'today';
     }
   };
 
