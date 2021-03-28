@@ -1,5 +1,9 @@
 import ReactMarkdown from 'react-markdown';
 import ReactDOMServer from 'react-dom/server';
+import {
+  calculateStartDate,
+  calculateDueDate,
+} from '../../functions/Common/CommonHelper';
 
 export const attachEvent = (gantt, props) => {
   gantt.attachEvent('onTaskDblClick', (gantt_task_id, e) => {
@@ -11,7 +15,14 @@ export const attachEvent = (gantt, props) => {
   });
 
   gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
+    updateParentTaskDate(gantt, gantt_task);
+    gantt.getChildren(gantt_task.id).map((child_gantt_task_id) => {
+      updateChildTaskDate(gantt, gantt_task, child_gantt_task_id);
+    });
     props.updateIssueByAPI(gantt_task, gantt);
+  });
+
+  gantt.attachEvent('onBeforeTaskUpdate', (id, mode, gantt_task) => {
   });
 
   gantt.attachEvent('onAfterTaskMove', (id, parent) => {
@@ -24,30 +35,30 @@ export const attachEvent = (gantt, props) => {
     }
   });
 
-  // Custom QuickInfo
-  // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
-  gantt.attachEvent('onQuickInfo', (id) => {
-    let gantt_task = gantt.getTask(id);
-    gantt.locale.labels.detail_button = 'DETAIL';
-    gantt.$click.buttons.detail_button = (gantt_task_id) => {
-      props.openIssueAtBrowser(gantt_task_id);
-      return true;
-    };
+  // // Custom QuickInfo
+  // // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
+  // gantt.attachEvent('onQuickInfo', (id) => {
+  //   let gantt_task = gantt.getTask(id);
+  //   gantt.locale.labels.detail_button = 'DETAIL';
+  //   gantt.$click.buttons.detail_button = (gantt_task_id) => {
+  //     props.openIssueAtBrowser(gantt_task_id);
+  //     return true;
+  //   };
 
-    gantt.ext.quickInfo.setContent({
-      header: {
-        title: '',
-        date: ReactDOMServer.renderToStaticMarkup().toString(),
-      },
-      content: ReactDOMServer.renderToStaticMarkup(
-        <div>
-          <h3>{gantt_task.text}</h3>
-          <ReactMarkdown>{gantt_task.description}</ReactMarkdown>
-        </div>
-      ).toString(),
-      buttons: ['detail_button'],
-    });
-  });
+  //   gantt.ext.quickInfo.setContent({
+  //     header: {
+  //       title: '',
+  //       date: ReactDOMServer.renderToStaticMarkup().toString(),
+  //     },
+  //     content: ReactDOMServer.renderToStaticMarkup(
+  //       <div>
+  //         <h3>{gantt_task.text}</h3>
+  //         <ReactMarkdown>{gantt_task.description}</ReactMarkdown>
+  //       </div>
+  //     ).toString(),
+  //     buttons: ['detail_button'],
+  //   });
+  // });
 
   // Changing the displayed range dynamically
   // https://docs.dhtmlx.com/gantt/desktop__configuring_time_scale.html#range
@@ -77,4 +88,47 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
+};
+
+export const updateParentTaskDate = (gantt, gantt_task) => {
+  if (!'parent' in gantt_task) {
+    return null;
+  }
+  if (gantt_task.parent === 0) {
+    return null;
+  }
+  let parent_gantt_task = gantt.getTask(gantt_task.parent).valueOf();
+  if (
+    parent_gantt_task.start_date.getTime() > gantt_task.start_date.getTime()
+  ) {
+    parent_gantt_task.start_date = gantt_task.start_date;
+    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
+    gantt.render();
+  }
+  if (parent_gantt_task.end_date.getTime() < gantt_task.end_date.getTime()) {
+    parent_gantt_task.end_date = gantt_task.end_date;
+    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
+    gantt.render();
+  }
+};
+
+export const updateChildTaskDate = (gantt, gantt_task, child_gantt_task_id) => {
+  let child_gantt_task = gantt.getTask(child_gantt_task_id).valueOf();
+  const date_duration = child_gantt_task.duration.valueOf();
+  if (child_gantt_task.start_date.getTime() < gantt_task.start_date.getTime()) {
+    child_gantt_task.start_date = gantt_task.start_date;
+    child_gantt_task.end_date = new Date(
+      calculateDueDate(gantt_task.start_date, date_duration)
+    );
+    gantt.updateTask(child_gantt_task.id, child_gantt_task);
+    gantt.render();
+  }
+  if (child_gantt_task.end_date.getTime() > gantt_task.end_date.getTime()) {
+    child_gantt_task.start_date = new Date(
+      calculateStartDate(gantt_task.end_date, date_duration)
+    );
+    child_gantt_task.end_date = gantt_task.end_date;
+    gantt.updateTask(child_gantt_task.id, child_gantt_task);
+    gantt.render();
+  }
 };

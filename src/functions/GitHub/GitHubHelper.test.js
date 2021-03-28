@@ -19,6 +19,7 @@ const issue_info = {
   title: 'テストissueのタイトル',
   assignee: { login: 'satoshi' },
   description: description,
+  updated_at:'2021/2/5',
 };
 
 const gantt_task = {
@@ -31,6 +32,7 @@ const gantt_task = {
   assignee: 'satoshi',
   parent: '#5',
   description: description,
+  update:'2021/2/5',
 };
 
 describe('generateGanttTaskFromGitHub', () => {

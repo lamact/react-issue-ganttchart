@@ -4,24 +4,23 @@ import {
   convertIDNameListToString,
   removeLastSlash,
   removeLastSpace,
-} from '../Common/Parser.js';
+} from '../functions/Common/Parser.js';
 import {
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
-} from '../Common/IssueAPI.js';
-import { isValidVariable } from '../Common/CommonHelper.js';
-import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
+} from '../functions/Common/IssueAPI.js';
+import { isValidVariable } from '../functions/Common/CommonHelper.js';
+import { isGitHubURL } from '../functions/GitHub/GitHubURLHelper.js';
 import {
   isGitLabURL,
   getSelfHostingGitLabDomain,
-} from '../GitLab/GitLabURLHelper.js';
+} from '../functions/GitLab/GitLabURLHelper.js';
 
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  currentZoom: 'Weeks',
-  screen: 'Table',
+  currentZoom: 'Days',
   update: 0,
   git_url: '',
   token: 'Tokens that have not yet been entered',
@@ -61,7 +60,7 @@ export const reducerFunc = (state, action) => {
         ),
       };
     case 'memberListChange':
-      return { ...state, member_list: action.value };
+      return { ...state, member_list: handleMemberListChange(action.value) };
     case 'selectedAssigneeChange':
       return {
         ...state,
@@ -91,17 +90,17 @@ export const reducerFunc = (state, action) => {
   }
 };
 
-const handleOpenIssueAtBrowser = (state, action) => {
+export const handleOpenIssueAtBrowser = (state, action) => {
   openIssueAtBrowser(action.value, state.git_url);
   return state;
 };
 
-const handleOpenNewIssueAtBrowser = (state, action) => {
+export const handleOpenNewIssueAtBrowser = (state, action) => {
   openNewIssueAtBrowser(action.value, state.git_url);
   return state;
 };
 
-const handleUpdateIssueByAPI = (state, action) => {
+export const handleUpdateIssueByAPI = (state, action) => {
   updateIssueByAPI(
     action.value.gantt_task,
     state.token,
@@ -111,7 +110,7 @@ const handleUpdateIssueByAPI = (state, action) => {
   return state;
 };
 
-const handleGitURLChange = (
+export const handleGitURLChange = (
   props,
   git_url,
   selected_labels,
@@ -132,12 +131,12 @@ const handleGitURLChange = (
   return git_url;
 };
 
-const handleTokenChange = (token) => {
+export const handleTokenChange = (token) => {
   bake_cookie('git_token', token);
   return token;
 };
 
-const handleSelectedLabelsChange = (
+export const handleSelectedLabelsChange = (
   props,
   git_url,
   selected_labels,
@@ -147,7 +146,17 @@ const handleSelectedLabelsChange = (
   return selected_labels;
 };
 
-const handleSelectedAssigneeChange = (
+export const handleMemberListChange = (
+  member_list
+) => {
+  if(isValidVariable(member_list)){
+    return member_list;
+  } else {
+    return [];
+  }
+};
+
+export const handleSelectedAssigneeChange = (
   props,
   git_url,
   selected_labels,
@@ -157,7 +166,7 @@ const handleSelectedAssigneeChange = (
   return selected_assignee;
 };
 
-const setURLQuery = (props, git_url, selected_labels, selected_assignee) => {
+export const setURLQuery = (props, git_url, selected_labels, selected_assignee) => {
   const params = new URLSearchParams(props.location.search);
   params.set('giturl', git_url);
   params.set('labels', convertIDNameListToString(selected_labels));
@@ -168,7 +177,7 @@ const setURLQuery = (props, git_url, selected_labels, selected_assignee) => {
   return null;
 };
 
-const setStateFromURLQueryString = (state, props, setValue) => {
+export const setStateFromURLQueryString = (state, props, setValue) => {
   const params = new URLSearchParams(props.location.search);
   state.git_url = params.get('giturl');
 

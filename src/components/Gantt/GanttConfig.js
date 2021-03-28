@@ -2,23 +2,26 @@ const zoom_level = {
   levels: [
     {
       name: 'Days',
-      scale_height: 60,
-      min_column_width: 70,
-      scales: [{ unit: 'day', step: 1, format: '%n/%d' }],
+      scale_height: 30,
+      min_column_width: 25,
+      scales: [
+        { unit: 'month', step: 1, format: '%n' },
+        { unit: 'day', step: 1, format: '%d' },
+      ],
     },
     {
       name: 'Weeks',
-      scale_height: 60,
+      scale_height: 30,
       min_column_width: 70,
-      scales: [
-        { unit: 'month', step: 1, format: '%Y年 %n月' },
-        { unit: 'week', step: 1, format: '%n/%d~' },
-      ],
+      scales: [{ unit: 'week', step: 1, format: '%n/%d~' }],
     },
   ],
 };
 
 const shortenDate = (date) => {
+  if (Object.prototype.toString.call(date) !== '[object Date]') {
+    return null;
+  }
   const m = ('00' + (date.getMonth() + 1)).slice(-2);
   const d = ('00' + date.getDate()).slice(-2);
   const shorten_date = m + '/' + d;
@@ -38,34 +41,51 @@ export const setGanttConfig = (gantt) => {
   gantt.config.sort = true;
 
   gantt.config.columns = [
-    { name: 'wbs', label: 'WBS', width: 40, template: gantt.getWBSCode },
-    { name: 'id', label: 'No.', align: 'left', tree: true, width: '*' },
+    {
+      name: 'id',
+      label: 'No.',
+      align: 'left',
+      tree: true,
+      width: '120',
+      template: (obj) => {
+        var befweek = new Date();
+        befweek.setDate(befweek.getDate() - 7);
+        console.log(obj.update + ' < ' + befweek.toLocaleDateString());
+        if (obj.update < befweek.toLocaleDateString()) {
+          return (
+            obj.id +
+            "<a title='There is no update for a week.'><span class='overdue'>i</span></a>"
+          );
+        }
+        return obj.id;
+      },
+    },
     {
       name: 'start_date',
       label: 'Start ',
       align: 'center',
-      width: '100',
+      width: '60',
       template: (obj) => {
         return shortenDate(obj.start_date);
       },
     },
     {
       name: 'due_date',
-      label: 'due ',
+      label: 'Due ',
       align: 'center',
-      width: '100',
+      width: '60',
       template: (obj) => {
         return shortenDate(obj.due_date);
       },
     },
-    { name: 'assignee', label: 'Assignee', align: 'center', width: '150' },
-    { name: 'add', label: '' },
+    { name: 'assignee', label: 'Assignee', align: 'center', width: '130' },
+    { name: 'add', label: '', width: '40' },
   ];
 
   gantt.plugins({
-    quick_info: true,
+    // quick_info: true,
     drag_timeline: true,
   });
-
+  gantt.showDate(new Date());
   gantt.ext.zoom.init(zoom_level);
 };

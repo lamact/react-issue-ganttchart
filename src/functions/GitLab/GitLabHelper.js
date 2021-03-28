@@ -11,6 +11,7 @@ import {
   orgRound,
   adjustDateString,
   isValidVariable,
+  getGanttUpdateDate,
 } from '../Common/CommonHelper.js';
 
 const getGitLabAssignee = (issue_info) => {
@@ -37,6 +38,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
+    update: getGanttUpdateDate(issue_info.created_at,issue_info.updated_at),
   };
   let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
   if (parent !== null) {

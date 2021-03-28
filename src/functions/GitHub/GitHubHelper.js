@@ -11,6 +11,7 @@ import {
   getGanttDuration,
   orgRound,
   adjustDateString,
+  getGanttUpdateDate,
 } from '../Common/CommonHelper.js';
 
 const getGitHubAssignee = (issue_info) => {
@@ -34,6 +35,7 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     assignee: getGitHubAssignee(issue_info),
     parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     description: description,
+    update: getGanttUpdateDate(issue_info.created_at,issue_info.updated_at),
   };
   return gantt_task;
 };
