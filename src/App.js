@@ -108,7 +108,19 @@ const App = (props) => {
       </div>
       ) : (
         <div className="gantt-container">
-        <Table/>
+        <Table
+          test={state.test}
+          git_url={state.git_url}
+          token={state.token}
+          selected_labels={state.selected_labels}
+          selected_assignee={state.selected_assignee}
+          TableupdateIssueByAPI={() =>
+            dispatch({
+              type: 'TableupdateIssueByAPI',
+              //value: {  },
+            })
+          }
+        />
       </div>
         )}
 

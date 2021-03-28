@@ -79,6 +79,8 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
+    case 'TableupdateIssueByAPI':
+      return handleTableUpdateIssueByAPI(state);
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -107,6 +109,10 @@ export const handleUpdateIssueByAPI = (state, action) => {
     action.value.gantt,
     state.git_url
   );
+  return state;
+};
+
+export const handleTableUpdateIssueByAPI = (state) => {
   return state;
 };
 

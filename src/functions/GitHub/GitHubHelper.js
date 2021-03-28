@@ -1,4 +1,5 @@
 import {
+  getAllFromDescriptionYaml,
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
   removeFirstSharp,
