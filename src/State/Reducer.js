@@ -29,6 +29,8 @@ export const initialState = {
   selected_labels: [],
   member_list: [],
   selected_assignee: {},
+  issue: [],
+  issue_columns: [],
 };
 
 export const reducerFunc = (state, action) => {
@@ -80,8 +82,8 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
-    case 'TableupdateIssueByAPI':
-      return handleTableUpdateIssueByAPI(state);
+    case 'setIssue':
+      return { ...state, issue: action.value };
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -156,7 +158,7 @@ export const handleSelectedLabelsChange = (
 export const handleMemberListChange = (
   member_list
 ) => {
-  if(isValidVariable(member_list)){
+  if (isValidVariable(member_list)) {
     return member_list;
   } else {
     return [];
