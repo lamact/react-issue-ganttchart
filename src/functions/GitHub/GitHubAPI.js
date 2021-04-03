@@ -109,7 +109,7 @@ export const updateGitHubIssueFromGanttTask = (
           type: 'error',
         });
       } else {
-        if (gantt_task !== generateGanttTaskFromGitHub(issue_info)) {
+        if (gantt_task !== generateGanttTaskFromGitHub(issue_info.body, issue_info)) {
           axios
             .post(
               url,
