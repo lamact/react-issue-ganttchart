@@ -50,16 +50,19 @@ const Table = (props) => {
         props.selected_assignee
       )
         .then((data) => {
+          console.log("data")
           console.log(data)
+          //datas = {};
           if (isValidVariable(data)) {
-            data.map((d) => {
-              datas.push({
-                id:d.id,
-                lastName:"test",
-                firstName: 'Jon', 
-                age: 35
-              });
-            });
+            datas=data;
+            // data.map((d) => {
+            //   datas.push({
+            //     id:d.id,
+            //     lastName:"test",
+            //     firstName: 'Jon', 
+            //     age: 35
+            //   });
+            // });
           }
         })
         .catch((err) => {
@@ -71,6 +74,7 @@ const Table = (props) => {
       props.selected_labels,
       props.selected_assignee,
       props.update,
+      
     ]);
 
     console.log(" before datanum : "+datas.length);

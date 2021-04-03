@@ -3,6 +3,7 @@ import {
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
   replacePropertyInDescriptionString,
+  parseYamlFromDescription,
 } from '../Common/Parser.js';
 import {
   getGanttStartDate,
@@ -38,12 +39,14 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
-    update: getGanttUpdateDate(issue_info.created_at,issue_info.updated_at),
+    update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
+    parent: '#' + getNumberFromDescriptionYaml(issue_info.description, 'parent'),
   };
-  let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
-  if (parent !== null) {
-    if (parent !== 0) {
-      gantt_task.parent = '#' + parent;
+  const yaml_struct = parseYamlFromDescription(issue_info.description);
+
+  for (let [key, value] of Object.entries(yaml_struct)) {
+    if (!(key in gantt_task)) {
+      gantt_task[key]=value;
     }
   }
   return gantt_task;

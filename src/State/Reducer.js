@@ -20,6 +20,7 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
+  screen: 'Table',
   currentZoom: 'Days',
   update: 0,
   git_url: '',

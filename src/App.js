@@ -85,7 +85,7 @@ const App = (props) => {
 
       {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
         <div className="gantt-container">
-        <Gantt
+          <Gantt
           zoom={state.currentZoom}
           git_url={state.git_url}
           token={state.token}
@@ -105,26 +105,27 @@ const App = (props) => {
             })
           }
         />
-      </div>
+        </div>
       ) : (
         <div className="gantt-container">
-        <Table
-          test={state.test}
-          git_url={state.git_url}
-          token={state.token}
-          selected_labels={state.selected_labels}
-          selected_assignee={state.selected_assignee}
-          TableupdateIssueByAPI={() =>
-            dispatch({
-              type: 'TableupdateIssueByAPI',
-              //value: {  },
-            })
-          }
-        />
-      </div>
-        )}
+          <Table
+            test={state.test}
+            git_url={state.git_url}
+            token={state.token}
+            selected_labels={state.selected_labels}
+            selected_assignee={state.selected_assignee}
+            update={state.update}
+            TableupdateIssueByAPI={() =>
+              dispatch({
+                type: 'TableupdateIssueByAPI',
+                //value: {  },
+              })
+            }
+          />
+        </div>
+      )}
 
-      
+
     </>
   );
 };
