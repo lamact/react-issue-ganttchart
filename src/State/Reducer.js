@@ -9,7 +9,6 @@ import {
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
-  getIssuesFromAPI,
 } from '../functions/Common/IssueAPI.js';
 import { isValidVariable } from '../functions/Common/CommonHelper.js';
 import { isGitHubURL } from '../functions/GitHub/GitHubURLHelper.js';
@@ -80,8 +79,9 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
-    case 'getIssueByAPI':
-      return handleGetIssueByAPI(state, action);
+    case 'setIssue':
+      return { ...state, issue: action.value };
+      
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -110,25 +110,6 @@ export const handleUpdateIssueByAPI = (state, action) => {
     action.value.gantt,
     state.git_url
   );
-  return state;
-};
-
-export const handleGetIssueByAPI = (state, action) => {
-  getIssuesFromAPI(
-    state.git_url,
-    state.token,
-    state.selected_labels,
-    state.selected_assignee
-  )
-    .then((issuedata) => {
-      if (isValidVariable(issuedata)) {
-        state.issue = issuedata;
-      }
-    })
-    .catch((err) => {
-      console.log('error');
-    });
-  console.log(state)
   return state;
 };
 
