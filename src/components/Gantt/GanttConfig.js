@@ -50,6 +50,7 @@ export const setGanttConfig = (gantt) => {
       template: (obj) => {
         var befweek = new Date();
         befweek.setDate(befweek.getDate() - 7);
+        console.log(obj.update + ' < ' + befweek.toLocaleDateString());
         if (obj.update < befweek.toLocaleDateString()) {
           return (
             obj.id +
