@@ -44,6 +44,16 @@ const App = (props) => {
       });
   }, [state.git_url, state.token, state.selected_assignee]);
 
+  useEffect(() => {
+    dispatch({ type: 'getIssueByAPI' });
+  }, [
+    state.git_url,
+    state.token,
+    state.selected_labels,
+    state.selected_assignee,
+    state.update,
+  ]);
+
   return (
     <>
       <div className="zoom-bar">

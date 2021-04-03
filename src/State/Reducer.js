@@ -9,6 +9,7 @@ import {
   updateIssueByAPI,
   openIssueAtBrowser,
   openNewIssueAtBrowser,
+  getIssuesFromAPI,
 } from '../functions/Common/IssueAPI.js';
 import { isValidVariable } from '../functions/Common/CommonHelper.js';
 import { isGitHubURL } from '../functions/GitHub/GitHubURLHelper.js';
@@ -28,6 +29,8 @@ export const initialState = {
   selected_labels: [],
   member_list: [],
   selected_assignee: {},
+  issue: [],
+  issue_columns: [],
 };
 
 export const reducerFunc = (state, action) => {
@@ -77,6 +80,8 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
+    case 'getIssueByAPI':
+      return handleGetIssueByAPI(state, action);
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -105,6 +110,25 @@ export const handleUpdateIssueByAPI = (state, action) => {
     action.value.gantt,
     state.git_url
   );
+  return state;
+};
+
+export const handleGetIssueByAPI = (state, action) => {
+  getIssuesFromAPI(
+    state.git_url,
+    state.token,
+    state.selected_labels,
+    state.selected_assignee
+  )
+    .then((issuedata) => {
+      if (isValidVariable(issuedata)) {
+        state.issue = issuedata;
+      }
+    })
+    .catch((err) => {
+      console.log('error');
+    });
+  console.log(state)
   return state;
 };
 
@@ -147,7 +171,7 @@ export const handleSelectedLabelsChange = (
 export const handleMemberListChange = (
   member_list
 ) => {
-  if(isValidVariable(member_list)){
+  if (isValidVariable(member_list)) {
     return member_list;
   } else {
     return [];
