@@ -38,7 +38,7 @@ const columns = [
     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
   ];
 
-  let datas=[];
+  let custom_data=[];
 
 const Table = (props) => {
     const { classes } = props;
@@ -49,20 +49,10 @@ const Table = (props) => {
         props.selected_labels,
         props.selected_assignee
       )
-        .then((data) => {
-          console.log("data")
-          console.log(data)
-          //datas = {};
-          if (isValidVariable(data)) {
-            datas=data;
-            // data.map((d) => {
-            //   datas.push({
-            //     id:d.id,
-            //     lastName:"test",
-            //     firstName: 'Jon', 
-            //     age: 35
-            //   });
-            // });
+        .then((issuedata) => {
+          if (isValidVariable(issuedata)) {
+            custom_data=issuedata;
+
           }
         })
         .catch((err) => {
@@ -77,7 +67,7 @@ const Table = (props) => {
       
     ]);
 
-    console.log(" before datanum : "+datas.length);
+    //console.log(" before datanum : "+datas.length);
     props.TableupdateIssueByAPI();
 
   
@@ -87,7 +77,7 @@ const Table = (props) => {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={datas} columns={columns} pageSize={5} checkboxSelection />
+      <DataGrid rows={custom_data} columns={columns} pageSize={5} checkboxSelection />
     </div>
   );
 };
