@@ -1,4 +1,4 @@
-import { bake_cookie } from 'sfcookies';
+import { bake_cookie, read_cookie } from 'sfcookies';
 import {
   convertIDNamesStringToList,
   convertIDNameListToString,
@@ -20,20 +20,21 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  //screen: 'Table',
-  screen: 'Gantt',
+  screen: 'Table',
+  //screen: 'Gantt',
   currentZoom: 'Days',
   update: 0,
   git_url: '',
-  token: 'Tokens that have not yet been entered',
+  token: read_cookie('git_token'),
   labels: [],
   selected_labels: [],
   member_list: [],
   selected_assignee: {},
   issue: [],
   issue_columns: [],
-  screenready: false,
+  initflag: false,
 };
+
 
 export const reducerFunc = (state, action) => {
   switch (action.type) {
@@ -86,6 +87,8 @@ export const reducerFunc = (state, action) => {
     //   return handleUpdateIssueByAPI(state, action);
     case 'setIssue':
       return setIssue(state, action);
+    case 'initFlagTrue':
+      return { ...state, initflag: true };
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -112,8 +115,9 @@ export const handleSetIssueByAPI = (state, action) => {
 };
 
 export const setIssue = (state, action) => {
-
-  console.log("fired.setIssue",action.value);
+  console.log("fired.setIssue", action.value);
+  console.log("state.update", state.update)
+  console.log("state.issue_columns", state.issue_columns)
   if (isValidVariable(action.value)) {
     if (action.value.length !== 0) {
       let columns = [];
@@ -134,14 +138,14 @@ export const setIssue = (state, action) => {
       });
       state.issue_columns = table_columns;
       state.update = state.update + 1;
-      console.log("state.update", state.update)
-      state.screenready = true;
-      
+      console.log("state.update", state.update);
+      console.log("state.issue_columns", state.issue_columns);
     }
   }
   state.issue = action.value;
+  console.log(state);
   return state;
-}
+};
 
 
 
@@ -171,6 +175,7 @@ export const handleGitURLChange = (
 };
 
 export const handleTokenChange = (token) => {
+  console.log('handleTokenChange');
   bake_cookie('git_token', token);
   return token;
 };

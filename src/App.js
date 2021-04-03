@@ -5,7 +5,7 @@ import Gantt from './components/Gantt';
 import Table from './components/Table';
 import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
-import { initialState, reducerFunc } from './State/Reducer.js';
+import { initialState, reducerFunc, setStateFromURLQueryString } from './State/Reducer.js';
 import {
   getIssuesFromAPI,
   setLabelListOfRepoFromAPI,
@@ -14,22 +14,26 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 const App = (props) => {
-  const [state, dispatch] = useReducer(reducerFunc, initialState);
   const { register, setValue } = useForm({ git_url: '', token: '' });
+  const [state, dispatch] = useReducer(reducerFunc, setStateFromURLQueryString(initialState, props, setValue));
+  setValue('token', read_cookie('git_token'));
+
+
 
   useEffect(() => {
-    setValue('token', read_cookie('git_token'));
-    dispatch({ type: 'tokenChange', value: read_cookie('git_token') });
-  }, []);
-
-  useEffect(() => {
-    dispatch({
-      type: 'setStateFromURLQueryString',
-      value: { props: props, setValue: setValue },
-    });
+    console.log('オレンジ', state)
+    if (state.initflag) {
+      dispatch({
+        type: 'setStateFromURLQueryString',
+        value: { props: props, setValue: setValue },
+      });
+    } else {
+      dispatch({ type: 'initFlagTrue' })
+    }
   }, [props.location]);
 
   useEffect(() => {
+    console.log('黒', state)
     setLabelListOfRepoFromAPI(state.git_url, state.token)
       .then((labels) => {
         dispatch({ type: 'labelChange', value: labels });
@@ -47,7 +51,7 @@ const App = (props) => {
   }, [state.git_url, state.token, state.selected_assignee]);
 
   useEffect(() => {
-    //dispatch({ type: 'getIssueByAPI' });
+    console.log('白', state)
     getIssuesFromAPI(
       state.git_url,
       state.token,
@@ -58,23 +62,16 @@ const App = (props) => {
         dispatch({ type: 'setIssue', value: issues });
       })
       .catch((err) => {
-        console.log('error');
+        console.log('error', err);
+
       });
   }, [
-    state.git_url,
     state.token,
+    state.git_url,
     state.selected_labels,
     state.selected_assignee,
     state.update,
   ]);
-
-  // useEffect(() => {
-  //   if (isValidVariable(state.issue)) {
-  //     if (state.issue.length !== 0) {
-  //       dispatch({ type: 'setIssue' });
-  //     }
-  //   }
-  // }, [state.issue]);
 
   return (
     <>
@@ -113,9 +110,8 @@ const App = (props) => {
           register={register}
         />
       </div>
-      {state.screenready ? (
         <div>
-          {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+          {/* {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
             <div className="gantt-container">
               <Gantt
                 zoom={state.currentZoom}
@@ -139,34 +135,17 @@ const App = (props) => {
                 }
               />
             </div>
-          ) : (
+          ) : ( */}
             <div className="gantt-container">
-
+              {console.log('statestatestate', state)}
+              {console.log('statestatestatec', state.issue_columns)}
               <Table
-                test={state.test}
-                git_url={state.git_url}
-                token={state.token}
-                selected_labels={state.selected_labels}
-                selected_assignee={state.selected_assignee}
-                update={state.update}
                 issue={state.issue}
                 issue_columns={state.issue_columns}
-                TableupdateIssueByAPI={() =>
-                  dispatch({
-                    type: 'TableupdateIssueByAPI',
-                    //value: {  },
-                  })
-                }
               />
-
             </div>
-          )}
+          {/* )} */}
         </div>
-      ) : (
-        <div>state.update : {state.update}</div>
-      )}
-
-
     </>
   );
 };

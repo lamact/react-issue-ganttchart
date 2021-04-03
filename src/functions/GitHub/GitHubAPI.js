@@ -34,6 +34,8 @@ export const getGitHubIssuesFromAPI = async (
   selected_labels,
   selected_assignee
 ) => {
+  console.log(git_url, selected_labels, selected_assignee)
+  console.log('aa',getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee))
   return axios
     .get(
       getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee)
