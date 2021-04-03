@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
-import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
 import { attachEvent } from './GanttAttachEvent.js';
 import { setGanttTemplates } from './GanttTemplates.js';
 import { setGanttConfig } from './GanttConfig.js';
@@ -31,31 +30,21 @@ const Gantt = (props) => {
   }, [props.zoom]);
 
   useEffect(() => {
-    getIssuesFromAPI(
-      props.git_url,
-      props.token,
-      props.selected_labels,
-      props.selected_assignee
-    )
-      .then((data) => {
-        if (isValidVariable(data)) {
-          gantt.clearAll();
-          data.map((d) => {
-            gantt.addTask(d);
-          });
-          gantt.sort('due_date', false);
-          gantt.render();
-        }
-      })
-      .catch((err) => {
-        gantt.message({ text: err, type: 'error' });
-      });
+    try {
+      if (isValidVariable(props.issue) && props.issue.length != 0) {
+        gantt.clearAll();
+        //gantt.parse(props.issue);  it's not work
+        props.issue.map((d) => {
+          gantt.addTask(d);
+        });
+        gantt.sort('due_date', false);
+        // gantt.render();
+      }
+    } catch (err) {
+      gantt.message({ text: err, type: 'error' });
+    }
   }, [
-    props.git_url,
-    props.token,
-    props.selected_labels,
-    props.selected_assignee,
-    props.update,
+    props.issue,
   ]);
 
   return (

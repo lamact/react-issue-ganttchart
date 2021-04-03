@@ -6,6 +6,7 @@ import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
 import { initialState, reducerFunc } from './State/Reducer.js';
 import {
+  getIssuesFromAPI,
   setLabelListOfRepoFromAPI,
   setMemberListOfRepoFromAPI,
 } from './functions/Common/IssueAPI.js';
@@ -43,6 +44,28 @@ const App = (props) => {
         gantt.message({ text: err, type: 'error' });
       });
   }, [state.git_url, state.token, state.selected_assignee]);
+
+  useEffect(() => {
+    //dispatch({ type: 'getIssueByAPI' });
+    getIssuesFromAPI(
+      state.git_url,
+      state.token,
+      state.selected_labels,
+      state.selected_assignee
+    )
+      .then((issues) => {
+        dispatch({ type: 'setIssue', value: issues });
+      })
+      .catch((err) => {
+        console.log('error');
+      });
+  }, [
+    state.git_url,
+    state.token,
+    state.selected_labels,
+    state.selected_assignee,
+    state.update,
+  ]);
 
   return (
     <>
@@ -87,6 +110,7 @@ const App = (props) => {
           token={state.token}
           selected_labels={state.selected_labels}
           selected_assignee={state.selected_assignee}
+          issue={state.issue}
           update={state.update}
           openIssueAtBrowser={(gantt_task_id) =>
             dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
