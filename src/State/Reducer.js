@@ -80,10 +80,12 @@ export const reducerFunc = (state, action) => {
       return handleOpenIssueAtBrowser(state, action);
     case 'openNewIssueAtBrowser':
       return handleOpenNewIssueAtBrowser(state, action);
-    case 'updateIssueByAPI':
-      return handleUpdateIssueByAPI(state, action);
+    // case 'updateIssueByAPI':
+    //   return handleUpdateIssueByAPI(state, action);
     case 'setIssue':
       return { ...state, issue: action.value };
+    case 'setIssueColumns':
+      return setIssueColumns(state, action);
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -105,15 +107,31 @@ export const handleOpenNewIssueAtBrowser = (state, action) => {
   return state;
 };
 
-export const handleUpdateIssueByAPI = (state, action) => {
-  updateIssueByAPI(
-    action.value.gantt_task,
-    state.token,
-    action.value.gantt,
-    state.git_url
-  );
+export const handleSetIssueByAPI = (state, action) => {
+  return { ...state, issue: action.value };
+};
+
+export const setIssueColumns = (state, action) => {
+  let columns = [];
+  state.issue.map((issue) => {
+    columns = columns.concat(Object.keys(issue));
+    for (var i = 0; i < columns.length; ++i) {
+      for (var j = i + 1; j < columns.length; ++j) {
+        if (columns[i] === columns[j])
+          columns.splice(j--, 1);
+      }
+    }
+    return null;
+  });
+  let table_columns = [];
+  columns.map((column) => {
+    table_columns.push({ field: column, headerName: column });
+    return null;
+  });
+  state.columns = table_columns
   return state;
 };
+
 
 export const handleTableUpdateIssueByAPI = (state) => {
   return state;

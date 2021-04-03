@@ -3,68 +3,15 @@ import { DataGrid } from '@material-ui/data-grid';
 import { getIssuesFromAPI } from '../../functions/Common/IssueAPI.js';
 import { isValidVariable } from '../../functions/Common/CommonHelper.js';
 
-
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-  },
-];
-let custom_columns = [];
-let custom_data = [];
-
 const Table = (props) => {
-  const { classes } = props;
-  useEffect(() => {
-    getIssuesFromAPI(
-      props.git_url,
-      props.token,
-      props.selected_labels,
-      props.selected_assignee
-    )
-      .then((issuedata) => {
-        if (isValidVariable(issuedata)) {
-          custom_data = issuedata;
-        }
-      })
-      .catch((err) => {
-        console.log('error');
-      });
-  }, [
-    props.git_url,
-    props.token,
-    props.selected_labels,
-    props.selected_assignee,
-    props.update,
-
-  ]);
-
-  //console.log(" before datanum : "+datas.length);
-  props.TableupdateIssueByAPI();
-
-
-
-
-
-
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={custom_data} columns={custom_columns} pageSize={5} checkboxSelection />
+      {props.columns ?
+        <DataGrid rows={props.issue} columns={props.columns} pageSize={5} checkboxSelection />
+        :
+        "columns not loaded"
+      }
+      
     </div>
   );
 };
