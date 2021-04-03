@@ -59,34 +59,11 @@ export const parseYamlFromDescription = (description) => {
   return yaml_struct;
 };
 
-
-
-
-
-
-export const getAllFromDescriptionYaml = (description, column_name) => {
-  if (description === null) {
-    return null;
-  }
-  const yaml_struct = parseYamlFromDescription(description);
-  console.log(getStringFromDescription(yaml_struct,column_name));
-
-  return;
-};
-
-
-
-
-
 export const getStringFromDescriptionYaml = (description, column_name) => {
   if (description === null) {
     return null;
   }
   const yaml_struct = parseYamlFromDescription(description);
-  return getStringFromDescription(yaml_struct,column_name);
-};
-
-export const getStringFromDescription = (yaml_struct, column_name) => {
   if (yaml_struct === null || !(column_name in yaml_struct)) {
     return null;
   }
@@ -97,17 +74,11 @@ export const getStringFromDescription = (yaml_struct, column_name) => {
   return removeLastSpace(removeLastSpace(string));
 };
 
-
-
 export const getNumberFromDescriptionYaml = (description, column_name) => {
   if (description === null) {
     return null;
   }
   const yaml_struct = parseYamlFromDescription(description);
-  return getNumberFromDescription(yaml_struct, column_name)
-};
-
-export const getNumberFromDescription = (yaml_struct, column_name) => {
   if (yaml_struct === null || !(column_name in yaml_struct)) {
     return null;
   }
@@ -123,10 +94,6 @@ export const getDateFromDescriptionYaml = (description, column_name) => {
     return null;
   }
   const date = getStringFromDescriptionYaml(description, column_name);
-  return getDateFromDescription(date, column_name);
-};
-
-export const getDateFromDescription = (date, column_name) => {
   if (!/\d{4}\/\d{1,2}\/\d{1,2}/.test(date)) {
     return null;
   }
@@ -197,5 +164,3 @@ export const convertIDNamesStringToList = (string) => {
   }
   return list;
 };
-
-
