@@ -3,6 +3,7 @@ import {
   getNumberFromDescriptionYaml,
   removeFirstSharp,
   replacePropertyInDescriptionString,
+  getDependonFromDescriptionYaml,
 } from '../Common/Parser.js';
 import {
   calculateDueDate,
@@ -35,15 +36,32 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     assignee: getGitHubAssignee(issue_info),
     parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     description: description,
-    update: getGanttUpdateDate(issue_info.created_at,issue_info.updated_at),
+    update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
   return gantt_task;
+};
+
+export const generateLinkFromGitHub = (issue_info) => {
+  const link = [];
+  let dependon = [];
+  dependon = getDependonFromDescriptionYaml(issue_info.body, 'dependon');
+  if (dependon != null) {
+    //let data = [];
+    for (let i = 0; i < dependon.length; i++) {
+      let data = [];
+      data.type = '0';
+      data.target = '#' + issue_info.number;
+      data.source = '#' + dependon[i];
+      link.push(data);
+    }
+    return link;
+  }
 };
 
 export const updateGitHubDescriptionStringFromGanttTask = (
   description,
   gantt_task
-) => { 
+) => {
   const start_date_str = adjustDateString(gantt_task.start_date)
     .replace(/\-/g, '/');
   const due_date_str = calculateDueDate(
@@ -57,6 +75,9 @@ export const updateGitHubDescriptionStringFromGanttTask = (
   };
   if ('parent' in gantt_task) {
     task.parent = parseInt(removeFirstSharp(gantt_task.parent));
+  }
+  if ('dependon' in gantt_task) {
+    task.dependon = gantt_task.dependon;
   }
   description = replacePropertyInDescriptionString(description, task);
   return description;

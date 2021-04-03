@@ -34,8 +34,12 @@ const Gantt = (props) => {
       if (isValidVariable(props.issue) && props.issue.length != 0) {
         gantt.clearAll();
         //gantt.parse(props.issue);  it's not work
-        props.issue.map((d) => {
-          gantt.addTask(d);
+        props.issue.map((issue) => {
+          gantt.addTask(issue);
+          issue.links.map((link) => {
+            gantt.addLink(link);
+            return null;
+          });
         });
         gantt.sort('due_date', false);
         // gantt.render();
