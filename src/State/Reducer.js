@@ -20,7 +20,8 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  screen: 'Table',
+  //screen: 'Table',
+  screen: 'Gantt',
   currentZoom: 'Days',
   update: 0,
   git_url: '',
@@ -31,6 +32,7 @@ export const initialState = {
   selected_assignee: {},
   issue: [],
   issue_columns: [],
+  screenready: false,
 };
 
 export const reducerFunc = (state, action) => {
@@ -83,9 +85,7 @@ export const reducerFunc = (state, action) => {
     // case 'updateIssueByAPI':
     //   return handleUpdateIssueByAPI(state, action);
     case 'setIssue':
-      return { ...state, issue: action.value };
-    case 'setIssueColumns':
-      return setIssueColumns(state, action);
+      return setIssue(state, action);
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -111,26 +111,38 @@ export const handleSetIssueByAPI = (state, action) => {
   return { ...state, issue: action.value };
 };
 
-export const setIssueColumns = (state, action) => {
-  let columns = [];
-  state.issue.map((issue) => {
-    columns = columns.concat(Object.keys(issue));
-    for (var i = 0; i < columns.length; ++i) {
-      for (var j = i + 1; j < columns.length; ++j) {
-        if (columns[i] === columns[j])
-          columns.splice(j--, 1);
-      }
+export const setIssue = (state, action) => {
+
+  console.log("fired.setIssue",action.value);
+  if (isValidVariable(action.value)) {
+    if (action.value.length !== 0) {
+      let columns = [];
+      action.value.map((issue) => {
+        columns = columns.concat(Object.keys(issue));
+        for (var i = 0; i < columns.length; ++i) {
+          for (var j = i + 1; j < columns.length; ++j) {
+            if (columns[i] === columns[j])
+              columns.splice(j--, 1);
+          }
+        }
+        return null;
+      });
+      let table_columns = [];
+      columns.map((column) => {
+        table_columns.push({ field: column, headerName: column });
+        return null;
+      });
+      state.issue_columns = table_columns;
+      state.update = state.update + 1;
+      console.log("state.update", state.update)
+      state.screenready = true;
+      
     }
-    return null;
-  });
-  let table_columns = [];
-  columns.map((column) => {
-    table_columns.push({ field: column, headerName: column });
-    return null;
-  });
-  state.columns = table_columns
+  }
+  state.issue = action.value;
   return state;
-};
+}
+
 
 
 export const handleTableUpdateIssueByAPI = (state) => {

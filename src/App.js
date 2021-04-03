@@ -12,7 +12,6 @@ import {
   setMemberListOfRepoFromAPI,
 } from './functions/Common/IssueAPI.js';
 import { gantt } from 'dhtmlx-gantt';
-import { isValidVariable } from './functions/Common/CommonHelper';
 
 const App = (props) => {
   const [state, dispatch] = useReducer(reducerFunc, initialState);
@@ -69,13 +68,13 @@ const App = (props) => {
     state.update,
   ]);
 
-  useEffect(() => {
-    if (isValidVariable(state.issue)) {
-      if (state.issue.length !== 0) {
-        dispatch({ type: 'setIssueColumns' });
-      }
-    }
-  }, [state.issue]);
+  // useEffect(() => {
+  //   if (isValidVariable(state.issue)) {
+  //     if (state.issue.length !== 0) {
+  //       dispatch({ type: 'setIssue' });
+  //     }
+  //   }
+  // }, [state.issue]);
 
   return (
     <>
@@ -114,50 +113,57 @@ const App = (props) => {
           register={register}
         />
       </div>
+      {state.screenready ? (
+        <div>
+          {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+            <div className="gantt-container">
+              <Gantt
+                zoom={state.currentZoom}
+                git_url={state.git_url}
+                token={state.token}
+                selected_labels={state.selected_labels}
+                selected_assignee={state.selected_assignee}
+                issue={state.issue}
+                update={state.update}
+                openIssueAtBrowser={(gantt_task_id) =>
+                  dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
+                }
+                openNewIssueAtBrowser={(gantt_task_id) =>
+                  dispatch({ type: 'openNewIssueAtBrowser', value: gantt_task_id })
+                }
+                updateIssueByAPI={(gantt_task, gantt) =>
+                  dispatch({
+                    type: 'updateIssueByAPI',
+                    value: { gantt_task: gantt_task, gantt: gantt },
+                  })
+                }
+              />
+            </div>
+          ) : (
+            <div className="gantt-container">
 
-      {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
-        <div className="gantt-container">
-          <Gantt
-            zoom={state.currentZoom}
-            git_url={state.git_url}
-            token={state.token}
-            selected_labels={state.selected_labels}
-            selected_assignee={state.selected_assignee}
-            issue={state.issue}
-            update={state.update}
-            openIssueAtBrowser={(gantt_task_id) =>
-              dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
-            }
-            openNewIssueAtBrowser={(gantt_task_id) =>
-              dispatch({ type: 'openNewIssueAtBrowser', value: gantt_task_id })
-            }
-            updateIssueByAPI={(gantt_task, gantt) =>
-              dispatch({
-                type: 'updateIssueByAPI',
-                value: { gantt_task: gantt_task, gantt: gantt },
-              })
-            }
-          />
+              <Table
+                test={state.test}
+                git_url={state.git_url}
+                token={state.token}
+                selected_labels={state.selected_labels}
+                selected_assignee={state.selected_assignee}
+                update={state.update}
+                issue={state.issue}
+                issue_columns={state.issue_columns}
+                TableupdateIssueByAPI={() =>
+                  dispatch({
+                    type: 'TableupdateIssueByAPI',
+                    //value: {  },
+                  })
+                }
+              />
+
+            </div>
+          )}
         </div>
       ) : (
-        <div className="gantt-container">
-          <Table
-            test={state.test}
-            git_url={state.git_url}
-            token={state.token}
-            selected_labels={state.selected_labels}
-            selected_assignee={state.selected_assignee}
-            update={state.update}
-            issue={state.issue}
-            columns={state.columns}
-            TableupdateIssueByAPI={() =>
-              dispatch({
-                type: 'TableupdateIssueByAPI',
-                //value: {  },
-              })
-            }
-          />
-        </div>
+        <div>state.update : {state.update}</div>
       )}
 
 

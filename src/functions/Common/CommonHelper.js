@@ -3,7 +3,6 @@ import moment from 'moment';
 export const isValidVariable = (variable) => {
   if (
     variable !== null &&
-    variable !== [] &&
     variable !== void 0 &&
     variable !== ''
   ) {

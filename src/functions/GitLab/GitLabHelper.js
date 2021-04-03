@@ -40,13 +40,17 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
-    parent: '#' + getNumberFromDescriptionYaml(issue_info.description, 'parent'),
   };
-  const yaml_struct = parseYamlFromDescription(issue_info.description);
+  if (getNumberFromDescriptionYaml(issue_info.description, 'parent')) {
+    gantt_task.parent = '#' + getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  }
 
-  for (let [key, value] of Object.entries(yaml_struct)) {
-    if (!(key in gantt_task)) {
-      gantt_task[key]=value;
+  const yaml_struct = parseYamlFromDescription(issue_info.description);
+  if (yaml_struct) {
+    for (let [key, value] of Object.entries(yaml_struct)) {
+      if (!(key in gantt_task)) {
+        gantt_task[key] = value;
+      }
     }
   }
   return gantt_task;
