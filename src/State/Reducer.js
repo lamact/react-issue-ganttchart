@@ -20,8 +20,8 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  screen: 'Table',
-  //screen: 'Gantt',
+  //screen: 'Table',
+  screen: 'Gantt',
   currentZoom: 'Days',
   update: 0,
   git_url: '',
@@ -115,9 +115,7 @@ export const handleSetIssueByAPI = (state, action) => {
 };
 
 export const setIssue = (state, action) => {
-  console.log("fired.setIssue", action.value);
-  console.log("state.update", state.update)
-  console.log("state.issue_columns", state.issue_columns)
+  console.log("state.update start")
   if (isValidVariable(action.value)) {
     if (action.value.length !== 0) {
       let columns = [];
@@ -136,15 +134,12 @@ export const setIssue = (state, action) => {
         table_columns.push({ field: column, headerName: column });
         return null;
       });
-      state.issue_columns = table_columns;
-      state.update = state.update + 1;
-      console.log("state.update", state.update);
-      console.log("state.issue_columns", state.issue_columns);
+      const issue_columns = table_columns;
+      console.log("new_state.updated");
+      return { ...state, update: state.update + 1, issue_columns, issue: action.value }
     }
   }
-  state.issue = action.value;
-  console.log(state);
-  return state;
+  return { ...state, issue: action.value }
 };
 
 

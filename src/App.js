@@ -21,7 +21,7 @@ const App = (props) => {
 
 
   useEffect(() => {
-    console.log('オレンジ', state)
+    console.log('useEffect：橙', state)
     if (state.initflag) {
       dispatch({
         type: 'setStateFromURLQueryString',
@@ -33,7 +33,7 @@ const App = (props) => {
   }, [props.location]);
 
   useEffect(() => {
-    console.log('黒', state)
+    console.log('useEffect：黒', state)
     setLabelListOfRepoFromAPI(state.git_url, state.token)
       .then((labels) => {
         dispatch({ type: 'labelChange', value: labels });
@@ -51,7 +51,7 @@ const App = (props) => {
   }, [state.git_url, state.token, state.selected_assignee]);
 
   useEffect(() => {
-    console.log('白', state)
+    console.log('useEffect：白', state)
     getIssuesFromAPI(
       state.git_url,
       state.token,
@@ -70,7 +70,6 @@ const App = (props) => {
     state.git_url,
     state.selected_labels,
     state.selected_assignee,
-    state.update,
   ]);
 
   return (
@@ -111,7 +110,7 @@ const App = (props) => {
         />
       </div>
         <div>
-          {/* {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+          {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
             <div className="gantt-container">
               <Gantt
                 zoom={state.currentZoom}
@@ -135,16 +134,14 @@ const App = (props) => {
                 }
               />
             </div>
-          ) : ( */}
+          ) : (
             <div className="gantt-container">
-              {console.log('statestatestate', state)}
-              {console.log('statestatestatec', state.issue_columns)}
               <Table
                 issue={state.issue}
                 issue_columns={state.issue_columns}
               />
             </div>
-          {/* )} */}
+          )} 
         </div>
     </>
   );
