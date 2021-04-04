@@ -36,11 +36,26 @@ const Gantt = (props) => {
         //gantt.parse(props.issue);  it's not work
         props.issue.map((issue) => {
           gantt.addTask(issue);
-          issue.links.map((link) => {
-            gantt.addLink(link);
-            return null;
-          });
+          // console.log(issue);
+          // if ('links' in issue) {
+          //   issue.links.map((link) => {
+          //     console.log(link);
+          //     gantt.addLink(link);
+          //     return null;
+          //   });
+          // }
         });
+        props.issue.map((issue) => {
+          if ('links' in issue) {
+            issue.links.map((link) => {
+              console.log(link);
+              gantt.addLink(link);
+              return null;
+            });
+          }
+        });
+
+
         gantt.sort('due_date', false);
         // gantt.render();
       }

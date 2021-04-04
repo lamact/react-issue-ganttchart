@@ -3,6 +3,7 @@ import {
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
   replacePropertyInDescriptionString,
+  getDependonFromDescriptionYaml,
 } from '../Common/Parser.js';
 import {
   getGanttStartDate,
@@ -38,7 +39,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
-    update: getGanttUpdateDate(issue_info.created_at,issue_info.updated_at),
+    update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
   let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
   if (parent !== null) {
@@ -46,7 +47,37 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
       gantt_task.parent = '#' + parent;
     }
   }
+  let links = [];
+  const link = generateLinkFromGitLab(issue_info);
+  if (typeof link != "undefined") {
+    for (let i = 0; i < link.length; i++) {
+      let prelink = {
+        type: link[i].type,
+        target: link[i].target,
+        source: link[i].source,
+      }
+      links.push(prelink);
+    }
+  }
+  gantt_task.links = links;
   return gantt_task;
+};
+
+export const generateLinkFromGitLab = (issue_info) => {
+  const link = [];
+  let dependon = [];
+  dependon = getDependonFromDescriptionYaml(issue_info.description, 'dependon');
+  if (dependon != null) {
+    //let data = [];
+    for (let i = 0; i < dependon.length; i++) {
+      let data = [];
+      data.type = '0';
+      data.target = '#' + issue_info.iid;
+      data.source = '#' + dependon[i];
+      link.push(data);
+    }
+    return link;
+  }
 };
 
 export const updateGitLabDescriptionStringFromGanttTask = (
@@ -64,5 +95,23 @@ export const updateGitLabDescriptionStringFromGanttTask = (
   if ('parent' in gantt_task) {
     task.parent = parseInt(removeFirstSharp(gantt_task.parent));
   }
+  if ('dependon' in gantt_task) {
+    task.dependon = gantt_task.dependon;
+  }
   return replacePropertyInDescriptionString(description, task);
 };
+
+export const Arrangegantt = (issue_info) => {
+  const arrange = {
+    assignee: issue_info.assignee,
+    description: issue_info.description,
+    due_date: issue_info.due_date,
+    duration: issue_info.duration,
+    id: issue_info.id,
+    progress: issue_info.progress,
+    start_date: adjustDateString(issue_info.start_date),
+    text: issue_info.text,
+    update: issue_info.update,
+  }
+  return arrange;
+}
