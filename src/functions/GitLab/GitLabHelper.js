@@ -102,16 +102,45 @@ export const updateGitLabDescriptionStringFromGanttTask = (
 };
 
 export const Arrangegantt = (issue_info) => {
+  let arrangelink = [];
+  issue_info.links.map((list) => {
+    arrangelink.push({ type: list.type, target: list.target, source: list.source });
+  });
+
   const arrange = {
-    assignee: issue_info.assignee,
-    description: issue_info.description,
+    id: issue_info.id,
+    text: issue_info.text,
+    start_date: adjustDateString(issue_info.start_date),
     due_date: issue_info.due_date,
     duration: issue_info.duration,
-    id: issue_info.id,
     progress: issue_info.progress,
-    start_date: adjustDateString(issue_info.start_date),
-    text: issue_info.text,
+    assignee: issue_info.assignee,
+    description: issue_info.description,
     update: issue_info.update,
+    links: arrangelink,
   }
+
   return arrange;
+}
+
+export const contentcheck = (Arrange, generate) => {
+  if (
+    Arrange.id == generate.id &&
+    Arrange.text == generate.text &&
+    Arrange.start_date == generate.start_date &&
+    Arrange.due_date == generate.due_date.toString() &&
+    Arrange.duration == generate.duration &&
+    Arrange.progress == generate.progress &&
+    Arrange.assignee == generate.assignee &&
+    Arrange.description == generate.description &&
+    Arrange.update == generate.update &&
+    Arrange.parent == generate.parent &&
+    JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
+  ) {
+    console.log(JSON.stringify(Arrange.links));
+    console.log(JSON.stringify(generate.links));
+    return true;
+  } else {
+    return false;
+  }
 }

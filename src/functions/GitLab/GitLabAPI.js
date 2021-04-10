@@ -12,6 +12,7 @@ import {
   generateLinkFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
   Arrangegantt,
+  contentcheck,
 } from './GitLabHelper.js';
 import {
   adjustDateString,
@@ -38,7 +39,7 @@ export const getGitLabIssuesFromAPI = async (
 
         data.push(gantt_task);
       });
-       console.log(data);
+      console.log(data);
       return data;
     })
     .catch((err) => {
@@ -97,9 +98,14 @@ export const updateGitLabIssueFromGanttTask = (
     )
     .then((res) => {
       const issue_info = res.data;
-       if (Arrangegantt(gantt_task) !== generateGanttTaskFromGitLab(issue_info)) {
-         console.log(Arrangegantt(gantt_task));
-         console.log(generateGanttTaskFromGitLab(issue_info));
+      if (gantt_task !== generateGanttTaskFromGitLab(issue_info)) {
+      //   let flag=contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info));
+      //  if (flag==false) {
+        console.log('bbb');
+        console.log(gantt_task);
+        console.log(Arrangegantt(gantt_task));
+        console.log(generateGanttTaskFromGitLab(issue_info));
+        console.log(contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info)));
         if (
           parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))
         ) {
