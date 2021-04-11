@@ -25,7 +25,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { useTable, useSortBy  } from 'react-table'
+import { useTable, useSortBy, useBlockLayout, useResizeColumns  } from 'react-table'
 
 import makeData from './makeData'
 
@@ -33,6 +33,7 @@ const Styles = styled.div`
   padding: 1rem;
 
   table {
+    display: inline-block; 
     border-spacing: 0;
     border: 1px solid black;
 
@@ -50,6 +51,25 @@ const Styles = styled.div`
       padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
+
+      position: relative;
+
+      .resizer {
+        display: inline-block;
+        background: blue;
+        width: 10px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: translateX(50%);
+        z-index: 1;
+        ${'' /* prevents from scrolling while dragging on touch devices */}
+        touch-action:none;
+
+        &.isResizing {
+          background: red;
+        }
 
       :last-child {
         border-right: 0;
@@ -86,7 +106,9 @@ function Table({ columns, data }) {
       columns,
       data,
     },
-    useSortBy
+    useSortBy,
+    useBlockLayout,
+    useResizeColumns
   )
 
   // Render the UI for your table
@@ -116,14 +138,23 @@ function Table({ columns, data }) {
                 // we can add them into the header props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render('Header')}
-                  {/* Add a sort direction indicator */}
-                  <span>
+                  
+                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
                         ? ' 🔽'
                         : ' 🔼'
                       : ''}
-                  </span>
+                  </span> 
+                  <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? 'isResizing' : ''
+                      }`}
+                    />
+
+
+
                 </th>
               ))}
             </tr>
@@ -169,10 +200,12 @@ function App() {
           {
             Header: 'Age',
             accessor: 'age',
+            width: 50,
           },
           {
             Header: 'Visits',
             accessor: 'visits',
+            width: 50,
           },
           {
             Header: 'Status',
