@@ -25,7 +25,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { useTable, useSortBy, useBlockLayout, useResizeColumns  } from 'react-table'
+import { useTable, useSortBy, useBlockLayout, useResizeColumns } from 'react-table'
 
 import makeData from './makeData'
 
@@ -90,7 +90,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table({ columns, data }) {
+function Table2({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -131,30 +131,26 @@ function Table({ columns, data }) {
       </div>
       <table {...getTableProps()}>
         <thead>
-        {headerGroups.map(headerGroup => (
+          {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 // Add the sorting props to control sorting. For this example
                 // we can add them into the header props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render('Header')}
-                  
-                   <span>
+
+                  <span>
                     {column.isSorted
                       ? column.isSortedDesc
                         ? ' 🔽'
                         : ' 🔼'
                       : ''}
-                  </span> 
+                  </span>
                   <div
-                      {...column.getResizerProps()}
-                      className={`resizer ${
-                        column.isResizing ? 'isResizing' : ''
+                    {...column.getResizerProps()}
+                    className={`resizer ${column.isResizing ? 'isResizing' : ''
                       }`}
-                    />
-
-
-
+                  />
                 </th>
               ))}
             </tr>
@@ -178,28 +174,16 @@ function Table({ columns, data }) {
   )
 }
 
-function App() {
+const Table = (props) => {
+  
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Name',
-        columns: [
-          {
-            Header: 'First Name',
-            accessor: 'firstName',
-          },
-          {
-            Header: 'Last Name',
-            accessor: 'lastName',
-          },
-        ],
-      },
       {
         Header: 'Info',
         columns: [
           {
             Header: 'Age',
-            accessor: 'age',
+            accessor: 'id',
             width: 50,
           },
           {
@@ -221,13 +205,25 @@ function App() {
     []
   )
 
-  const data = React.useMemo(() => makeData(20), [])
+  //const data = React.useMemo(() => makeData(20), [])
+  console.log(columns);
+  console.log(props.issue_columns);
 
   return (
-    <Styles>
-      <Table columns={columns} data={data} />
-    </Styles>
+    <div>
+      {props.issue ? (
+        < Styles >
+          <Table2 columns={props.issue_columns} data={props.issue} />
+        </Styles >
+      ) : (
+        <div>
+          urlを入力ください
+        </div>
+      )
+      }
+    </div>
+
   )
 }
 
-export default App
+export default Table

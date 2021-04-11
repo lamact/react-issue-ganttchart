@@ -131,10 +131,10 @@ export const setIssue = (state, action) => {
       });
       let table_columns = [];
       columns.map((column) => {
-        table_columns.push({ field: column, headerName: column });
+        table_columns.push({ accessor: column, Header: column, width: 50 });
         return null;
       });
-      const issue_columns = table_columns;
+      const issue_columns = [{ Header: 'Info', columns: table_columns }];
       console.log("new_state.updated");
       return { ...state, update: state.update + 1, issue_columns, issue: action.value }
     }
