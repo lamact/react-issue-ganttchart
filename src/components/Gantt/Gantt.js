@@ -33,19 +33,11 @@ const Gantt = (props) => {
     try {
       if (isValidVariable(props.issue) && props.issue.length != 0) {
         gantt.clearAll();
-        //gantt.parse(props.issue);  it's not work
+        // props.issue.map((issue) => {
+        //   gantt.addTask(issue);
+        // });
         props.issue.map((issue) => {
           gantt.addTask(issue);
-          // console.log(issue);
-          // if ('links' in issue) {
-          //   issue.links.map((link) => {
-          //     console.log(link);
-          //     gantt.addLink(link);
-          //     return null;
-          //   });
-          // }
-        });
-        props.issue.map((issue) => {
           if ('links' in issue) {
             issue.links.map((link) => {
               console.log(link);
