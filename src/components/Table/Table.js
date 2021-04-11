@@ -213,7 +213,7 @@ const Table = (props) => {
     <div>
       {props.issue ? (
         < Styles >
-          <Table2 columns={props.issue_columns} data={props.issue} />
+          <Table2 columns={columns} data={props.issue} />
         </Styles >
       ) : (
         <div>
