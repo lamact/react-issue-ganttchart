@@ -164,3 +164,15 @@ export const convertIDNamesStringToList = (string) => {
   }
   return list;
 };
+
+export const getDependonFromDescriptionYaml = (description, column_name) => {
+  if (description === null) {
+    return null;
+  }
+  const yaml_struct = parseYamlFromDescription(description);
+  if (yaml_struct === null || !(column_name in yaml_struct)) {
+    return null;
+  }
+  const number = yaml_struct[column_name];
+     return number;
+};

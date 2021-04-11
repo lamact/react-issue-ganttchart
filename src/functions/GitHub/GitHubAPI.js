@@ -9,6 +9,7 @@ import {
 } from './GitHubURLHelper.js';
 import {
   generateGanttTaskFromGitHub,
+  generateLinkFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
 } from './GitHubHelper.js';
 import { date2string, isValidVariable } from '../Common/CommonHelper.js';
@@ -21,7 +22,21 @@ export const getGitHubIssueFromAPI = async (git_url, issue_info) => {
   return axios
     .get(getGitHubAPIURLIssuebyNumber(git_url, issue_info.number))
     .then((res) => {
+      let links = [];
       const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
+      const link = generateLinkFromGitHub(issue_info);
+      if (typeof link != "undefined") {
+        for (let i = 0; i < link.length; i++) {
+          let prelink = {
+            type: link[i].type,
+            target: link[i].target,
+            source: link[i].source,
+          }
+          links.push(prelink)
+        }
+      }
+      gantt_task.links = links;
+      console.log(gantt_task);
       return gantt_task;
     })
     .catch((err) => {
@@ -111,7 +126,7 @@ export const updateGitHubIssueFromGanttTask = (
           type: 'error',
         });
       } else {
-        if (gantt_task !== generateGanttTaskFromGitHub(issue_info)) {
+        if (gantt_task !== generateGanttTaskFromGitHub(issue_info.body, issue_info)) {
           axios
             .post(
               url,

@@ -34,7 +34,53 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
+  gantt.attachEvent("onAfterLinkAdd", function (id, item) {
+    let afterlinkId = [];
+    let afterlink = [];
+    let addobj = item.target;
+    let taskObj = gantt.getTask(addobj);
+    let target = taskObj.$target;
+    target.forEach(function (linkId) {
+      let link = gantt.getLink(linkId);
+      let linkid = link.target;
+      let linkIds = link.source;
+      afterlink.push({type:'0',target:linkid,source:linkIds});
+      let relinkIds = linkIds.slice(1);
+      if (relinkIds != '') {
+        afterlinkId.push(relinkIds);
+      }
+    });
+    // let linkids = afterlinkId.join(',');
+    // gantt.getTask(addobj).dependon = linkids; //changes task's data
+    // gantt.updateTask(addobj); //renders the updated task
+    gantt.getTask(addobj).dependon = afterlinkId;
+    gantt.getTask(addobj).links = afterlink;
+    gantt.updateTask(addobj);
+  });
 
+  gantt.attachEvent("onAfterLinkDelete", function (id, item) {
+    let afterlinkId = [];
+    let afterlink = [];
+    let addobj = item.target;
+    let taskObj = gantt.getTask(addobj);
+    let target = taskObj.$target;
+    target.forEach(function (linkId) {
+      let link = gantt.getLink(linkId);
+      let linkid = link.target;
+      let linkIds = link.source;
+      afterlink.push({type:'0',target:linkid,source:linkIds});
+      let relinkIds = linkIds.slice(1);
+      if (relinkIds != '') {
+        afterlinkId.push(relinkIds);
+      }
+    });
+    // let linkids = afterlinkId.join(',');
+    // gantt.getTask(addobj).dependon = linkids; //changes task's data
+    // gantt.updateTask(addobj); //renders the updated task
+    gantt.getTask(addobj).dependon = afterlinkId;
+    gantt.getTask(addobj).links = afterlink;
+    gantt.updateTask(addobj);
+  });
   // // Custom QuickInfo
   // // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
   // gantt.attachEvent('onQuickInfo', (id) => {

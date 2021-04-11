@@ -24,6 +24,7 @@ const issue_info = {
 
 const gantt_task = {
   id: '#36',
+  links: [],
   text: 'テストissueのタイトル',
   start_date: '2021/2/5',
   due_date: new Date('2021/2/5'),
@@ -74,6 +75,7 @@ const gantt_task_dont_have_parent = {
   assignee: 'satoshi',
   description: description_dont_have_parent,
   update:'2021/2/5',
+  links:[],
 };
 
 describe('have parent', () => {
