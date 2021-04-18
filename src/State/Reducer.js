@@ -126,6 +126,7 @@ export const handleGitURLChange = (
     gantt.message({ text: 'Access GitLab.com' });
   } else if (getSelfHostingGitLabDomain(git_url) !== null) {
     gantt.message({ text: 'Access Maybe GitLab.self-host' });
+  } else if (git_url === '') {
   } else {
     gantt.message({ text: 'Not a valid URL.', type: 'error' });
     return null;
