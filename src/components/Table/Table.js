@@ -1,31 +1,7 @@
-// import React from 'react';
-// import { DataGrid } from '@material-ui/data-grid';
-
-// const Table = (props) => {
-//   return (
-//     <div style={{ height: 400, width: '100%' }}>
-//       {props.issue ? (
-//       <DataGrid
-//         rows={props.issue}
-//         columns={props.issue_columns}
-//         pageSize={5}
-//         checkboxSelection
-//         />
-//       ) : (
-//         <div>
-//         urlを入力ください
-//       </div>
-//     )} 
-//     </div>
-//   );
-// };
-
-// export default Table;
-
-
-import React from 'react'
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy, useBlockLayout, useResizeColumns } from 'react-table'
+import xtype from 'xtypejs'
 
 import makeData from './makeData'
 
@@ -91,7 +67,6 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 function Table2({ columns, data }) {
-  // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
@@ -111,7 +86,6 @@ function Table2({ columns, data }) {
     useResizeColumns
   )
 
-  // Render the UI for your table
   return (
     <>
       <div>
@@ -174,52 +148,70 @@ function Table2({ columns, data }) {
   )
 }
 
+const checkVoidColumns = (props, columns) => {
+  console.log(props.issue_columns[0]);
+  if (typeof props.issue_columns[0] === "undefined") {
+    return false;
+  } else {
+    let test = props.issue_columns[0].columns;
+    test.splice(2, 2);
+    test.splice(6, 1);
+    test.splice(8, 1);
+    columns[0].columns = test;
+    
+    return (
+      < Styles >
+        <Table2 columns={columns} data={props.issue} />
+      </Styles >
+    );
+  }
+};
+
+
+
 const Table = (props) => {
-  
-  const columns = React.useMemo(
+  let columns = React.useMemo(
     () => [
       {
         Header: 'Info',
-        columns: [
-          {
-            Header: 'Age',
-            accessor: 'id',
-            width: 50,
-          },
-          {
-            Header: 'Visits',
-            accessor: 'visits',
-            width: 50,
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-          },
-          {
-            Header: 'Profile Progress',
-            accessor: 'progress',
-          },
-        ],
+        columns: [],
       },
     ],
     []
   )
 
-  //const data = React.useMemo(() => makeData(20), [])
-  console.log(columns);
-  console.log(props.issue_columns);
+
+  const columns2 = React.useMemo(
+    () => [
+      {
+        Header: 'Info',
+        columns: [
+          { accessor: "id", Header: "id", width: 50 }
+          , { accessor: "text", Header: "text", width: 50 }
+          , { accessor: "duration", Header: "duration", width: 50 }
+          , { accessor: "progress", Header: "progress", width: 50 }
+          , { accessor: "assignee", Header: "assignee", width: 50 }
+          , { accessor: "description", Header: "description", width: 50 }
+          , { accessor: "parent", Header: "parent", width: 50 }
+          , { accessor: "dependon", Header: "dependon", width: 50 }
+          ,
+        ],
+      },
+    ],
+    []
+  )
+  // useEffect(() => {
+  //   console.log('useEffect：a')
+  //   if (checkvoid(props.issue_columns)) {
+  //     let test = props.issue_columns[0].columns;
+  //     let test2 = test.splice(2, 2);
+  //   }
+  // }, [props.issue_columns[0]]);
+
 
   return (
     <div>
-      {props.issue ? (
-        < Styles >
-          <Table2 columns={columns} data={props.issue} />
-        </Styles >
-      ) : (
-        <div>
-          urlを入力ください
-        </div>
-      )
+      {checkVoidColumns(props, columns, columns2)
       }
     </div>
 
