@@ -121,7 +121,7 @@ export const Arrangegantt = (issue_info) => {
   }
 
   return arrange;
-}
+};
 
 export const contentcheck = (Arrange, generate) => {
   if (
@@ -143,4 +143,4 @@ export const contentcheck = (Arrange, generate) => {
   } else {
     return false;
   }
-}
+};
