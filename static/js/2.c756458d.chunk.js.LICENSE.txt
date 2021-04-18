@@ -39,7 +39,7 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
-/*! js-yaml 4.0.0 https://github.com/nodeca/js-yaml @license MIT */
+/*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT */
 
 /**
  * A better abstraction over CSS.
