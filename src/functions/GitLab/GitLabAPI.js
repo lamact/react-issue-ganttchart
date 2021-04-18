@@ -99,14 +99,6 @@ export const updateGitLabIssueFromGanttTask = (
     .then((res) => {
       const issue_info = res.data;
       if (contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info))!=true) {
-      // if (gantt_task !== generateGanttTaskFromGitLab(issue_info)) {
-      //   let flag=contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info));
-      //  if (flag==false) {
-        // console.log('bbb');
-        // console.log(gantt_task);
-        // console.log(Arrangegantt(gantt_task));
-        // console.log(generateGanttTaskFromGitLab(issue_info));
-        // console.log(contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info)));
         if (
           parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))
         ) {
