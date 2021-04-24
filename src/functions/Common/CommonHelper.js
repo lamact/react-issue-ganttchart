@@ -66,6 +66,11 @@ export const calculateDueDate = (start_date_str, duration) => {
   return date2string(due_date);
 };
 
+export const dateorstring2string = (date) => {
+  if (typeof data === 'string') return date;
+  return date2string(date);
+}
+
 export const date2string = (date) => {
   if (Object.prototype.toString.call(date) !== '[object Date]') {
     return null;
@@ -107,7 +112,7 @@ export const getGanttDueDate = (start_date, due_date, created_at) => {
   return due_date_str;
 };
 
-export const getGanttUpdateDate = (created_at,updated_at) => {
+export const getGanttUpdateDate = (created_at, updated_at) => {
   let updated_date_str = null;
   if (updated_at != null) {
     updated_date_str = adjustDateString(updated_at);

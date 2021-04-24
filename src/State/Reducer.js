@@ -115,9 +115,11 @@ export const handleSetIssueByAPI = (state, action) => {
 };
 
 export const setIssue = (state, action) => {
-  console.log("state.update start")
+  console.log("state.update start", action.value)
   if (isValidVariable(action.value)) {
     if (action.value.length !== 0) {
+
+      //Creating a column list
       let columns = [];
       action.value.map((issue) => {
         columns = columns.concat(Object.keys(issue));
@@ -129,9 +131,32 @@ export const setIssue = (state, action) => {
         }
         return null;
       });
+
+      //Creating a table setting
       let table_columns = [];
       columns.map((column) => {
-        table_columns.push({ accessor: column, Header: column, width: 150 });
+        let lengthall = column.length;
+        action.value.map((issueone) => {
+          let lengthone = 0;
+          try {
+            lengthone = issueone[column].length;
+          } catch (e) { }
+          if (isNaN(lengthall)) {
+            lengthone = 0;
+          } else if (lengthall < lengthone) {
+            lengthall = lengthone;
+          }
+        })
+        lengthall = 20 + (lengthall * 9);
+        if (lengthall > 150) lengthall = 150;
+        if (column === "text") {
+          table_columns.push({ accessor: 'text', Header: 'title', width: lengthall });
+        } else if (column === "description") {
+        } else {
+          table_columns.push({ accessor: column, Header: column, width: lengthall });
+        }
+        
+
         return null;
       });
       const issue_columns = [{ Header: 'Info', columns: table_columns }];

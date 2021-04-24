@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy, useBlockLayout, useResizeColumns } from 'react-table'
+import { dateorstring2string } from '../../functions/Common/CommonHelper.js';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -85,7 +86,6 @@ function Table2({ columns, data }) {
 
   return (
     <>
-      
       {/* <div>
         <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
@@ -150,13 +150,23 @@ const checkVoidColumns = (props, columns) => {
   if (typeof props.issue_columns[0] === "undefined") {
     return false;
   } else {
-    let prco = props.issue_columns[0].columns;
-    columns.push(prco[prco.findIndex((element) => element.accessor === 'id')]);
-    columns.push(prco[prco.findIndex((element) => element.accessor === 'text')]);
-    columns.push(prco[prco.findIndex((element) => element.accessor === 'description')]);
+    let data=[];
+    props.issue.map((issue) => {
+      const issuedata = {
+        ...issue,
+        start_date: dateorstring2string(issue.start_date),
+        end_date: dateorstring2string(issue.end_date),
+        due_date: dateorstring2string(issue.due_date),
+        links: "TBD"
+      };
+      data.push(issuedata)
+    });
+    console.log(props.issue_columns[0].columns);
+    console.log(data);
+
     return (
       < Styles >
-        <Table2 columns={columns} data={props.issue} />
+        <Table2 columns={props.issue_columns[0].columns} data={data} />
       </Styles >
     );
   }
@@ -165,20 +175,10 @@ const checkVoidColumns = (props, columns) => {
 
 
 const Table = (props) => {
-  let columns = React.useMemo(
-    () => [
-      {
-        Header: 'Info',
-        columns: [],
-      },
-    ],
-    []
-  )
-
   return (
     <div>
-      ※テーブル表示機能はエクスペリメンタル版となります．
-      {checkVoidColumns(props, columns)
+      ※The table display function is an experimental version.
+      {checkVoidColumns(props)
       }
     </div>
 
