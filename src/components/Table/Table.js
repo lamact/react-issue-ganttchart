@@ -67,7 +67,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table2({ columns, data }) {
+function SmartTable({ columns, data }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -166,7 +166,7 @@ const checkVoidColumns = (props, columns) => {
     });
     return (
       < Styles >
-        <Table2 columns={props.issue_columns[0].columns} data={data} />
+        <SmartTable columns={props.issue_columns[0].columns} data={data} />
       </Styles >
     );
   }
@@ -177,7 +177,6 @@ const checkVoidColumns = (props, columns) => {
 const Table = (props) => {
   return (
     <div>
-      ※The table display function is an experimental version.
       {checkVoidColumns(props)
       }
     </div>
