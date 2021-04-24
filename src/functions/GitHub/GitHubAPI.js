@@ -38,7 +38,6 @@ export const getGitHubIssueFromAPI = async (git_url, issue_info) => {
         }
       }
       gantt_task.links = links;
-      console.log(gantt_task);
       return gantt_task;
     })
     .catch((err) => {
@@ -51,8 +50,6 @@ export const getGitHubIssuesFromAPI = async (
   selected_labels,
   selected_assignee
 ) => {
-  console.log(git_url, selected_labels, selected_assignee)
-  console.log('aa',getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee))
   return axios
     .get(
       getGitHubAPIURLIssueFilterd(git_url, selected_labels, selected_assignee)

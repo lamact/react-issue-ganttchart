@@ -27,7 +27,6 @@ const Gantt = (props) => {
           gantt.addTask(issue);
           if ('links' in issue) {
             issue.links.map((link) => {
-              console.log(link);
               gantt.addLink(link);
               return null;
             });

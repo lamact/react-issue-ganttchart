@@ -144,8 +144,6 @@ export const contentcheck = (Arrange, generate) => {
     Arrange.parent == generate.parent &&
     JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
   ) {
-    console.log(JSON.stringify(Arrange.links));
-    console.log(JSON.stringify(generate.links));
     return true;
   } else {
     return false;

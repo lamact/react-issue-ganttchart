@@ -112,7 +112,6 @@ export const handleSetIssueByAPI = (state, action) => {
 };
 
 export const setIssue = (state, action) => {
-  console.log("state.update start", action.value)
   if (isValidVariable(action.value)) {
     if (action.value.length !== 0) {
 
@@ -157,7 +156,6 @@ export const setIssue = (state, action) => {
         return null;
       });
       const issue_columns = [{ Header: 'Info', columns: table_columns }];
-      console.log("new_state.updated");
       return { ...state, update: state.update + 1, issue_columns, issue: action.value }
     }
   }
@@ -193,7 +191,6 @@ export const handleGitURLChange = (
 };
 
 export const handleTokenChange = (token) => {
-  console.log('handleTokenChange');
   bake_cookie('git_token', token);
   return token;
 };

@@ -19,7 +19,6 @@ const App = (props) => {
   setValue('token', read_cookie('git_token'));
   
   useEffect(() => {
-    console.log('useEffect：橙', state)
     if (state.initflag) {
       dispatch({
         type: 'setStateFromURLQueryString',
@@ -31,7 +30,6 @@ const App = (props) => {
   }, [props.location]);
 
   useEffect(() => {
-    console.log('useEffect：黒', state)
     setLabelListOfRepoFromAPI(state.git_url, state.token)
       .then((labels) => {
         dispatch({ type: 'labelChange', value: labels });
@@ -49,7 +47,6 @@ const App = (props) => {
   }, [state.git_url, state.token, state.selected_assignee]);
 
   useEffect(() => {
-    console.log('useEffect：白', state)
     getIssuesFromAPI(
       state.git_url,
       state.token,

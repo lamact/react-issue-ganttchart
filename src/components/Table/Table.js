@@ -150,7 +150,7 @@ const checkVoidColumns = (props, columns) => {
   if (typeof props.issue_columns[0] === "undefined") {
     return false;
   } else {
-    let data=[];
+    let data = [];
     props.issue.map((issue) => {
       const issuedata = {
         ...issue,
@@ -161,9 +161,6 @@ const checkVoidColumns = (props, columns) => {
       };
       data.push(issuedata)
     });
-    console.log(props.issue_columns[0].columns);
-    console.log(data);
-
     return (
       < Styles >
         <Table2 columns={props.issue_columns[0].columns} data={data} />
