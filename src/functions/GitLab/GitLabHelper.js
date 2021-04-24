@@ -42,8 +42,11 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
-  if (getNumberFromDescriptionYaml(issue_info.description, 'parent')) {
-    gantt_task.parent = '#' + getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  if (parent !== null) {
+    if (parent !== 0) {
+      gantt_task.parent = '#' + parent;
+    }
   }
 
   const yaml_struct = parseYamlFromDescription(issue_info.description);
@@ -124,6 +127,7 @@ export const Arrangegantt = (issue_info) => {
     assignee: issue_info.assignee,
     description: issue_info.description,
     update: issue_info.update,
+    parent: issue_info.parent,
     links: arrangelink,
   }
 
@@ -131,18 +135,7 @@ export const Arrangegantt = (issue_info) => {
 };
 
 export const contentcheck = (Arrange, generate) => {
-  console.log('id',Arrange.id == generate.id);
-  console.log('te',Arrange.text == generate.text);
-  console.log('st',Arrange.start_date == generate.start_date);
-  console.log('du',Arrange.due_date == generate.due_date.toString());
-  console.log('du',Arrange.duration == generate.duration);
-  console.log('pr',Arrange.progress == generate.progress);
-  console.log('as',Arrange.assignee == generate.assignee);
-  console.log('de',Arrange.description == generate.description);
-  console.log('up',Arrange.update == generate.update);
-  console.log('pa',Arrange.parent == generate.parent);
-
-  if (
+if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
     Arrange.start_date == generate.start_date &&
