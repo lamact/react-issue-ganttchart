@@ -11,6 +11,8 @@ import {
   generateGanttTaskFromGitHub,
   generateLinkFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
+  Arrangegantt,
+  contentcheck,
 } from './GitHubHelper.js';
 import { date2string, isValidVariable } from '../Common/CommonHelper.js';
 import {
@@ -126,7 +128,7 @@ export const updateGitHubIssueFromGanttTask = (
           type: 'error',
         });
       } else {
-        if (gantt_task !== generateGanttTaskFromGitHub(issue_info.body, issue_info)) {
+        if (contentcheck(Arrangegantt(gantt_task), generateGanttTaskFromGitHub(issue_info.body, issue_info), generateLinkFromGitHub(issue_info))!=true) {
           axios
             .post(
               url,
