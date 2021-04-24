@@ -131,7 +131,7 @@ export const setIssue = (state, action) => {
       });
       let table_columns = [];
       columns.map((column) => {
-        table_columns.push({ accessor: column, Header: column, width: 50 });
+        table_columns.push({ accessor: column, Header: column, width: 150 });
         return null;
       });
       const issue_columns = [{ Header: 'Info', columns: table_columns }];

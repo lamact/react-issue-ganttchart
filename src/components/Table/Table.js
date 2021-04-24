@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy, useBlockLayout, useResizeColumns } from 'react-table'
-import xtype from 'xtypejs'
-
-import makeData from './makeData'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -32,8 +29,8 @@ const Styles = styled.div`
 
       .resizer {
         display: inline-block;
-        background: blue;
-        width: 10px;
+        background: black;
+        width: 1px;
         height: 100%;
         position: absolute;
         right: 0;
@@ -88,7 +85,8 @@ function Table2({ columns, data }) {
 
   return (
     <>
-      <div>
+      
+      {/* <div>
         <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
@@ -102,7 +100,7 @@ function Table2({ columns, data }) {
           </div>
         ))}
         <br />
-      </div>
+      </div> */}
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -143,22 +141,19 @@ function Table2({ columns, data }) {
           })}
         </tbody>
       </table>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </>
   )
 }
 
 const checkVoidColumns = (props, columns) => {
-  console.log(props.issue_columns[0]);
   if (typeof props.issue_columns[0] === "undefined") {
     return false;
   } else {
-    let test = props.issue_columns[0].columns;
-    test.splice(2, 2);
-    test.splice(6, 1);
-    test.splice(8, 1);
-    columns[0].columns = test;
-    
+    let prco = props.issue_columns[0].columns;
+    columns.push(prco[prco.findIndex((element) => element.accessor === 'id')]);
+    columns.push(prco[prco.findIndex((element) => element.accessor === 'text')]);
+    columns.push(prco[prco.findIndex((element) => element.accessor === 'description')]);
     return (
       < Styles >
         <Table2 columns={columns} data={props.issue} />
@@ -180,38 +175,10 @@ const Table = (props) => {
     []
   )
 
-
-  const columns2 = React.useMemo(
-    () => [
-      {
-        Header: 'Info',
-        columns: [
-          { accessor: "id", Header: "id", width: 50 }
-          , { accessor: "text", Header: "text", width: 50 }
-          , { accessor: "duration", Header: "duration", width: 50 }
-          , { accessor: "progress", Header: "progress", width: 50 }
-          , { accessor: "assignee", Header: "assignee", width: 50 }
-          , { accessor: "description", Header: "description", width: 50 }
-          , { accessor: "parent", Header: "parent", width: 50 }
-          , { accessor: "dependon", Header: "dependon", width: 50 }
-          ,
-        ],
-      },
-    ],
-    []
-  )
-  // useEffect(() => {
-  //   console.log('useEffect：a')
-  //   if (checkvoid(props.issue_columns)) {
-  //     let test = props.issue_columns[0].columns;
-  //     let test2 = test.splice(2, 2);
-  //   }
-  // }, [props.issue_columns[0]]);
-
-
   return (
     <div>
-      {checkVoidColumns(props, columns, columns2)
+      ※テーブル表示機能はエクスペリメンタル版となります．
+      {checkVoidColumns(props, columns)
       }
     </div>
 

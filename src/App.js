@@ -17,9 +17,7 @@ const App = (props) => {
   const { register, setValue } = useForm({ git_url: '', token: '' });
   const [state, dispatch] = useReducer(reducerFunc, setStateFromURLQueryString(initialState, props, setValue));
   setValue('token', read_cookie('git_token'));
-
-
-
+  
   useEffect(() => {
     console.log('useEffect：橙', state)
     if (state.initflag) {
