@@ -19,6 +19,7 @@ export const attachEvent = (gantt, props) => {
     gantt.getChildren(gantt_task.id).map((child_gantt_task_id) => {
       updateChildTaskDate(gantt, gantt_task, child_gantt_task_id);
     });
+    console.log('move');
     props.updateIssueByAPI(gantt_task, gantt);
   });
 

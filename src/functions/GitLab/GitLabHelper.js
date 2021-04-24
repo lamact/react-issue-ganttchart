@@ -131,6 +131,17 @@ export const Arrangegantt = (issue_info) => {
 };
 
 export const contentcheck = (Arrange, generate) => {
+  console.log('id',Arrange.id == generate.id);
+  console.log('te',Arrange.text == generate.text);
+  console.log('st',Arrange.start_date == generate.start_date);
+  console.log('du',Arrange.due_date == generate.due_date.toString());
+  console.log('du',Arrange.duration == generate.duration);
+  console.log('pr',Arrange.progress == generate.progress);
+  console.log('as',Arrange.assignee == generate.assignee);
+  console.log('de',Arrange.description == generate.description);
+  console.log('up',Arrange.update == generate.update);
+  console.log('pa',Arrange.parent == generate.parent);
+
   if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&

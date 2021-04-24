@@ -150,7 +150,6 @@ function Table2({ columns, data }) {
 }
 
 const checkVoidColumns = (props, columns) => {
-  console.log('props.issue',props)
   if (typeof props.issue_columns[0] === "undefined" || typeof props.issue === "undefined") {
     return false;
   } else {

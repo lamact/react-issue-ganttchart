@@ -68,7 +68,6 @@ export const calculateDueDate = (start_date_str, duration) => {
 
 export const dateorstring2string = (date) => {
   if (typeof date === 'string') {
-    console.log('datetest2',date);
     return (date);
   } else {
     return date2string(date); 
