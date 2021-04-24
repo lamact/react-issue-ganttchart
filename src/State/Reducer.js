@@ -147,12 +147,10 @@ export const setIssue = (state, action) => {
         if (lengthall > 150) lengthall = 150;
         if (column === "text") {
           table_columns.push({ accessor: 'text', Header: 'title', width: lengthall });
-        } else if (column === "description") {
+        } else if (column === "description" || column === "links") {
         } else {
           table_columns.push({ accessor: column, Header: column, width: lengthall });
         }
-        
-
         return null;
       });
       const issue_columns = [{ Header: 'Info', columns: table_columns }];

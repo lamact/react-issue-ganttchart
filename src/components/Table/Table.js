@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import { useTable, useSortBy, useBlockLayout, useResizeColumns } from 'react-table'
 import { dateorstring2string } from '../../functions/Common/CommonHelper.js';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BTable from 'react-bootstrap/Table';
+
 const Styles = styled.div`
   padding: 1rem;
 
@@ -101,7 +104,7 @@ function Table2({ columns, data }) {
         ))}
         <br />
       </div> */}
-      <table {...getTableProps()}>
+      <BTable striped bordered hover size="sm" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -140,7 +143,7 @@ function Table2({ columns, data }) {
             )
           })}
         </tbody>
-      </table>
+      </BTable>
       {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </>
   )
@@ -158,7 +161,7 @@ const checkVoidColumns = (props, columns) => {
         start_date: dateorstring2string(issue.start_date),
         end_date: dateorstring2string(issue.end_date),
         due_date: dateorstring2string(issue.due_date),
-        links: "TBD"
+        links: ""
       };
       data.push(issuedata)
     });
