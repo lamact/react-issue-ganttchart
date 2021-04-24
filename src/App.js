@@ -72,10 +72,8 @@ const App = (props) => {
 
   return (
     <>
-      <div className="zoom-bar">
+      <div>
         <Toolbar
-          zoom={state.currentZoom}
-          onZoomChange={(zoom) => dispatch({ type: 'zoomChange', value: zoom })}
           onScreenChange={(screen) => dispatch({ type: 'screenChange', value: screen })}
           onGitURLChange={(git_url) =>
             dispatch({
@@ -111,7 +109,6 @@ const App = (props) => {
           {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
             <div className="gantt-container">
               <Gantt
-                zoom={state.currentZoom}
                 git_url={state.git_url}
                 token={state.token}
                 selected_labels={state.selected_labels}
