@@ -13,21 +13,8 @@ const Gantt = (props) => {
     setGanttTemplates(gantt);
     attachEvent(gantt, props);
     gantt.init(containerRef.current);
-    gantt.ext.zoom.setLevel(props.zoom);
+    gantt.ext.zoom.setLevel('Days');
   }, []);
-
-  useEffect(() => {
-    if (props.zoom === 'Days') {
-      gantt.eachTask(function (task) {
-        task.$open = true;
-      });
-    } else {
-      gantt.eachTask(function (task) {
-        task.$open = false;
-      });
-    }
-    gantt.ext.zoom.setLevel(props.zoom);
-  }, [props.zoom]);
 
   useEffect(() => {
     try {
