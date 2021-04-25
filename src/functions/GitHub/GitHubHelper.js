@@ -1,6 +1,7 @@
 import {
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
+  parseYamlFromDescription,
   removeFirstSharp,
   replacePropertyInDescriptionString,
   getDependonFromDescriptionYaml,
@@ -38,6 +39,13 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     description: description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
+  const yaml_struct = parseYamlFromDescription(issue_info.description);
+
+  for (let [key, value] of Object.entries(yaml_struct)) {
+    if (!(key in gantt_task)) {
+      gantt_task[key]=value;
+    }
+  }
   return gantt_task;
 };
 

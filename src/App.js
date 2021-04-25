@@ -2,9 +2,10 @@ import React, { useReducer, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
+import Table from './components/Table';
 import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
-import { initialState, reducerFunc } from './State/Reducer.js';
+import { initialState, reducerFunc, setStateFromURLQueryString } from './State/Reducer.js';
 import {
   getIssuesFromAPI,
   setLabelListOfRepoFromAPI,
@@ -13,19 +14,19 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 const App = (props) => {
-  const [state, dispatch] = useReducer(reducerFunc, initialState);
   const { register, setValue } = useForm({ git_url: '', token: '' });
-
+  const [state, dispatch] = useReducer(reducerFunc, setStateFromURLQueryString(initialState, props, setValue));
+  setValue('token', read_cookie('git_token'));
+  
   useEffect(() => {
-    setValue('token', read_cookie('git_token'));
-    dispatch({ type: 'tokenChange', value: read_cookie('git_token') });
-  }, []);
-
-  useEffect(() => {
-    dispatch({
-      type: 'setStateFromURLQueryString',
-      value: { props: props, setValue: setValue },
-    });
+    if (state.initflag) {
+      dispatch({
+        type: 'setStateFromURLQueryString',
+        value: { props: props, setValue: setValue },
+      });
+    } else {
+      dispatch({ type: 'initFlagTrue' })
+    }
   }, [props.location]);
 
   useEffect(() => {
@@ -46,7 +47,6 @@ const App = (props) => {
   }, [state.git_url, state.token, state.selected_assignee]);
 
   useEffect(() => {
-    //dispatch({ type: 'getIssueByAPI' });
     getIssuesFromAPI(
       state.git_url,
       state.token,
@@ -57,22 +57,21 @@ const App = (props) => {
         dispatch({ type: 'setIssue', value: issues });
       })
       .catch((err) => {
-        console.log('error');
+        console.log('error', err);
+
       });
   }, [
-    state.git_url,
     state.token,
+    state.git_url,
     state.selected_labels,
     state.selected_assignee,
-    state.update,
   ]);
 
   return (
     <>
-      <div className="zoom-bar">
+      <div>
         <Toolbar
-          zoom={state.currentZoom}
-          onZoomChange={(zoom) => dispatch({ type: 'zoomChange', value: zoom })}
+          onScreenChange={(screen) => dispatch({ type: 'screenChange', value: screen })}
           onGitURLChange={(git_url) =>
             dispatch({
               type: 'gitURLChange',
@@ -103,29 +102,39 @@ const App = (props) => {
           register={register}
         />
       </div>
-      <div className="gantt-container">
-        <Gantt
-          zoom={state.currentZoom}
-          git_url={state.git_url}
-          token={state.token}
-          selected_labels={state.selected_labels}
-          selected_assignee={state.selected_assignee}
-          issue={state.issue}
-          update={state.update}
-          openIssueAtBrowser={(gantt_task_id) =>
-            dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
-          }
-          openNewIssueAtBrowser={(gantt_task_id) =>
-            dispatch({ type: 'openNewIssueAtBrowser', value: gantt_task_id })
-          }
-          updateIssueByAPI={(gantt_task, gantt) =>
-            dispatch({
-              type: 'updateIssueByAPI',
-              value: { gantt_task: gantt_task, gantt: gantt },
-            })
-          }
-        />
-      </div>
+        <div>
+          {state.screen === 'Gantt' ? ( //ガントチャートとインシデント棚卸し画面の切替フラグはここで制御する
+            <div className="gantt-container">
+              <Gantt
+                git_url={state.git_url}
+                token={state.token}
+                selected_labels={state.selected_labels}
+                selected_assignee={state.selected_assignee}
+                issue={state.issue}
+                update={state.update}
+                openIssueAtBrowser={(gantt_task_id) =>
+                  dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
+                }
+                openNewIssueAtBrowser={(gantt_task_id) =>
+                  dispatch({ type: 'openNewIssueAtBrowser', value: gantt_task_id })
+                }
+                updateIssueByAPI={(gantt_task, gantt) =>
+                  dispatch({
+                    type: 'updateIssueByAPI',
+                    value: { gantt_task: gantt_task, gantt: gantt },
+                  })
+                }
+              />
+            </div>
+          ) : (
+            <div className="gantt-container">
+              <Table
+                issue={state.issue}
+                issue_columns={state.issue_columns}
+              />
+            </div>
+          )} 
+        </div>
     </>
   );
 };
