@@ -14,6 +14,7 @@ import {
   orgRound,
   adjustDateString,
   getGanttUpdateDate,
+  isValidVariable,
 } from '../Common/CommonHelper.js';
 
 const getGitHubAssignee = (issue_info) => {
@@ -39,12 +40,15 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     description: description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
-  const yaml_struct = parseYamlFromDescription(issue_info.description);
-
-  for (let [key, value] of Object.entries(yaml_struct)) {
-    if (!(key in gantt_task)) {
-      gantt_task[key]=value;
+  const yaml_struct = parseYamlFromDescription(description);
+  if (isValidVariable(yaml_struct)) {
+    for (let [key, value] of Object.entries(yaml_struct)) {
+      if (!(key in gantt_task)) {
+        gantt_task[key] = value;
+      }
     }
+  }else{
+    console.error("yaml_struct is null",gantt_task.id)
   }
   return gantt_task;
 };
@@ -94,11 +98,11 @@ export const updateGitHubDescriptionStringFromGanttTask = (
 export const Arrangegantt = (issue_info) => {
   let arrangelink = [];
   issue_info.links.map((list) => {
-  let prearrangelink = [];
-      prearrangelink.type = list.type;
-      prearrangelink.target = list.target;
-      prearrangelink.source = list.source
-      arrangelink.push(prearrangelink);
+    let prearrangelink = [];
+    prearrangelink.type = list.type;
+    prearrangelink.target = list.target;
+    prearrangelink.source = list.source
+    arrangelink.push(prearrangelink);
   });
 
   const arrange = {
@@ -112,13 +116,13 @@ export const Arrangegantt = (issue_info) => {
     description: issue_info.description,
     update: issue_info.update,
     links: arrangelink,
-    parent: '#'+issue_info.parent,
+    parent: '#' + issue_info.parent,
   }
 
   return arrange;
 };
 
-export const contentcheck = (Arrange, generate,links) => {
+export const contentcheck = (Arrange, generate, links) => {
   if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
@@ -130,7 +134,7 @@ export const contentcheck = (Arrange, generate,links) => {
     Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
-    Arrange.links.toString() == links.toString() 
+    Arrange.links.toString() == links.toString()
   ) {
     return true;
   } else {

@@ -58,7 +58,6 @@ const App = (props) => {
       })
       .catch((err) => {
         console.log('error', err);
-
       });
   }, [
     state.token,
