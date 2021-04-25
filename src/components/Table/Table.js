@@ -5,6 +5,8 @@ import { dateorstring2string } from '../../functions/Common/CommonHelper.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BTable from 'react-bootstrap/Table';
+import { IconButton } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -89,21 +91,23 @@ function SmartTable({ columns, data }) {
 
   return (
     <>
-      {/* <div>
-        <div>
+      <div>
+        {/* <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
-        </div>
+        </div> */}
         {allColumns.map(column => (
-          <div key={column.id}>
-            <label>
-              <input type="checkbox" {...column.getToggleHiddenProps()} />{' '}
-              {column.id}
-            </label>
-          </div>
+          <> <input type="checkbox" {...column.getToggleHiddenProps()} />{column.id}</>
         ))}
+      <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
+        <AddCircleOutlineIcon
+          // onClick={(e) => {
+          //   props.onAddCustomFieldButtonClick();
+          // }}
+        />
+      </IconButton>
         <br />
-      </div> */}
+      </div>
       <BTable striped bordered hover size="sm" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -172,13 +176,10 @@ const checkVoidColumns = (props, columns) => {
   }
 };
 
-
-
 const Table = (props) => {
   return (
     <div>
-      {checkVoidColumns(props)
-      }
+      {checkVoidColumns(props)}
     </div>
 
   )
