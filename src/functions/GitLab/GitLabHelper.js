@@ -3,7 +3,6 @@ import {
   getDateFromDescriptionYaml,
   getNumberFromDescriptionYaml,
   replacePropertyInDescriptionString,
-  parseYamlFromDescription,
   getDependonFromDescriptionYaml,
 } from '../Common/Parser.js';
 import {
@@ -46,15 +45,6 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
   if (parent !== null) {
     if (parent !== 0) {
       gantt_task.parent = '#' + parent;
-    }
-  }
-
-  const yaml_struct = parseYamlFromDescription(issue_info.description);
-  if (yaml_struct) {
-    for (let [key, value] of Object.entries(yaml_struct)) {
-      if (!(key in gantt_task)) {
-        gantt_task[key] = value;
-      }
     }
   }
   let links = [];
@@ -127,7 +117,6 @@ export const Arrangegantt = (issue_info) => {
     assignee: issue_info.assignee,
     description: issue_info.description,
     update: issue_info.update,
-    parent: issue_info.parent,
     links: arrangelink,
   }
 
@@ -135,7 +124,7 @@ export const Arrangegantt = (issue_info) => {
 };
 
 export const contentcheck = (Arrange, generate) => {
-if (
+  if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
     Arrange.start_date == generate.start_date &&
@@ -148,6 +137,8 @@ if (
     Arrange.parent == generate.parent &&
     JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
   ) {
+    console.log(JSON.stringify(Arrange.links));
+    console.log(JSON.stringify(generate.links));
     return true;
   } else {
     return false;

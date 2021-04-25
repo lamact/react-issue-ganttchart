@@ -13,23 +13,43 @@ const Gantt = (props) => {
     setGanttTemplates(gantt);
     attachEvent(gantt, props);
     gantt.init(containerRef.current);
-    gantt.ext.zoom.setLevel('Days');
+    gantt.ext.zoom.setLevel(props.zoom);
   }, []);
 
   useEffect(() => {
+    if (props.zoom === 'Days') {
+      gantt.eachTask(function (task) {
+        task.$open = true;
+      });
+    } else {
+      gantt.eachTask(function (task) {
+        task.$open = false;
+      });
+    }
+    gantt.ext.zoom.setLevel(props.zoom);
+  }, [props.zoom]);
+
+  useEffect(() => {
     try {
-      gantt.clearAll();
-      if (isValidVariable(props.issue)) {
+      if (isValidVariable(props.issue) && props.issue.length != 0) {
+        gantt.clearAll();
+        // props.issue.map((issue) => {
+        //   gantt.addTask(issue);
+        // });
         props.issue.map((issue) => {
           gantt.addTask(issue);
           if ('links' in issue) {
             issue.links.map((link) => {
+              console.log(link);
               gantt.addLink(link);
               return null;
             });
           }
         });
+
+
         gantt.sort('due_date', false);
+        // gantt.render();
       }
     } catch (err) {
       gantt.message({ text: err, type: 'error' });
