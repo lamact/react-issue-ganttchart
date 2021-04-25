@@ -9,15 +9,8 @@ const zoom_level = {
         { unit: 'day', step: 1, format: '%d' },
       ],
     },
-    {
-      name: 'Weeks',
-      scale_height: 30,
-      min_column_width: 70,
-      scales: [{ unit: 'week', step: 1, format: '%n/%d~' }],
-    },
   ],
 };
-
 const shortenDate = (date) => {
   if (Object.prototype.toString.call(date) !== '[object Date]') {
     return null;
