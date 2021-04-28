@@ -20,8 +20,8 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  screen: 'Table',
-  //screen: 'Gantt',
+  //screen: 'Table',
+  screen: 'Gantt',
   update: 0,
   git_url: '',
   token: read_cookie('git_token'),
