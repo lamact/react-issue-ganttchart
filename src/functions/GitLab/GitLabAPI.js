@@ -98,6 +98,8 @@ export const updateGitLabIssueFromGanttTask = (
     )
     .then((res) => {
       const issue_info = res.data;
+      console.log(Arrangegantt(gantt_task));
+      console.log(generateGanttTaskFromGitLab(issue_info));
       if (contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info))!=true) {
         if (
           parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))

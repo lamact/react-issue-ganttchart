@@ -119,7 +119,9 @@ export const Arrangegantt = (issue_info) => {
     update: issue_info.update,
     links: arrangelink,
   }
-
+  if(issue_info.parent!== 0) {
+      arrange.parent = issue_info.parent;
+    }
   return arrange;
 };
 
@@ -132,13 +134,11 @@ export const contentcheck = (Arrange, generate) => {
     Arrange.duration == generate.duration &&
     Arrange.progress == generate.progress &&
     Arrange.assignee == generate.assignee &&
-    Arrange.description == generate.description &&
+    // Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
     JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
   ) {
-    console.log(JSON.stringify(Arrange.links));
-    console.log(JSON.stringify(generate.links));
     return true;
   } else {
     return false;
