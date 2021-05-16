@@ -8,17 +8,27 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Multiselect } from 'multiselect-react-dropdown';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import { gantt } from 'dhtmlx-gantt';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 const Toolbar = (props) => {
   const { classes } = props;
   return (
     <form noValidate>
+      <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
+        <MenuOpenIcon
+          // style={{ fontSize: 27 }}
+          onClick={(e) => {
+            gantt.config.show_grid = !gantt.config.show_grid;
+            gantt.render();
+          }} />
+      </IconButton>
       <TextField
         className={classes.root}
         required
         placeholder="https://github.com/lamact/react-issue-ganttchart"
         label="Git Repository URL"
-        style={{ width: '25%', verticalAlign: 'middle' }}
+        style={{ width: '20%', verticalAlign: 'middle' }}
         onChange={(e) => {
           props.onGitURLChange(e.target.value);
         }}
