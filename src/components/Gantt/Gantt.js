@@ -9,31 +9,34 @@ import { isValidVariable } from '../../functions/Common/CommonHelper.js';
 const Gantt = (props) => {
   const containerRef = useRef(null);
   useEffect(() => {
-    setGanttConfig(gantt);
-    setGanttTemplates(gantt);
-    attachEvent(gantt, props);
+    if (props.ganttsetupflag) {
+      setGanttConfig(gantt);
+      setGanttTemplates(gantt);
+      attachEvent(gantt, props);
+      gantt.ext.zoom.setLevel('Days');
+      props.ganttSetupFlagFalse();
+    }
     gantt.init(containerRef.current);
-    gantt.ext.zoom.setLevel('Days');
   }, []);
 
   useEffect(() => {
-    try {
-      gantt.clearAll();
-      if (isValidVariable(props.issue)) {
-        props.issue.map((issue) => {
-          gantt.addTask(issue);
-          if ('links' in issue) {
-            issue.links.map((link) => {
-              gantt.addLink(link);
-              return null;
-            });
-          }
-        });
-        gantt.sort('due_date', false);
+      try {
+        gantt.clearAll();
+        if (isValidVariable(props.issue)) {
+          props.issue.map((issue) => {
+            gantt.addTask(issue);
+            if ('links' in issue) {
+              issue.links.map((link) => {
+                gantt.addLink(link);
+                return null;
+              });
+            }
+          });
+          gantt.sort('due_date', false);
+        }
+      } catch (err) {
+        gantt.message({ text: err, type: 'error' });
       }
-    } catch (err) {
-      gantt.message({ text: err, type: 'error' });
-    }
   }, [
     props.issue,
   ]);

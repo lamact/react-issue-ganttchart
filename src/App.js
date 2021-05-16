@@ -110,7 +110,8 @@ const App = (props) => {
                 selected_labels={state.selected_labels}
                 selected_assignee={state.selected_assignee}
                 issue={state.issue}
-                update={state.update}
+              update={state.update}
+              ganttsetupflag={state.ganttsetupflag}
                 openIssueAtBrowser={(gantt_task_id) =>
                   dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
                 }
@@ -123,6 +124,14 @@ const App = (props) => {
                     value: { gantt_task: gantt_task, gantt: gantt },
                   })
                 }
+                ganttSetupFlagFalse={() =>
+                  dispatch({type: 'ganttSetupFlagFalse'})
+                }
+              
+            />
+            <Table
+                issue={state.issue}
+                issue_columns={state.issue_columns}
               />
             </div>
           ) : (

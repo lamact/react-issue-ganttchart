@@ -32,6 +32,7 @@ export const initialState = {
   issue: [],
   issue_columns: [],
   initflag: false,
+  ganttsetupflag: true,
 };
 
 
@@ -86,6 +87,8 @@ export const reducerFunc = (state, action) => {
       return setIssue(state, action);
     case 'initFlagTrue':
       return { ...state, initflag: true };
+    case 'ganttSetupFlagFalse':
+      return { ...state, ganttsetupflag: false };
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
