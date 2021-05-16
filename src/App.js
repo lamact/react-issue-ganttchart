@@ -130,10 +130,6 @@ const App = (props) => {
                 }
               
             />
-            <Table
-                issue={state.issue}
-                issue_columns={state.issue_columns}
-              />
             </div>
           ) : (
             <div className="gantt-container">
