@@ -130,7 +130,9 @@ export const Arrangegantt = (issue_info) => {
     parent: issue_info.parent,
     links: arrangelink,
   }
-
+  if(issue_info.parent!== 0) {
+      arrange.parent = issue_info.parent;
+    }
   return arrange;
 };
 
@@ -143,7 +145,7 @@ if (
     Arrange.duration == generate.duration &&
     Arrange.progress == generate.progress &&
     Arrange.assignee == generate.assignee &&
-    //Arrange.description == generate.description &&
+    // Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
     JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
