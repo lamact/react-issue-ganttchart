@@ -64,6 +64,7 @@ const App = (props) => {
     state.git_url,
     state.selected_labels,
     state.selected_assignee,
+    state.screen,
   ]);
 
   return (
