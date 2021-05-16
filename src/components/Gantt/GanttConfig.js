@@ -37,7 +37,7 @@ export const setGanttConfig = (gantt) => {
   gantt.config.grid_resize = true;
   gantt.config.open_tree_initially = true;
   gantt.config.fit_tasks = true;
-
+  gantt.config.show_grid = false;
   gantt.config.sort = true;
 
   gantt.config.columns = [
@@ -78,7 +78,7 @@ export const setGanttConfig = (gantt) => {
       },
     },
     { name: 'assignee', label: 'Assignee', align: 'center', width: '130' },
-    { name: 'add', label: '', width: '40' },
+    { name: 'add', label: '', width: '30' },
   ];
 
   gantt.plugins({

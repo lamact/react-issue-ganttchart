@@ -119,7 +119,7 @@ export const contentcheck = (Arrange, generate,links) => {
     Arrange.duration == generate.duration &&
     Arrange.progress == generate.progress &&
     Arrange.assignee == generate.assignee &&
-    Arrange.description == generate.description &&
+    // Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
     Arrange.links.toString() == links.toString() 
