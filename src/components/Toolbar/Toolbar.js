@@ -17,7 +17,6 @@ const Toolbar = (props) => {
     <form noValidate>
       <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
         <MenuOpenIcon
-          // style={{ fontSize: 27 }}
           onClick={(e) => {
             gantt.config.show_grid = !gantt.config.show_grid;
             gantt.render();
