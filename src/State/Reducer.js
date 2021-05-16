@@ -83,8 +83,8 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
-    case 'setIssue':
-      return setIssue(state, action);
+    case 'handleGetIssueByAPI':
+      return handleGetIssueByAPI(state, action);
     case 'initFlagTrue':
       return { ...state, initflag: true };
     case 'ganttSetupFlagFalse':
@@ -120,11 +120,7 @@ export const handleUpdateIssueByAPI = (state, action) => {
   return state;
 };
 
-export const handleSetIssueByAPI = (state, action) => {
-  return { ...state, issue: action.value };
-};
-
-export const setIssue = (state, action) => {
+export const handleGetIssueByAPI = (state, action) => {
   if (isValidVariable(action.value)) {
     if (action.value.length !== 0) {
 

@@ -54,7 +54,7 @@ const App = (props) => {
       state.selected_assignee
     )
       .then((issues) => {
-        dispatch({ type: 'setIssue', value: issues });
+        dispatch({ type: 'handleGetIssueByAPI', value: issues });
       })
       .catch((err) => {
         console.log('error', err);
