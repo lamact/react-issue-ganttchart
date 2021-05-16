@@ -1,4 +1,4 @@
-import { bake_cookie } from 'sfcookies';
+import { bake_cookie, read_cookie } from 'sfcookies';
 import {
   convertIDNamesStringToList,
   convertIDNameListToString,
@@ -20,22 +20,26 @@ import {
 import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
-  currentZoom: 'Days',
+  //screen: 'Table',
+  screen: 'Gantt',
   update: 0,
   git_url: '',
-  token: 'Tokens that have not yet been entered',
+  token: read_cookie('git_token'),
   labels: [],
   selected_labels: [],
   member_list: [],
   selected_assignee: {},
   issue: [],
   issue_columns: [],
+  initflag: false,
+  ganttsetupflag: true,
 };
+
 
 export const reducerFunc = (state, action) => {
   switch (action.type) {
-    case 'zoomChange':
-      return { ...state, currentZoom: action.value };
+    case 'screenChange':
+      return { ...state, screen: action.value };
     case 'gitURLChange':
       return {
         ...state,
@@ -79,9 +83,12 @@ export const reducerFunc = (state, action) => {
       return handleOpenNewIssueAtBrowser(state, action);
     case 'updateIssueByAPI':
       return handleUpdateIssueByAPI(state, action);
-    case 'setIssue':
-      return { ...state, issue: action.value };
-      
+    case 'handleGetIssueByAPI':
+      return handleGetIssueByAPI(state, action);
+    case 'initFlagTrue':
+      return { ...state, initflag: true };
+    case 'ganttSetupFlagFalse':
+      return { ...state, ganttsetupflag: false };
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -110,6 +117,61 @@ export const handleUpdateIssueByAPI = (state, action) => {
     action.value.gantt,
     state.git_url
   );
+  return state;
+};
+
+export const handleGetIssueByAPI = (state, action) => {
+  if (isValidVariable(action.value)) {
+    if (action.value.length !== 0) {
+
+      //Creating a column list
+      let columns = [];
+      action.value.map((issue) => {
+        columns = columns.concat(Object.keys(issue));
+        for (var i = 0; i < columns.length; ++i) {
+          for (var j = i + 1; j < columns.length; ++j) {
+            if (columns[i] === columns[j])
+              columns.splice(j--, 1);
+          }
+        }
+        return null;
+      });
+
+      //Creating a table setting
+      let table_columns = [];
+      columns.map((column) => {
+        let lengthall = column.length;
+        action.value.map((issueone) => {
+          let lengthone = 0;
+          try {
+            lengthone = issueone[column].length;
+          } catch (e) { }
+          if (isNaN(lengthall)) {
+            lengthone = 0;
+          } else if (lengthall < lengthone) {
+            lengthall = lengthone;
+          }
+        })
+        lengthall = 20 + (lengthall * 9);
+        if (lengthall > 150) lengthall = 150;
+        if (column === "text") {
+          table_columns.push({ accessor: 'text', Header: 'title', width: lengthall });
+        } else if (column === "description" || column === "links") {
+        } else {
+          table_columns.push({ accessor: column, Header: column, width: lengthall });
+        }
+        return null;
+      });
+      const issue_columns = [{ Header: 'Info', columns: table_columns }];
+      return { ...state, update: state.update + 1, issue_columns, issue: action.value }
+    }
+  }
+  return { ...state, issue: action.value }
+};
+
+
+
+export const handleTableUpdateIssueByAPI = (state) => {
   return state;
 };
 

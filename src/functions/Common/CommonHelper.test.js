@@ -22,6 +22,9 @@ describe('isValidVariable', () => {
   test('false', () => {
     expect(isValidVariable('')).toBe(false);
   });
+  test('true : When make URL, [] must be true ', () => {
+    expect(isValidVariable([])).toBe(true);
+  });
 });
 
 describe('validVariable', () => {

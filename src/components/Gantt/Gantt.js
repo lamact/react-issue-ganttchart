@@ -9,51 +9,34 @@ import { isValidVariable } from '../../functions/Common/CommonHelper.js';
 const Gantt = (props) => {
   const containerRef = useRef(null);
   useEffect(() => {
-    setGanttConfig(gantt);
-    setGanttTemplates(gantt);
-    attachEvent(gantt, props);
+    if (props.ganttsetupflag) {
+      setGanttConfig(gantt);
+      setGanttTemplates(gantt);
+      attachEvent(gantt, props);
+      gantt.ext.zoom.setLevel('Days');
+      props.ganttSetupFlagFalse();
+    }
     gantt.init(containerRef.current);
-    gantt.ext.zoom.setLevel(props.zoom);
   }, []);
 
   useEffect(() => {
-    if (props.zoom === 'Days') {
-      gantt.eachTask(function (task) {
-        task.$open = true;
-      });
-    } else {
-      gantt.eachTask(function (task) {
-        task.$open = false;
-      });
-    }
-    gantt.ext.zoom.setLevel(props.zoom);
-  }, [props.zoom]);
-
-  useEffect(() => {
-    try {
-      if (isValidVariable(props.issue) && props.issue.length != 0) {
+      try {
         gantt.clearAll();
-        // props.issue.map((issue) => {
-        //   gantt.addTask(issue);
-        // });
-        props.issue.map((issue) => {
-          gantt.addTask(issue);
-          if ('links' in issue) {
-            issue.links.map((link) => {
-              console.log(link);
-              gantt.addLink(link);
-              return null;
-            });
-          }
-        });
-
-
-        gantt.sort('due_date', false);
-        // gantt.render();
+        if (isValidVariable(props.issue)) {
+          props.issue.map((issue) => {
+            gantt.addTask(issue);
+            if ('links' in issue) {
+              issue.links.map((link) => {
+                gantt.addLink(link);
+                return null;
+              });
+            }
+          });
+          gantt.sort('due_date', false);
+        }
+      } catch (err) {
+        gantt.message({ text: err, type: 'error' });
       }
-    } catch (err) {
-      gantt.message({ text: err, type: 'error' });
-    }
   }, [
     props.issue,
   ]);
