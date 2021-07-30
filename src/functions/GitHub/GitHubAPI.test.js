@@ -35,6 +35,7 @@ describe('setGitHubLabelListOfRepoFromAPI', () => {
           assignee: 'yhzz',
           description: undefined,
           due_date: new Date('2000/01/01'),
+          end_date: new Date('2000/01/01'),
           duration: 1,
           id: '#1',
           progress: null,

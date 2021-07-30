@@ -1,4 +1,3 @@
-[![codecov](https://codecov.io/gh/lamact/react-issue-ganttchart/branch/main/graph/badge.svg?token=9JRU6OX1FC)](https://codecov.io/gh/lamact/react-issue-ganttchart)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lamact/react-issue-ganttchart)
 
 react-issue-ganttchart
