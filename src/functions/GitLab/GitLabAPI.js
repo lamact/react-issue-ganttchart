@@ -39,7 +39,6 @@ export const getGitLabIssuesFromAPI = async (
 
         data.push(gantt_task);
       });
-      console.log(data);
       return data;
     })
     .catch((err) => {
