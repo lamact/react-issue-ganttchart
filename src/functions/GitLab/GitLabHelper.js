@@ -36,12 +36,14 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     text: issue_info.title,
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
     due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
+    end_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     duration: getGanttDuration(start_date, due_date),
     progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
+  console.log(gantt_task)
   let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
   if (parent !== null) {
     if (parent !== 0) {
