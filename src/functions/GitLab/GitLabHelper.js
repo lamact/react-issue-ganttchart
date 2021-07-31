@@ -12,6 +12,7 @@ import {
   getGanttDuration,
   orgRound,
   adjustDateString,
+  adjustDateString2,
   isValidVariable,
   getGanttUpdateDate,
 } from '../Common/CommonHelper.js';
@@ -30,7 +31,14 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     issue_info.description,
     'start_date'
   );
-  const due_date = adjustDateString(issue_info.due_date);
+  let due_date;
+  if (issue_info.due_date == null) {
+    issue_info.due_date = issue_info.created_at;
+    due_date = adjustDateString2(issue_info.due_date);
+  } else {
+    due_date = adjustDateString(issue_info.due_date);
+  }
+
   const gantt_task = {
     id: '#' + issue_info.iid,
     text: issue_info.title,
@@ -43,7 +51,6 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
-  console.log(gantt_task)
   let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
   if (parent !== null) {
     if (parent !== 0) {
@@ -133,13 +140,13 @@ export const Arrangegantt = (issue_info) => {
     links: arrangelink,
   }
   if(issue_info.parent!== 0) {
-      arrange.parent = issue_info.parent;
-    }
+    arrange.parent = issue_info.parent;
+  }
   return arrange;
 };
 
 export const contentcheck = (Arrange, generate) => {
-if (
+  if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
     Arrange.start_date == generate.start_date &&

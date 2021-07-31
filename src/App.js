@@ -47,6 +47,7 @@ const App = (props) => {
   }, [state.git_url, state.token, state.selected_assignee]);
 
   useEffect(() => {
+    console.log("update"+state.update)
     getIssuesFromAPI(
       state.git_url,
       state.token,
@@ -65,6 +66,7 @@ const App = (props) => {
     state.selected_labels,
     state.selected_assignee,
     state.screen,
+    state.update
   ]);
 
   return (

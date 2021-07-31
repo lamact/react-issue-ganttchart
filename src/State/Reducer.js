@@ -163,7 +163,7 @@ export const handleGetIssueByAPI = (state, action) => {
         return null;
       });
       const issue_columns = [{ Header: 'Info', columns: table_columns }];
-      return { ...state, update: state.update + 1, issue_columns, issue: action.value }
+      return { ...state,  issue_columns, issue: action.value }
     }
   }
   return { ...state, issue: action.value }
