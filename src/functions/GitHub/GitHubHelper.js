@@ -31,7 +31,7 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     text: issue_info.title,
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
     due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
-    duration: getGanttDuration(start_date, due_date),
+    duration: getGanttDuration(start_date, due_date, issue_info.created_at),
     progress: getNumberFromDescriptionYaml(description, 'progress'),
     assignee: getGitHubAssignee(issue_info),
     parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
@@ -86,11 +86,11 @@ export const updateGitHubDescriptionStringFromGanttTask = (
 export const Arrangegantt = (issue_info) => {
   let arrangelink = [];
   issue_info.links.map((list) => {
-  let prearrangelink = [];
-      prearrangelink.type = list.type;
-      prearrangelink.target = list.target;
-      prearrangelink.source = list.source
-      arrangelink.push(prearrangelink);
+    let prearrangelink = [];
+    prearrangelink.type = list.type;
+    prearrangelink.target = list.target;
+    prearrangelink.source = list.source
+    arrangelink.push(prearrangelink);
   });
 
   const arrange = {
@@ -104,13 +104,13 @@ export const Arrangegantt = (issue_info) => {
     description: issue_info.description,
     update: issue_info.update,
     links: arrangelink,
-    parent: '#'+issue_info.parent,
+    parent: '#' + issue_info.parent,
   }
 
   return arrange;
 };
 
-export const contentcheck = (Arrange, generate,links) => {
+export const contentcheck = (Arrange, generate, links) => {
   if (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
@@ -122,7 +122,7 @@ export const contentcheck = (Arrange, generate,links) => {
     // Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
-    Arrange.links.toString() == links.toString() 
+    Arrange.links.toString() == links.toString()
   ) {
     return true;
   } else {

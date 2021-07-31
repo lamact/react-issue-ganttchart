@@ -1,4 +1,4 @@
-import { isValidIDName, isValidVariable, validVariable, getGanttStartDate, getGanttDueDate } from './CommonHelper';
+import { isValidIDName, isValidVariable, validVariable, getGanttStartDate, getGanttDueDate, getGanttDuration } from './CommonHelper';
 
 describe('isValidVariable', () => {
   test('true', () => {
@@ -76,5 +76,18 @@ describe('getGanttDueDate', () => {
   });
   test('true', () => {
     expect(getGanttDueDate(null, null, new Date('2021/2/13'))).toStrictEqual(new Date('2021/2/13'));
+  });
+});
+
+
+describe('getGanttDuration', () => {
+  test('true', () => {
+    expect(getGanttDuration(new Date('2021/2/13'), new Date('2021/2/15'), new Date('2021/2/13'))).toStrictEqual(3);
+  });
+  test('true', () => {
+    expect(getGanttDuration(null, new Date('2021/2/15'), new Date('2021/2/13'))).toStrictEqual(3);
+  });
+  test('true', () => {
+    expect(getGanttDuration(null, null, new Date('2021/2/13'))).toStrictEqual(null);
   });
 });
