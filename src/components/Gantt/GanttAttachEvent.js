@@ -25,14 +25,11 @@ export const attachEvent = (gantt, props) => {
   gantt.attachEvent('onBeforeTaskUpdate', (id, mode, gantt_task) => {
   });
 
-  gantt.attachEvent('onAfterTaskMove', (id, parent) => {
+  gantt.attachEvent('onBeforeRowDragEnd', (id, parent) => {
     let gantt_task = gantt.getTask(id);
-    if ('parent' in gantt_task) {
-      if (gantt_task.parent !== 0) {
-        gantt_task.parent = parent;
-        props.updateIssueByAPI(gantt_task, gantt);
-      }
-    }
+    gantt_task.parent = parent;
+    props.updateIssueByAPI(gantt_task, gantt);
+
   });
   gantt.attachEvent("onAfterLinkAdd", function (id, item) {
     let afterlinkId = [];
@@ -44,7 +41,7 @@ export const attachEvent = (gantt, props) => {
       let link = gantt.getLink(linkId);
       let linkid = link.target;
       let linkIds = link.source;
-      afterlink.push({type:'0',target:linkid,source:linkIds});
+      afterlink.push({ type: '0', target: linkid, source: linkIds });
       let relinkIds = linkIds.slice(1);
       if (relinkIds != '') {
         afterlinkId.push(relinkIds);
@@ -68,7 +65,7 @@ export const attachEvent = (gantt, props) => {
       let link = gantt.getLink(linkId);
       let linkid = link.target;
       let linkIds = link.source;
-      afterlink.push({type:'0',target:linkid,source:linkIds});
+      afterlink.push({ type: '0', target: linkid, source: linkIds });
       let relinkIds = linkIds.slice(1);
       if (relinkIds != '') {
         afterlinkId.push(relinkIds);
