@@ -12,7 +12,7 @@ import {
   getGanttDuration,
   orgRound,
   adjustDateString,
-  adjustDateString2,
+  adjustDateString_plusoneday,
   isValidVariable,
   getGanttUpdateDate,
 } from '../Common/CommonHelper.js';
@@ -34,7 +34,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
   let due_date;
   if (issue_info.due_date == null) {
     issue_info.due_date = issue_info.created_at;
-    due_date = adjustDateString2(issue_info.due_date);
+    due_date = adjustDateString_plusoneday(issue_info.due_date);
   } else {
     due_date = adjustDateString(issue_info.due_date);
   }
@@ -42,7 +42,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
   const gantt_task = {
     id: '#' + issue_info.iid,
     text: issue_info.title,
-    start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
+    start_date: getGanttStartDate(start_date, issue_info.created_at),
     due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     end_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     duration: getGanttDuration(start_date, due_date),

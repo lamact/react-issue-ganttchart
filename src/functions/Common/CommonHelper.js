@@ -95,13 +95,13 @@ export const adjustDateString = (date_str) => {
   return date2string(new Date(date_str));
 };
 
-export const adjustDateString2 = (date_str) => {
+export const adjustDateString_plusoneday = (date_str) => {
   let date = new Date(date_str);
-  date.setDate(date.getDate() + 1);
+  date.setDate(date.getDate() + 10);
   return date2string(date);
 };
 
-export const getGanttStartDate = (start_date, due_date, created_at) => {
+export const getGanttStartDate = (start_date, created_at) => {
   let start_date_str = null;
   if (isValidVariable(start_date)) {
     start_date_str = date2string(start_date);
