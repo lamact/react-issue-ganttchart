@@ -25,7 +25,7 @@ const Toolbar = (props) => {
       <TextField
         className={classes.root}
         required
-        placeholder="https://github.com/lamact/react-issue-ganttchart"
+        placeholder="https://github.com/xxx/xxx"
         label="Git Repository URL"
         style={{ width: '20%', verticalAlign: 'middle' }}
         onChange={(e) => {
