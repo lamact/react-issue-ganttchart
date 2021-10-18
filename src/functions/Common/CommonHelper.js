@@ -31,7 +31,7 @@ export const isValidURL = (url) => {
   if (!isValidVariable(url)) {
     return false;
   }
-  return /https:\/\//.test(url);
+  return /https?:\/\//.test(url);
 };
 
 export const isNumber = (n) => {
