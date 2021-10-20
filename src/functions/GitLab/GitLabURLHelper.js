@@ -36,7 +36,7 @@ export const getGitLabDomain = (git_url) => {
   let gitlab_domain = null;
   const self_hosting_gitlab_domain = getSelfHostingGitLabDomain(git_url);
   if (self_hosting_gitlab_domain !== null) {
-    gitlab_domain = 'https://' + self_hosting_gitlab_domain + '/';
+    gitlab_domain = git_url.substr(0, git_url.indexOf(':')) + '://' + self_hosting_gitlab_domain + '/';
   }
   return gitlab_domain;
 };
