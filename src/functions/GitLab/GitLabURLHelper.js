@@ -184,7 +184,8 @@ export const getGitLabAPIURLMember = (git_url, token) => {
     'groups/' +
     getGitLabNameSpaceFromGitURL(git_url) +
     '/members/all' +
-    post_fix_str
+    post_fix_str +
+    '&per_page=200'
   );
 };
 
