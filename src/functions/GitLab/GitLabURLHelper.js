@@ -61,7 +61,7 @@ export const getGitLabNameSpaceFromGitURL = (git_url) => {
   }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 5) {
-    return split_git_url[3];
+    return split_git_url.slice(3, split_git_url.length - 1).join('%2F');
   }
   return null;
 };
@@ -72,7 +72,7 @@ export const getGitLabProjectFromGitURL = (git_url) => {
   }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 5) {
-    return split_git_url[4];
+    return split_git_url[split_git_url.length - 1];
   }
   return null;
 };
@@ -84,7 +84,7 @@ export const postFixToken = (token) => {
     token !== 'Tokens that have not yet been entered'
   ) {
     post_fix_str += 'access_token=' + token;
-  } 
+  }
   return post_fix_str;
 };
 
@@ -181,8 +181,10 @@ export const getGitLabAPIURLMember = (git_url, token) => {
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
-    'groups/' +
+    'projects/' +
     getGitLabNameSpaceFromGitURL(git_url) +
+    '%2F' +
+    getGitLabProjectFromGitURL(git_url) +
     '/members/all' +
     post_fix_str +
     '&per_page=200'
