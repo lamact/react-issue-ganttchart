@@ -29,6 +29,11 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     issue_info.description,
     'start_date'
   );
+  const task_completion_status = issue_info.task_completion_status
+  const count = task_completion_status.count
+  const completed_count = task_completion_status.completed_count
+  const progress = count == 0 ? 0 : completed_count / count
+  
   const due_date = adjustDateString(issue_info.due_date);
   const gantt_task = {
     id: '#' + issue_info.iid,
@@ -36,7 +41,7 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
     due_date: getGanttDueDate(start_date, due_date, issue_info.created_at),
     duration: getGanttDuration(start_date, due_date, issue_info.created_at),
-    progress: getNumberFromDescriptionYaml(issue_info.description, 'progress'),
+    progress: progress,
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
