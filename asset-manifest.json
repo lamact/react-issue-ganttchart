@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/react-issue-ganttchart/static/css/main.cac66910.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.92c0699a.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.92c0699a.chunk.js.map",
-    "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.bdde71eb.js",
-    "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.bdde71eb.js.map",
-    "static/css/2.4ed320cc.chunk.css": "/react-issue-ganttchart/static/css/2.4ed320cc.chunk.css",
-    "static/js/2.ff35a941.chunk.js": "/react-issue-ganttchart/static/js/2.ff35a941.chunk.js",
-    "static/js/2.ff35a941.chunk.js.map": "/react-issue-ganttchart/static/js/2.ff35a941.chunk.js.map",
+    "main.css": "/react-issue-ganttchart/static/css/main.be6e9726.chunk.css",
+    "main.js": "/react-issue-ganttchart/static/js/main.21cf40e8.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.21cf40e8.chunk.js.map",
+    "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.a4089362.js",
+    "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.a4089362.js.map",
+    "static/css/2.55cf193b.chunk.css": "/react-issue-ganttchart/static/css/2.55cf193b.chunk.css",
+    "static/js/2.2ae934a3.chunk.js": "/react-issue-ganttchart/static/js/2.2ae934a3.chunk.js",
+    "static/js/2.2ae934a3.chunk.js.map": "/react-issue-ganttchart/static/js/2.2ae934a3.chunk.js.map",
     "index.html": "/react-issue-ganttchart/index.html",
-    "static/css/2.4ed320cc.chunk.css.map": "/react-issue-ganttchart/static/css/2.4ed320cc.chunk.css.map",
-    "static/css/main.cac66910.chunk.css.map": "/react-issue-ganttchart/static/css/main.cac66910.chunk.css.map",
-    "static/js/2.ff35a941.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.ff35a941.chunk.js.LICENSE.txt"
+    "static/css/2.55cf193b.chunk.css.map": "/react-issue-ganttchart/static/css/2.55cf193b.chunk.css.map",
+    "static/css/main.be6e9726.chunk.css.map": "/react-issue-ganttchart/static/css/main.be6e9726.chunk.css.map",
+    "static/js/2.2ae934a3.chunk.js.LICENSE.txt": "/react-issue-ganttchart/static/js/2.2ae934a3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.bdde71eb.js",
-    "static/css/2.4ed320cc.chunk.css",
-    "static/js/2.ff35a941.chunk.js",
-    "static/css/main.cac66910.chunk.css",
-    "static/js/main.92c0699a.chunk.js"
+    "static/js/runtime-main.a4089362.js",
+    "static/css/2.55cf193b.chunk.css",
+    "static/js/2.2ae934a3.chunk.js",
+    "static/css/main.be6e9726.chunk.css",
+    "static/js/main.21cf40e8.chunk.js"
   ]
 }

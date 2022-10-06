@@ -1,7 +1,7 @@
 /*
 @license
 
-dhtmlxGantt v.7.1.7 Standard
+dhtmlxGantt v.7.1.12 Standard
 
 This version of dhtmlxGantt is distributed under GPL 2.0 license and can be legally used in GPL projects.
 
@@ -65,6 +65,8 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 /*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /**
  * A better abstraction over CSS.
