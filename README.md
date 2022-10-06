@@ -21,7 +21,7 @@ https://lamact.github.io/react-issue-ganttchart/?giturl=https%3A%2F%2Fgithub.com
 ## How to start on your server
 
  - clone the repository or download files
- - install dependencies
+ - install dependencies (nodejs >= 16.10.0)
 ~~~
 yarn install
 ~~~
