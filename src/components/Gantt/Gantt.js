@@ -40,14 +40,11 @@ const Gantt = (props) => {
           gantt.addTask(issue);
           if ('links' in issue) {
             issue.links.map((link) => {
-              console.log(link);
               gantt.addLink(link);
               return null;
             });
           }
         });
-
-
         gantt.sort('due_date', false);
         // gantt.render();
       }
@@ -55,7 +52,7 @@ const Gantt = (props) => {
       gantt.message({ text: err, type: 'error' });
     }
   }, [
-    props.issue,
+    props.issue
   ]);
 
   return (

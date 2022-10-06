@@ -30,7 +30,7 @@ export const getIssuesFromAPI = async (
   if (!isValidURL(git_url)) {
     return Promise.resolve();
   } else if (isGitHubURL(git_url)) {
-    return getGitHubIssuesFromAPI(git_url, selected_labels, selected_assignee);
+    return getGitHubIssuesFromAPI(git_url, token, selected_labels, selected_assignee);
   } else if (
     isGitLabURL(git_url) ||
     getSelfHostingGitLabDomain(git_url) !== null
