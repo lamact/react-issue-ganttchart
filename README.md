@@ -15,7 +15,6 @@ It is required your Personal Access Token. See below.
 
 ## Why use react-issue-ganttchart?
 
-
 * Only need to access GitHub/GitLab from a browser to use it, because you only need to hit the REST API against GitHub/GitLab.
 
 
@@ -28,6 +27,7 @@ It is required your Personal Access Token. See below.
 * Can be used on self-hosted GitLab servers.
 
 ## Requirements
+
 - Your Repository's Path (github.com / gitlab.com / self-host.gitlab.com)  
   ex) https://github.com/lamact/react-issue-ganttchart
 
@@ -54,6 +54,7 @@ yarn deploy
 ~~~
 
 # Check List
+
 | Domain              | function                     | Result |
 | ------------------- | ---------------------------- | ------ |
 | github.com          | Public Issues (List&Update)  | ✅      |
