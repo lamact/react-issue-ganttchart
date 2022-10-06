@@ -3,12 +3,29 @@
 react-issue-ganttchart
 ===================
 
-This is a single page application created with React to display github.com / gitlab.com / your-self-host.gitlab.com issues as a Gantt chart.  
-Repository URL and personal access token are required, but not the rest.  
+This is a single page application created with React to display github.com / gitlab.com / self-host.gitlab.com issues as a Gantt chart.  
 No backend is required, and the token is stored in a cookie.  
 
 ## Demo
+![demo](demo-rig.gif)
+
 https://lamact.github.io/react-issue-ganttchart/?giturl=https%3A%2F%2Fgithub.com%2Flamact%2Freact-issue-ganttchart&labels=
+
+It is required your Personal Access Token. See below.
+
+## Why use react-issue-ganttchart?
+
+
+* Only need to access GitHub/GitLab from a browser to use it, because you only need to hit the REST API against GitHub/GitLab.
+
+
+* Can be filtered by asignee and label to show dependencies.
+
+* Filter conditons are stored in URL parameters, so you can bookmark and save the same filter conditons.
+
+* Issues can be sorted by start date and expiration date.
+
+* Can be used on self-hosted GitLab servers.
 
 ## Requirements
 - Your Repository's Path (github.com / gitlab.com / self-host.gitlab.com)  
