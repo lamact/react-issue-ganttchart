@@ -105,13 +105,6 @@ const Toolbar = (props) => {
         </Button>
       </ButtonGroup>
       <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
-        <CachedIcon
-          onClick={(e) => {
-            props.onUpdateClick();
-          }}
-        />
-      </IconButton>
-      <IconButton color="primary" style={{ verticalAlign: 'middle' }}>
         <GitHubIcon onClick={() => window.open('https://github.com/lamact/react-issue-ganttchart')} />
       </IconButton>
     </form>

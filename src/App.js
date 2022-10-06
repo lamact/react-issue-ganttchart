@@ -64,7 +64,6 @@ const App = (props) => {
     state.token,
     state.selected_labels,
     state.selected_assignee,
-    state.update,
   ]);
 
   return (
@@ -83,7 +82,6 @@ const App = (props) => {
           onTokenChange={(token) =>
             dispatch({ type: 'tokenChange', value: token })
           }
-          onUpdateClick={() => dispatch({ type: 'updateClick' })}
           labels={state.labels}
           selected_labels={state.selected_labels}
           onSelectedLabelChange={(selected_labels) =>
@@ -111,7 +109,6 @@ const App = (props) => {
           selected_labels={state.selected_labels}
           selected_assignee={state.selected_assignee}
           issue={state.issue}
-          update={state.update}
           openIssueAtBrowser={(gantt_task_id) =>
             dispatch({ type: 'openIssueAtBrowser', value: gantt_task_id })
           }

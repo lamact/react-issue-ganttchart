@@ -21,7 +21,6 @@ import { gantt } from 'dhtmlx-gantt';
 
 export const initialState = {
   currentZoom: 'Days',
-  update: 0,
   git_url: '',
   token: 'Tokens that have not yet been entered',
   labels: [],
@@ -71,8 +70,6 @@ export const reducerFunc = (state, action) => {
           action.value.selected_assignee
         ),
       };
-    case 'updateClick':
-      return { ...state, update: state.update + 1 };
     case 'openIssueAtBrowser':
       return handleOpenIssueAtBrowser(state, action);
     case 'openNewIssueAtBrowser':
