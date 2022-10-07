@@ -121,7 +121,7 @@ export const getGitLabAPIURLIssueFilterd = (
       post_fix_str += '&assignee_id=' + assignee.id;
     }
   }
-  post_fix_str += '&per_page=100&state=opened';
+  post_fix_str += '&per_page=100';
   return (
     getGitLabAPIURL(git_url) +
     'projects/' +
