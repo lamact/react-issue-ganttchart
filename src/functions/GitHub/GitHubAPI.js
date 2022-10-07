@@ -41,7 +41,6 @@ export const getGitHubIssueFromAPI = async (git_url, token, issue_info) => {
         }
       }
       gantt_task.links = links;
-      console.log(gantt_task);
       return gantt_task;
     })
     .catch((err) => {

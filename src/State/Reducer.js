@@ -11,10 +11,14 @@ import {
   openNewIssueAtBrowser,
 } from '../functions/Common/IssueAPI.js';
 import { isValidVariable } from '../functions/Common/CommonHelper.js';
-import { isGitHubURL } from '../functions/GitHub/GitHubURLHelper.js';
+import { 
+  isGitHubURL,
+  getGitHubProjectFromGitURL,
+ } from '../functions/GitHub/GitHubURLHelper.js';
 import {
   isGitLabURL,
   getSelfHostingGitLabDomain,
+  getGitLabProjectFromGitURL,
 } from '../functions/GitLab/GitLabURLHelper.js';
 
 import { gantt } from 'dhtmlx-gantt';
@@ -29,6 +33,7 @@ export const initialState = {
   selected_assignee: {},
   issue: [],
   issue_columns: [],
+  title: '',
 };
 
 export const reducerFunc = (state, action) => {
@@ -36,14 +41,7 @@ export const reducerFunc = (state, action) => {
     case 'zoomChange':
       return { ...state, currentZoom: action.value };
     case 'gitURLChange':
-      return {
-        ...state,
-        git_url: handleGitURLChange(
-          action.value.props,
-          action.value.git_url,
-          state.selected_labels
-        ),
-      };
+      return handleGitURLChange(state, action);
     case 'tokenChange':
       return { ...state, token: handleTokenChange(action.value) };
     case 'labelChange':
@@ -110,26 +108,30 @@ export const handleUpdateIssueByAPI = (state, action) => {
   return state;
 };
 
-export const handleGitURLChange = (
-  props,
-  git_url,
-  selected_labels,
-  selected_assignee
-) => {
-  git_url = removeLastSlash(removeLastSpace(git_url));
+export const handleGitURLChange = (state, action) => {
+  var git_url = removeLastSlash(removeLastSpace(action.value.git_url));
   if (isGitHubURL(git_url)) {
     gantt.message({ text: 'Access GitHub.com' });
+    state.title = getGitHubProjectFromGitURL(git_url);
   } else if (isGitLabURL(git_url)) {
     gantt.message({ text: 'Access GitLab.com' });
+    state.title = getGitLabProjectFromGitURL(git_url);
   } else if (getSelfHostingGitLabDomain(git_url) !== null) {
     gantt.message({ text: 'Access Maybe GitLab.self-host' });
+    state.title = getGitLabProjectFromGitURL(git_url);
   } else if (git_url === '') {
   } else {
     gantt.message({ text: 'Not a valid URL.', type: 'error' });
     return null;
   }
-  setURLQuery(props, git_url, selected_labels, selected_assignee);
-  return git_url;
+  setURLQuery(
+    action.value.props,
+    git_url,
+    state.selected_labels,
+    action.value.selected_assignee
+  );  
+  state.git_url = git_url
+  return state;
 };
 
 export const handleTokenChange = (token) => {
@@ -181,6 +183,16 @@ export const setURLQuery = (props, git_url, selected_labels, selected_assignee) 
 export const setStateFromURLQueryString = (state, props, setValue) => {
   const params = new URLSearchParams(props.location.search);
   state.git_url = params.get('giturl');
+
+  const git_url = removeLastSlash(removeLastSpace(params.get('giturl')));
+  if (isGitHubURL(git_url)) {
+    state.title = getGitHubProjectFromGitURL(git_url);
+  } else if (isGitLabURL(git_url)) {
+    state.title = getGitLabProjectFromGitURL(git_url);
+  } else if (getSelfHostingGitLabDomain(git_url) !== null) {
+    state.title = getGitLabProjectFromGitURL(git_url);
+  } 
+  state.git_url = git_url;
 
   const selected_labels = convertIDNamesStringToList(params.get('labels'));
   if (isValidVariable(selected_labels[0])) {
