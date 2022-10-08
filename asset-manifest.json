@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/react-issue-ganttchart/static/css/main.3487d35c.chunk.css",
-    "main.js": "/react-issue-ganttchart/static/js/main.005b407f.chunk.js",
-    "main.js.map": "/react-issue-ganttchart/static/js/main.005b407f.chunk.js.map",
+    "main.js": "/react-issue-ganttchart/static/js/main.980016ff.chunk.js",
+    "main.js.map": "/react-issue-ganttchart/static/js/main.980016ff.chunk.js.map",
     "runtime-main.js": "/react-issue-ganttchart/static/js/runtime-main.a4089362.js",
     "runtime-main.js.map": "/react-issue-ganttchart/static/js/runtime-main.a4089362.js.map",
     "static/css/2.55cf193b.chunk.css": "/react-issue-ganttchart/static/css/2.55cf193b.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.55cf193b.chunk.css",
     "static/js/2.3fdce4dc.chunk.js",
     "static/css/main.3487d35c.chunk.css",
-    "static/js/main.005b407f.chunk.js"
+    "static/js/main.980016ff.chunk.js"
   ]
 }
