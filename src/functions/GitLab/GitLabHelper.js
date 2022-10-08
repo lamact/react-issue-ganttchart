@@ -30,6 +30,10 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     'start_date'
   );
   const due_date = adjustDateString(issue_info.due_date);
+  var parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  if (parent !== null) {
+    parent = '#' + parent;
+  }
   var gantt_task = {
     id: '#' + issue_info.iid,
     text: issue_info.title,
@@ -40,7 +44,8 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
-    _parent: '#' + getNumberFromDescriptionYaml(issue_info.description, 'parent'),
+    parent: parent,
+    _parent: parent,
   };
 
   let links = [];
@@ -88,8 +93,9 @@ export const updateGitLabDescriptionStringFromGanttTask = (
     start_date: start_date_str,
     progress: orgRound(gantt_task.progress, 0.01),
   };
-  task.parent = parseInt(removeFirstSharp(gantt_task.parent));
-
+  if ('parent' in gantt_task && gantt_task.parent != null) {
+    task.parent = parseInt(removeFirstSharp(gantt_task.parent));
+  }
   if ('dependon' in gantt_task) {
     task.dependon = gantt_task.dependon;
   }

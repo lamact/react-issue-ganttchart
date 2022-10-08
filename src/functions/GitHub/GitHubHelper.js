@@ -35,6 +35,7 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     duration: getGanttDuration(start_date, due_date, issue_info.created_at),
     progress: getNumberFromDescriptionYaml(description, 'progress'),
     assignee: getGitHubAssignee(issue_info),
+    parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     _parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     description: description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
