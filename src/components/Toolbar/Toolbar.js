@@ -92,6 +92,13 @@ const Toolbar = (props) => {
       <ButtonGroup size="small" style={{ height: '34px' }}>
         <Button
           onClick={(e) => {
+            props.onZoomChange('Years');
+          }}
+        >
+          Years
+        </Button>
+        <Button
+          onClick={(e) => {
             props.onZoomChange('Weeks');
           }}
         >
