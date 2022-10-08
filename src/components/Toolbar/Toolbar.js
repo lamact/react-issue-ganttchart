@@ -9,6 +9,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { gantt } from 'dhtmlx-gantt';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import { bake_cookie } from 'sfcookies';
 
 const Toolbar = (props) => {
   const { classes } = props;
@@ -18,6 +19,7 @@ const Toolbar = (props) => {
         <MenuOpenIcon
           onClick={(e) => {
             gantt.config.show_grid = !gantt.config.show_grid;
+            bake_cookie('menu_opened', gantt.config.show_grid);
             gantt.render();
           }} />
       </IconButton>
