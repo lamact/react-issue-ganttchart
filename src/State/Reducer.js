@@ -39,7 +39,7 @@ export const initialState = {
 export const reducerFunc = (state, action) => {
   switch (action.type) {
     case 'zoomChange':
-      return { ...state, currentZoom: action.value };
+      return { ...state, currentZoom: handleZoomChange(action.value) };
     case 'gitURLChange':
       return handleGitURLChange(state, action);
     case 'tokenChange':
@@ -85,6 +85,11 @@ export const reducerFunc = (state, action) => {
     default:
       return state;
   }
+};
+
+export const handleZoomChange = (zoom) => {
+  bake_cookie('zoom', zoom);
+  return zoom;
 };
 
 export const handleOpenIssueAtBrowser = (state, action) => {
