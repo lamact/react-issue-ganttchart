@@ -13,6 +13,7 @@ import {
   orgRound,
   adjustDateString,
   getGanttUpdateDate,
+  isValidVariable,
 } from '../Common/CommonHelper.js';
 
 const getGitHubAssignee = (issue_info) => {
@@ -38,14 +39,29 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     description: description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
+
+  let links = [];
+  const link = generateLinkFromGitHub(description, issue_info);
+  if (typeof link != "undefined") {
+    for (let i = 0; i < link.length; i++) {
+      let prelink = {
+        type: link[i].type,
+        target: link[i].target,
+        source: link[i].source,
+      }
+      links.push(prelink);
+    }
+  }
+  gantt_task.links = links;
+
   return gantt_task;
 };
 
-export const generateLinkFromGitHub = (issue_info) => {
+export const generateLinkFromGitHub = (description, issue_info) => {
   const link = [];
   let dependon = [];
-  dependon = getDependonFromDescriptionYaml(issue_info.body, 'dependon');
-  if (dependon != null) {
+  dependon = getDependonFromDescriptionYaml(description, 'dependon');
+  if (isValidVariable(dependon)) {
     //let data = [];
     for (let i = 0; i < dependon.length; i++) {
       let data = [];
@@ -110,8 +126,8 @@ export const Arrangegantt = (issue_info) => {
   return arrange;
 };
 
-export const contentcheck = (Arrange, generate, links) => {
-  if (
+export const contentcheck = (Arrange, generate) => {
+  return (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
     Arrange.start_date == generate.start_date &&
@@ -122,10 +138,6 @@ export const contentcheck = (Arrange, generate, links) => {
     // Arrange.description == generate.description &&
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
-    Arrange.links.toString() == links.toString()
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+    JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
+  );
 };

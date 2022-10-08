@@ -11,10 +11,10 @@ import {
   openNewIssueAtBrowser,
 } from '../functions/Common/IssueAPI.js';
 import { isValidVariable } from '../functions/Common/CommonHelper.js';
-import { 
+import {
   isGitHubURL,
   getGitHubProjectFromGitURL,
- } from '../functions/GitHub/GitHubURLHelper.js';
+} from '../functions/GitHub/GitHubURLHelper.js';
 import {
   isGitLabURL,
   getSelfHostingGitLabDomain,
@@ -76,7 +76,6 @@ export const reducerFunc = (state, action) => {
       return handleUpdateIssueByAPI(state, action);
     case 'setIssue':
       return { ...state, issue: action.value };
-      
     case 'setStateFromURLQueryString':
       return setStateFromURLQueryString(
         state,
@@ -129,7 +128,7 @@ export const handleGitURLChange = (state, action) => {
     git_url,
     state.selected_labels,
     action.value.selected_assignee
-  );  
+  );
   state.git_url = git_url
   return state;
 };
@@ -191,7 +190,7 @@ export const setStateFromURLQueryString = (state, props, setValue) => {
     state.title = getGitLabProjectFromGitURL(git_url);
   } else if (getSelfHostingGitLabDomain(git_url) !== null) {
     state.title = getGitLabProjectFromGitURL(git_url);
-  } 
+  }
   state.git_url = git_url;
 
   const selected_labels = convertIDNamesStringToList(params.get('labels'));

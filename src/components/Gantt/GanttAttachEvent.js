@@ -34,6 +34,7 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
+
   gantt.attachEvent("onAfterLinkAdd", function (id, item) {
     let afterlinkId = [];
     let afterlink = [];
@@ -44,7 +45,7 @@ export const attachEvent = (gantt, props) => {
       let link = gantt.getLink(linkId);
       let linkid = link.target;
       let linkIds = link.source;
-      afterlink.push({type:'0',target:linkid,source:linkIds});
+      afterlink.push({ type: '0', target: linkid, source: linkIds });
       let relinkIds = linkIds.slice(1);
       if (relinkIds != '') {
         afterlinkId.push(relinkIds);
@@ -68,7 +69,7 @@ export const attachEvent = (gantt, props) => {
       let link = gantt.getLink(linkId);
       let linkid = link.target;
       let linkIds = link.source;
-      afterlink.push({type:'0',target:linkid,source:linkIds});
+      afterlink.push({ type: '0', target: linkid, source: linkIds });
       let relinkIds = linkIds.slice(1);
       if (relinkIds != '') {
         afterlinkId.push(relinkIds);
