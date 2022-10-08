@@ -108,7 +108,7 @@ export const handleUpdateIssueByAPI = (state, action) => {
 };
 
 export const handleGitURLChange = (state, action) => {
-  var git_url = removeLastSlash(removeLastSpace(action.value.git_url));
+  const git_url = removeLastSlash(removeLastSpace(action.value.git_url));
   if (isGitHubURL(git_url)) {
     gantt.message({ text: 'Access GitHub.com' });
     state.title = getGitHubProjectFromGitURL(git_url);
