@@ -24,7 +24,6 @@ const Gantt = (props) => {
     try {
       gantt.clearAll();
       if (isValidVariable(props.issue) && props.issue.length != 0) {
-        gantt.clearAll();
         props.issue.map((issue) => {
           gantt.addTask(issue);
           if ('links' in issue) {
@@ -32,6 +31,11 @@ const Gantt = (props) => {
               gantt.addLink(link);
               return null;
             });
+          }
+        });
+        props.issue.map((issue) => {
+          if (issue._parent !== "#0") {
+            gantt.setParent(gantt.getTask(issue.id), issue._parent);
           }
         });
         gantt.sort('due_date', false);

@@ -133,3 +133,47 @@ export const getGanttDuration = (start_date, due_date, created_at) => {
   }
   return duration;
 };
+
+export const ArrangeGanttTaskToGeneratedGanttTaskForCompare = (issue_info) => {
+  let arrangelink = [];
+  issue_info.links.map((list) => {
+    arrangelink.push({ type: list.type, target: list.target, source: list.source });
+  });
+  var _parent
+  if (issue_info.parent == 0)
+    _parent = "#0";
+  else {
+    _parent = issue_info.parent;
+  }
+
+  const arrange = {
+    id: issue_info.id,
+    text: issue_info.text,
+    start_date: adjustDateString(issue_info.start_date),
+    due_date: issue_info.due_date,
+    duration: issue_info.duration,
+    progress: issue_info.progress,
+    assignee: issue_info.assignee,
+    description: issue_info.description,
+    update: issue_info.update,
+    links: arrangelink,
+    _parent: _parent,
+  }
+  return arrange;
+};
+
+export const isEqualGanntTask = (GanntTaskA, GanntTaskB) => {
+  return (
+    GanntTaskA.id == GanntTaskB.id &&
+    GanntTaskA.text == GanntTaskB.text &&
+    GanntTaskA.start_date == GanntTaskB.start_date &&
+    GanntTaskA.due_date == GanntTaskB.due_date.toString() &&
+    GanntTaskA.duration == GanntTaskB.duration &&
+    GanntTaskA.progress == GanntTaskB.progress &&
+    GanntTaskA.assignee == GanntTaskB.assignee &&
+    // GanntTaskA.description == GanntTaskB.description &&
+    GanntTaskA.update == GanntTaskB.update &&
+    GanntTaskA._parent == GanntTaskB._parent &&
+    JSON.stringify(GanntTaskA.links) == JSON.stringify(GanntTaskB.links)
+  );
+};

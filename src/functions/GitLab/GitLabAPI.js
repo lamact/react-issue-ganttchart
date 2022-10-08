@@ -10,13 +10,13 @@ import {
 import {
   generateGanttTaskFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
-  Arrangegantt,
-  contentcheck,
 } from './GitLabHelper.js';
 import {
   adjustDateString,
+  ArrangeGanttTaskToGeneratedGanttTaskForCompare,
   calculateDueDate,
   date2string,
+  isEqualGanntTask,
 } from '../Common/CommonHelper.js';
 import {
   removeFirstSharp,
@@ -34,9 +34,7 @@ export const getGitLabIssuesFromAPI = async (
     .then((res) => {
       let data = [];
       res.data.map((issue_info) => {
-        const gantt_task = generateGanttTaskFromGitLab(issue_info);
-
-        data.push(gantt_task);
+        data.push(generateGanttTaskFromGitLab(issue_info));
       });
       return data;
     })
@@ -97,9 +95,10 @@ export const updateGitLabIssueFromGanttTask = (
     .then((res) => {
       const issue_info = res.data;
       // Update if different from existing parameters
-      if (!contentcheck(
-        Arrangegantt(gantt_task),
-        generateGanttTaskFromGitLab(issue_info))) {
+      if (!isEqualGanntTask(
+        ArrangeGanttTaskToGeneratedGanttTaskForCompare(gantt_task),
+        generateGanttTaskFromGitLab(issue_info)
+      )) {
         if (
           parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))
         ) {
