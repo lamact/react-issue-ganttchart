@@ -1,23 +1,3 @@
-const zoom_level = {
-  levels: [
-    {
-      name: 'Days',
-      scale_height: 30,
-      min_column_width: 25,
-      scales: [
-        { unit: 'month', step: 1, format: '%n' },
-        { unit: 'day', step: 1, format: '%d' },
-      ],
-    },
-    {
-      name: 'Weeks',
-      scale_height: 30,
-      min_column_width: 70,
-      scales: [{ unit: 'week', step: 1, format: '%n/%d~' }],
-    },
-  ],
-};
-
 const shortenDate = (date) => {
   if (Object.prototype.toString.call(date) !== '[object Date]') {
     return null;
@@ -86,5 +66,37 @@ export const setGanttConfig = (gantt) => {
     drag_timeline: true,
   });
   gantt.showDate(new Date());
-  gantt.ext.zoom.init(zoom_level);
+  gantt.ext.zoom.init({
+    levels: [
+      {
+        name: 'Days',
+        scale_height: 30,
+        min_column_width: 30,
+        scales: [
+          { unit: 'month', step: 1, format: '%n' },
+          { unit: 'day', step: 1, format: '%d' },
+        ],
+      },
+      {
+        name: 'Weeks',
+        scale_height: 30,
+        min_column_width: 20,
+        scales: [{ unit: 'week', step: 1, format: '%n/%d~' }],
+      },
+      {
+        name: 'Years',
+        scale_height: 30,
+        column_width: 50,
+        scales: [
+          { unit: 'year', step: 1, format: '%Y' },
+          { unit: 'month', step: 1, format: '%n' }
+        ],
+      },
+    ],
+    useKey: "ctrlKey",
+    trigger: "wheel",
+    element: function(){
+      return gantt.$root.querySelector(".gantt_task");
+    }
+  });
 };
