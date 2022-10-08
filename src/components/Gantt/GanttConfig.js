@@ -93,5 +93,10 @@ export const setGanttConfig = (gantt) => {
         ],
       },
     ],
+    useKey: "ctrlKey",
+    trigger: "wheel",
+    element: function(){
+      return gantt.$root.querySelector(".gantt_task");
+    }
   });
 };
