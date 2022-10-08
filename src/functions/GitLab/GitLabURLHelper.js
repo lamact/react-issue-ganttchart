@@ -181,9 +181,11 @@ export const getGitLabAPIURLMember = (git_url, token) => {
   const post_fix_str = postFixToken(token);
   return (
     getGitLabAPIURL(git_url) +
-    'groups/' +
+    'projects/' +
     getGitLabNameSpaceFromGitURL(git_url) +
-    '/members/all' +
+    '%2F' +
+    getGitLabProjectFromGitURL(git_url) +
+    '/members' +
     post_fix_str +
     '&per_page=200'
   );
