@@ -355,7 +355,7 @@ describe('getGitLabAPIURLMember', () => {
         'privateaccesstoken'
       )
     ).toBe(
-      'https://gitlab.com/api/v4/groups/lamact/members/all?access_token=privateaccesstoken&per_page=200'
+      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/members?access_token=privateaccesstoken&per_page=200'
     );
   });
   test('null', () => {
