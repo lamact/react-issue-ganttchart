@@ -9,7 +9,6 @@ import {
 } from './GitHubURLHelper.js';
 import {
   generateGanttTaskFromGitHub,
-  generateLinkFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
   Arrangegantt,
   contentcheck,
@@ -27,22 +26,7 @@ export const getGitHubIssueFromAPI = async (git_url, token, issue_info) => {
       data: {},
     })
     .then((res) => {
-      let links = [];
-      const gantt_task = generateGanttTaskFromGitHub(res.data.body, issue_info);
-      const link = generateLinkFromGitHub(issue_info);
-      if (typeof link != "undefined") {
-        for (let i = 0; i < link.length; i++) {
-          let prelink = {
-            type: link[i].type,
-            target: link[i].target,
-            source: link[i].source,
-          }
-          links.push(prelink)
-        }
-      }
-      gantt_task.links = links;
-      console.log(gantt_task);
-      return gantt_task;
+      return generateGanttTaskFromGitHub(res.data.body, issue_info);
     })
     .catch((err) => {
       return Promise.reject(err);
@@ -138,7 +122,9 @@ export const updateGitHubIssueFromGanttTask = (
           type: 'error',
         });
       } else {
-        if (contentcheck(Arrangegantt(gantt_task), generateGanttTaskFromGitHub(issue_info.body, issue_info), generateLinkFromGitHub(issue_info)) != true) {
+        // Update if different from existing parameters
+        if (!contentcheck(Arrangegantt(gantt_task),
+          generateGanttTaskFromGitHub(issue_info.body, issue_info))) {
           axios
             .post(
               url,

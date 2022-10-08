@@ -33,6 +33,7 @@ const gantt_task = {
   parent: '#5',
   description: description,
   update:'2021/2/5',
+  links: [],
 };
 
 describe('generateGanttTaskFromGitHub', () => {

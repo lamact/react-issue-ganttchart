@@ -2,6 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Toolbar from './components/Toolbar';
 import Gantt from './components/Gantt';
+import PageHeader from './components/PageHeader';
 import { read_cookie } from 'sfcookies';
 import { withRouter } from 'react-router-dom';
 import { initialState, reducerFunc } from './State/Reducer.js';
@@ -68,6 +69,7 @@ const App = (props) => {
 
   return (
     <>
+      <PageHeader title={state.title} />
       <div className="zoom-bar">
         <Toolbar
           zoom={state.currentZoom}

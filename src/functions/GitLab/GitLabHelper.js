@@ -41,7 +41,6 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
-  console.log(gantt_task)
   let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
   if (parent !== null) {
     if (parent !== 0) {
@@ -127,7 +126,7 @@ export const Arrangegantt = (issue_info) => {
 };
 
 export const contentcheck = (Arrange, generate) => {
-  if (
+  return (
     Arrange.id == generate.id &&
     Arrange.text == generate.text &&
     Arrange.start_date == generate.start_date &&
@@ -139,9 +138,5 @@ export const contentcheck = (Arrange, generate) => {
     Arrange.update == generate.update &&
     Arrange.parent == generate.parent &&
     JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  );
 };

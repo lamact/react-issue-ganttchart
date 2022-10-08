@@ -9,7 +9,6 @@ import {
 } from './GitLabURLHelper.js';
 import {
   generateGanttTaskFromGitLab,
-  generateLinkFromGitLab,
   updateGitLabDescriptionStringFromGanttTask,
   Arrangegantt,
   contentcheck,
@@ -97,7 +96,10 @@ export const updateGitLabIssueFromGanttTask = (
     )
     .then((res) => {
       const issue_info = res.data;
-      if (contentcheck(Arrangegantt(gantt_task),generateGanttTaskFromGitLab(issue_info))!=true) {
+      // Update if different from existing parameters
+      if (!contentcheck(
+        Arrangegantt(gantt_task),
+        generateGanttTaskFromGitLab(issue_info))) {
         if (
           parseInt(issue_info.iid) === parseInt(removeFirstSharp(gantt_task.id))
         ) {
