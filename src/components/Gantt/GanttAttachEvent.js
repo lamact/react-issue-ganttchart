@@ -15,10 +15,6 @@ export const attachEvent = (gantt, props) => {
   });
 
   gantt.attachEvent('onAfterTaskUpdate', (id, gantt_task) => {
-    updateParentTaskDate(gantt, gantt_task);
-    gantt.getChildren(gantt_task.id).map((child_gantt_task_id) => {
-      updateChildTaskDate(gantt, gantt_task, child_gantt_task_id);
-    });
     props.updateIssueByAPI(gantt_task, gantt);
   });
 
@@ -27,12 +23,8 @@ export const attachEvent = (gantt, props) => {
 
   gantt.attachEvent('onAfterTaskMove', (id, parent) => {
     let gantt_task = gantt.getTask(id);
-    if ('parent' in gantt_task) {
-      if (gantt_task.parent !== 0) {
-        gantt_task.parent = parent;
-        props.updateIssueByAPI(gantt_task, gantt);
-      }
-    }
+    // gantt_task._parent = parent;
+    props.updateIssueByAPI(gantt_task, gantt);
   });
 
   gantt.attachEvent("onAfterLinkAdd", function (id, item) {
@@ -86,7 +78,6 @@ export const attachEvent = (gantt, props) => {
   // Custom QuickInfo
   // https://docs.dhtmlx.com/gantt/desktop__quick_info.html
   gantt.attachEvent('onQuickInfo', (id) => {
-    console.log("onQuickInfo")
     let gantt_task = gantt.getTask(id);
     gantt.locale.labels.detail_button = 'DETAIL';
     gantt.$click.buttons.detail_button = (gantt_task_id) => {
@@ -137,47 +128,4 @@ export const attachEvent = (gantt, props) => {
       }
     }
   });
-};
-
-export const updateParentTaskDate = (gantt, gantt_task) => {
-  if (!'parent' in gantt_task) {
-    return null;
-  }
-  if (gantt_task.parent === 0) {
-    return null;
-  }
-  let parent_gantt_task = gantt.getTask(gantt_task.parent).valueOf();
-  if (
-    parent_gantt_task.start_date.getTime() > gantt_task.start_date.getTime()
-  ) {
-    parent_gantt_task.start_date = gantt_task.start_date;
-    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
-    gantt.render();
-  }
-  if (parent_gantt_task.end_date.getTime() < gantt_task.end_date.getTime()) {
-    parent_gantt_task.end_date = gantt_task.end_date;
-    gantt.updateTask(parent_gantt_task.id, parent_gantt_task);
-    gantt.render();
-  }
-};
-
-export const updateChildTaskDate = (gantt, gantt_task, child_gantt_task_id) => {
-  let child_gantt_task = gantt.getTask(child_gantt_task_id).valueOf();
-  const date_duration = child_gantt_task.duration.valueOf();
-  if (child_gantt_task.start_date.getTime() < gantt_task.start_date.getTime()) {
-    child_gantt_task.start_date = gantt_task.start_date;
-    child_gantt_task.end_date = new Date(
-      calculateDueDate(gantt_task.start_date, date_duration)
-    );
-    gantt.updateTask(child_gantt_task.id, child_gantt_task);
-    gantt.render();
-  }
-  if (child_gantt_task.end_date.getTime() > gantt_task.end_date.getTime()) {
-    child_gantt_task.start_date = new Date(
-      calculateStartDate(gantt_task.end_date, date_duration)
-    );
-    child_gantt_task.end_date = gantt_task.end_date;
-    gantt.updateTask(child_gantt_task.id, child_gantt_task);
-    gantt.render();
-  }
 };

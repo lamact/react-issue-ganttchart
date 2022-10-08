@@ -36,6 +36,7 @@ export const generateGanttTaskFromGitHub = (description, issue_info) => {
     progress: getNumberFromDescriptionYaml(description, 'progress'),
     assignee: getGitHubAssignee(issue_info),
     parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
+    _parent: '#' + getNumberFromDescriptionYaml(description, 'parent'),
     description: description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
   };
@@ -89,55 +90,10 @@ export const updateGitHubDescriptionStringFromGanttTask = (
     due_date: due_date_str,
     progress: orgRound(gantt_task.progress, 0.01),
   };
-  if ('parent' in gantt_task) {
-    task.parent = parseInt(removeFirstSharp(gantt_task.parent));
-  }
+  task.parent = parseInt(removeFirstSharp(gantt_task.parent));
   if ('dependon' in gantt_task) {
     task.dependon = gantt_task.dependon;
   }
   description = replacePropertyInDescriptionString(description, task);
   return description;
-};
-
-export const Arrangegantt = (issue_info) => {
-  let arrangelink = [];
-  issue_info.links.map((list) => {
-    let prearrangelink = [];
-    prearrangelink.type = list.type;
-    prearrangelink.target = list.target;
-    prearrangelink.source = list.source
-    arrangelink.push(prearrangelink);
-  });
-
-  const arrange = {
-    id: issue_info.id,
-    text: issue_info.text,
-    start_date: adjustDateString(issue_info.start_date),
-    due_date: issue_info.due_date,
-    duration: issue_info.duration,
-    progress: issue_info.progress,
-    assignee: issue_info.assignee,
-    description: issue_info.description,
-    update: issue_info.update,
-    links: arrangelink,
-    parent: '#' + issue_info.parent,
-  }
-
-  return arrange;
-};
-
-export const contentcheck = (Arrange, generate) => {
-  return (
-    Arrange.id == generate.id &&
-    Arrange.text == generate.text &&
-    Arrange.start_date == generate.start_date &&
-    Arrange.due_date == generate.due_date.toString() &&
-    Arrange.duration == generate.duration &&
-    Arrange.progress == generate.progress &&
-    Arrange.assignee == generate.assignee &&
-    // Arrange.description == generate.description &&
-    Arrange.update == generate.update &&
-    Arrange.parent == generate.parent &&
-    JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
-  );
 };

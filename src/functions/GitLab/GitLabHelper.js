@@ -30,7 +30,11 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     'start_date'
   );
   const due_date = adjustDateString(issue_info.due_date);
-  const gantt_task = {
+  var parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
+  if (parent !== null) {
+    parent = '#' + parent;
+  }
+  var gantt_task = {
     id: '#' + issue_info.iid,
     text: issue_info.title,
     start_date: getGanttStartDate(start_date, due_date, issue_info.created_at),
@@ -40,13 +44,10 @@ export const generateGanttTaskFromGitLab = (issue_info) => {
     assignee: getGitLabAssignee(issue_info),
     description: issue_info.description,
     update: getGanttUpdateDate(issue_info.created_at, issue_info.updated_at),
+    parent: parent,
+    _parent: parent,
   };
-  let parent = getNumberFromDescriptionYaml(issue_info.description, 'parent');
-  if (parent !== null) {
-    if (parent !== 0) {
-      gantt_task.parent = '#' + parent;
-    }
-  }
+
   let links = [];
   const link = generateLinkFromGitLab(issue_info);
   if (typeof link != "undefined") {
@@ -92,51 +93,11 @@ export const updateGitLabDescriptionStringFromGanttTask = (
     start_date: start_date_str,
     progress: orgRound(gantt_task.progress, 0.01),
   };
-  if ('parent' in gantt_task) {
+  if ('parent' in gantt_task && gantt_task.parent != null) {
     task.parent = parseInt(removeFirstSharp(gantt_task.parent));
   }
   if ('dependon' in gantt_task) {
     task.dependon = gantt_task.dependon;
   }
   return replacePropertyInDescriptionString(description, task);
-};
-
-export const Arrangegantt = (issue_info) => {
-  let arrangelink = [];
-  issue_info.links.map((list) => {
-    arrangelink.push({ type: list.type, target: list.target, source: list.source });
-  });
-
-  const arrange = {
-    id: issue_info.id,
-    text: issue_info.text,
-    start_date: adjustDateString(issue_info.start_date),
-    due_date: issue_info.due_date,
-    duration: issue_info.duration,
-    progress: issue_info.progress,
-    assignee: issue_info.assignee,
-    description: issue_info.description,
-    update: issue_info.update,
-    links: arrangelink,
-  }
-  if (issue_info.parent !== 0) {
-    arrange.parent = issue_info.parent;
-  }
-  return arrange;
-};
-
-export const contentcheck = (Arrange, generate) => {
-  return (
-    Arrange.id == generate.id &&
-    Arrange.text == generate.text &&
-    Arrange.start_date == generate.start_date &&
-    Arrange.due_date == generate.due_date.toString() &&
-    Arrange.duration == generate.duration &&
-    Arrange.progress == generate.progress &&
-    Arrange.assignee == generate.assignee &&
-    // Arrange.description == generate.description &&
-    Arrange.update == generate.update &&
-    Arrange.parent == generate.parent &&
-    JSON.stringify(Arrange.links) == JSON.stringify(generate.links)
-  );
 };

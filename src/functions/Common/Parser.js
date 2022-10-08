@@ -3,6 +3,9 @@ import yaml from 'js-yaml';
 import { gantt } from 'dhtmlx-gantt';
 
 export const removeFirstSharp = (id_str) => {
+  if(!isValidVariable(id_str)){
+    return null;
+  }
   if (id_str.length > 1 && /^#/.test(id_str)) {
     id_str = id_str.substring(1);
   }

@@ -7,7 +7,6 @@ const PageHeader = (props) => {
                 <meta charSet="utf-8" />
                 <title>{props.title}</title>
             </Helmet>
-            ...
         </div>
     );
 };

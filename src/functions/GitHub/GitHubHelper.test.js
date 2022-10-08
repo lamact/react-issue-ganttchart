@@ -31,6 +31,7 @@ const gantt_task = {
   progress: 0.5,
   assignee: 'satoshi',
   parent: '#5',
+  _parent: '#5',
   description: description,
   update:'2021/2/5',
   links: [],

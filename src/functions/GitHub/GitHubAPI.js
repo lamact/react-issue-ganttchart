@@ -10,10 +10,13 @@ import {
 import {
   generateGanttTaskFromGitHub,
   updateGitHubDescriptionStringFromGanttTask,
-  Arrangegantt,
-  contentcheck,
 } from './GitHubHelper.js';
-import { date2string, isValidVariable } from '../Common/CommonHelper.js';
+import {
+  date2string,
+  isValidVariable,
+  isEqualGanntTask,
+  ArrangeGanttTaskToGeneratedGanttTaskForCompare,
+} from '../Common/CommonHelper.js';
 import {
   removeFirstSharp,
   replacePropertyInDescriptionString,
@@ -123,8 +126,10 @@ export const updateGitHubIssueFromGanttTask = (
         });
       } else {
         // Update if different from existing parameters
-        if (!contentcheck(Arrangegantt(gantt_task),
-          generateGanttTaskFromGitHub(issue_info.body, issue_info))) {
+        if (!isEqualGanntTask(
+          ArrangeGanttTaskToGeneratedGanttTaskForCompare(gantt_task),
+          generateGanttTaskFromGitHub(issue_info.body, issue_info)
+        )) {
           axios
             .post(
               url,
