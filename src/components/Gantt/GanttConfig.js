@@ -82,7 +82,7 @@ export const setGanttConfig = (gantt) => {
   ];
 
   gantt.plugins({
-    // quick_info: true,
+    quick_info: true,
     drag_timeline: true,
   });
   gantt.showDate(new Date());
