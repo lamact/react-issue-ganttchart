@@ -20,6 +20,8 @@ const App = (props) => {
   useEffect(() => {
     setValue('token', read_cookie('git_token'));
     dispatch({ type: 'tokenChange', value: read_cookie('git_token') });
+    gantt.config.show_grid = read_cookie('menu_opened')
+    gantt.render();
   }, []);
 
   useEffect(() => {
