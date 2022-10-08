@@ -3,6 +3,10 @@ import {
   isValidIDName,
   isValidURL,
 } from '../Common/CommonHelper.js';
+import {
+  removeLastSlash,
+  removeLastSpace,
+} from '../Common/Parser.js';
 import { isGitHubURL } from '../GitHub/GitHubURLHelper.js';
 
 export const isGitLabURL = (git_url) => {
@@ -59,9 +63,28 @@ export const getGitLabNameSpaceFromGitURL = (git_url) => {
   if (!isValidURL(git_url)) {
     return null;
   }
+  git_url = removeLastSlash(removeLastSpace(git_url));
   const split_git_url = git_url.split('/');
-  if (split_git_url.length >= 5) {
+  if (split_git_url.length == 5) {
     return split_git_url[3];
+  }
+  if (split_git_url.length >= 5) {
+    return split_git_url.slice(3, split_git_url.length - 1).join('%2F');
+  }
+  return null;
+};
+
+export const getGitLabNameSpaceFromGitURLsplitSlash = (git_url) => {
+  if (!isValidURL(git_url)) {
+    return null;
+  }
+  git_url = removeLastSlash(removeLastSpace(git_url));
+  const split_git_url = git_url.split('/');
+  if (split_git_url.length == 5) {
+    return split_git_url[3];
+  }
+  if (split_git_url.length >= 5) {
+    return split_git_url.slice(3, split_git_url.length - 1).join('/');
   }
   return null;
 };
@@ -70,9 +93,13 @@ export const getGitLabProjectFromGitURL = (git_url) => {
   if (!isValidURL(git_url)) {
     return null;
   }
+  git_url = removeLastSlash(removeLastSpace(git_url));
   const split_git_url = git_url.split('/');
-  if (split_git_url.length >= 5) {
+  if (split_git_url.length == 5) {
     return split_git_url[4];
+  }
+  if (split_git_url.length >= 5) {
+    return split_git_url[split_git_url.length - 1];
   }
   return null;
 };
@@ -84,7 +111,7 @@ export const postFixToken = (token) => {
     token !== 'Tokens that have not yet been entered'
   ) {
     post_fix_str += 'access_token=' + token;
-  } 
+  }
   return post_fix_str;
 };
 
@@ -185,7 +212,7 @@ export const getGitLabAPIURLMember = (git_url, token) => {
     getGitLabNameSpaceFromGitURL(git_url) +
     '%2F' +
     getGitLabProjectFromGitURL(git_url) +
-    '/members' +
+    '/members/all' +
     post_fix_str +
     '&per_page=200'
   );
@@ -197,7 +224,7 @@ export const getGitLabURLIssuebyNumber = (git_url, number) => {
   }
   return (
     getGitLabURL(git_url) +
-    getGitLabNameSpaceFromGitURL(git_url) +
+    getGitLabNameSpaceFromGitURLsplitSlash(git_url) +
     '/' +
     getGitLabProjectFromGitURL(git_url) +
     '/-/issues/' +
@@ -211,7 +238,7 @@ export const getGitLabURLNewIssueWithTemplate = (git_url) => {
   }
   return (
     getGitLabURL(git_url) +
-    getGitLabNameSpaceFromGitURL(git_url) +
+    getGitLabNameSpaceFromGitURLsplitSlash(git_url) +
     '/' +
     getGitLabProjectFromGitURL(git_url) +
     '/issues/new?issue[description]='

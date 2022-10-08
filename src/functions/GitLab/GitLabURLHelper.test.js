@@ -151,6 +151,20 @@ describe('getGitLabNameSpaceFromGitURL', () => {
   test('true', () => {
     expect(
       getGitLabNameSpaceFromGitURL(
+        'https://gitlab.com/lamact/react-issue-ganttchart'
+      )
+    ).toBe('lamact');
+  });
+  test('true', () => {
+    expect(
+      getGitLabNameSpaceFromGitURL(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart'
+      )
+    ).toBe('lamact%2Fsubgrp');
+  });
+  test('true', () => {
+    expect(
+      getGitLabNameSpaceFromGitURL(
         'https://ex.gitlab.com/lamact/react-issue-ganttchart/'
       )
     ).toBe('lamact');
@@ -172,6 +186,13 @@ describe('getGitLabProjectFromGitURL', () => {
     expect(
       getGitLabProjectFromGitURL(
         'https://gitlab.com/lamact/react-issue-ganttchart/'
+      )
+    ).toBe('react-issue-ganttchart');
+  });
+  test('true', () => {
+    expect(
+      getGitLabProjectFromGitURL(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/'
       )
     ).toBe('react-issue-ganttchart');
   });
@@ -206,6 +227,21 @@ describe('getGitLabAPIURLIssueFilterd', () => {
       )
     ).toBe(
       'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/issues?access_token=privateaccesstoken&labels=Todo,Doing,&assignee_id=12&per_page=100&state=opened'
+    );
+  });
+  test('true', () => {
+    expect(
+      getGitLabAPIURLIssueFilterd(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/',
+        'privateaccesstoken',
+        [
+          { id: 123, name: 'Todo' },
+          { id: 124, name: 'Doing' },
+        ],
+        { id: 12, name: 'satoshi' }
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Fsubgrp%2Freact-issue-ganttchart/issues?access_token=privateaccesstoken&labels=Todo,Doing,&assignee_id=12&per_page=100&state=opened'
     );
   });
   test('null', () => {
@@ -297,6 +333,17 @@ describe('getGitabAPIURLIssuebyNumber', () => {
       'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/issues/325?access_token=privateaccesstoken'
     );
   });
+  test('true', () => {
+    expect(
+      getGitabAPIURLIssuebyNumber(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/',
+        'privateaccesstoken',
+        325
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Fsubgrp%2Freact-issue-ganttchart/issues/325?access_token=privateaccesstoken'
+    );
+  });
   test('null', () => {
     expect(
       getGitabAPIURLIssuebyNumber(
@@ -337,6 +384,16 @@ describe('getGitLabAPIURLLabel', () => {
       'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/labels?access_token=privateaccesstoken&per_page=100'
     );
   });
+  test('true', () => {
+    expect(
+      getGitLabAPIURLLabel(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Fsubgrp%2Freact-issue-ganttchart/labels?access_token=privateaccesstoken&per_page=100'
+    );
+  });
   test('null', () => {
     expect(
       getGitLabAPIURLLabel(
@@ -355,7 +412,17 @@ describe('getGitLabAPIURLMember', () => {
         'privateaccesstoken'
       )
     ).toBe(
-      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/members?access_token=privateaccesstoken&per_page=200'
+      'https://gitlab.com/api/v4/projects/lamact%2Freact-issue-ganttchart/members/all?access_token=privateaccesstoken&per_page=200'
+    );
+  });
+  test('true', () => {
+    expect(
+      getGitLabAPIURLMember(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/',
+        'privateaccesstoken'
+      )
+    ).toBe(
+      'https://gitlab.com/api/v4/projects/lamact%2Fsubgrp%2Freact-issue-ganttchart/members/all?access_token=privateaccesstoken&per_page=200'
     );
   });
   test('null', () => {
@@ -379,6 +446,16 @@ describe('getGitLabURLIssuebyNumber', () => {
       'https://gitlab.com/lamact/react-issue-ganttchart/-/issues/43'
     );
   });
+  test('true', () => {
+    expect(
+      getGitLabURLIssuebyNumber(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/',
+        43
+      )
+    ).toBe(
+      'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/-/issues/43'
+    );
+  });
   test('null', () => {
     expect(
       getGitLabURLIssuebyNumber('httom/lamact/react-issue-ganttchart/', 43)
@@ -395,6 +472,15 @@ describe('getGitLabURLNewIssueWithTemplate', () => {
       )
     ).toBe(
       'https://gitlab.com/lamact/react-issue-ganttchart/issues/new?issue[description]='
+    );
+  });
+  test('true', () => {
+    expect(
+      getGitLabURLNewIssueWithTemplate(
+        'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/'
+      )
+    ).toBe(
+      'https://gitlab.com/lamact/subgrp/react-issue-ganttchart/issues/new?issue[description]='
     );
   });
   test('null', () => {
