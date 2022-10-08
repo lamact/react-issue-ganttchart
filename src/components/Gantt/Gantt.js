@@ -22,11 +22,9 @@ const Gantt = (props) => {
 
   useEffect(() => {
     try {
+      gantt.clearAll();
       if (isValidVariable(props.issue) && props.issue.length != 0) {
         gantt.clearAll();
-        // props.issue.map((issue) => {
-        //   gantt.addTask(issue);
-        // });
         props.issue.map((issue) => {
           gantt.addTask(issue);
           if ('links' in issue) {
@@ -37,7 +35,6 @@ const Gantt = (props) => {
           }
         });
         gantt.sort('due_date', false);
-        // gantt.render();
       }
     } catch (err) {
       gantt.message({ text: err, type: 'error' });
