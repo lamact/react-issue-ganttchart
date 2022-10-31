@@ -24,6 +24,10 @@ describe('removeFirstSharp', () => {
   test('#1234', () => {
     expect(removeFirstSharp('#1234')).toBe('1234');
   });
+
+  test('null', () => {
+    expect(removeFirstSharp(null)).toBe(null);
+  });
 });
 
 describe('removeLastSlash', () => {
@@ -34,6 +38,10 @@ describe('removeLastSlash', () => {
   test('a/a', () => {
     expect(removeLastSlash('a/a')).toBe('a/a');
   });
+
+  test('null', () => {
+    expect(removeLastSlash(null)).toBe(null);
+  });
 });
 
 describe('removeLastSpace', () => {
@@ -43,6 +51,10 @@ describe('removeLastSpace', () => {
 
   test('a a', () => {
     expect(removeLastSpace('a a')).toBe('a a');
+  });
+
+  test('null', () => {
+    expect(removeLastSpace(null)).toBe(null);
   });
 });
 

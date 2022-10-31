@@ -13,6 +13,9 @@ export const removeFirstSharp = (id_str) => {
 };
 
 export const removeLastSlash = (url) => {
+  if(!isValidVariable(url)){
+    return null;
+  }
   if (url.length > 1 && /\/$/.test(url)) {
     url = url.slice(0, -1);
   }
@@ -20,6 +23,9 @@ export const removeLastSlash = (url) => {
 };
 
 export const removeLastSpace = (url) => {
+  if(!isValidVariable(url)){
+    return null;
+  }
   if (url.length > 1 && / +$/.test(url)) {
     url = url.slice(0, -1);
   }
