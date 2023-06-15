@@ -28,7 +28,7 @@ export const getSelfHostingGitLabDomain = (git_url) => {
   }
   const split_git_url = git_url.split('/');
   if (split_git_url.length >= 5) {
-    return split_git_url[2];
+    return split_git_url[2].replace('$$', '/');
   }
   return null;
 };
